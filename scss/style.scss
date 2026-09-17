@@ -1,0 +1,379 @@
+// ==========================================================
+// style.scss
+// ==========================================================
+@use "reset";
+@use "variables" as v;
+@use "mixin" as m;
+
+// ----------------------------------------------------------
+// ベース
+// ----------------------------------------------------------
+html {
+  scroll-padding-top: v.$spacing-md;
+}
+
+body {
+  font-family: v.$font-family-base;
+  @include m.font(v.$font-size-md, v.$font-weight-normal, v.$line-height-base);
+  color: v.$color-text;
+  background-color: v.$color-bg-side;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+}
+
+// ----------------------------------------------------------
+// レイアウト:3カラム
+//   左(header):fixed / 中央(lp):max-width 430px・スクロール / 右(side):fixed
+// ----------------------------------------------------------
+
+// 左カラム:ロゴ
+.header {
+  @include m.fixed-column(left);
+  @include m.flex-center;
+  z-index: 10;
+  padding: v.$spacing-md;
+
+  &__logo {
+    max-width: 200px;
+  }
+
+  &__logo-link {
+    display: block;
+  }
+
+  &__logo-img {
+    width: 100%;
+  }
+}
+
+// 中央カラム:LPコンテンツ(body自体がスクロールし、左右はfixedで留まる)
+.lp {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: v.$lp-max-width;
+  min-height: 100vh;
+  margin-inline: auto;
+  background-color: v.$color-bg;
+  box-shadow: 0 0 20px rgba(#000, 0.08);
+}
+
+// 右カラム:ナビ + CTA
+.side {
+  @include m.fixed-column(right);
+  @include m.flex(center, center, column);
+  z-index: 10;
+  gap: v.$spacing-lg;
+  padding: v.$spacing-md;
+
+  &__cta {
+    @include m.button-base;
+    @include m.font(v.$font-size-md, v.$font-weight-bold, 1);
+    padding: v.$spacing-sm v.$spacing-lg;
+    color: v.$color-text-inverse;
+    background-color: v.$color-primary;
+    border-radius: v.$radius-pill;
+  }
+}
+
+.nav {
+  &__list {
+    @include m.flex(flex-start, flex-start, column);
+    gap: v.$spacing-sm;
+  }
+
+  &__link {
+    @include m.font-en;
+    @include m.font(v.$font-size-md, v.$font-weight-medium, 1);
+    display: block;
+    text-decoration: none;
+    transition: color v.$transition-base;
+
+    &:hover {
+      color: v.$color-primary;
+    }
+  }
+}
+
+// 左右カラムは中央カラム(430px)より外側に収まらない幅では非表示
+@include m.mq-down(md) {
+  .header,
+  .side {
+    display: none;
+  }
+}
+
+// ----------------------------------------------------------
+// セクション共通
+// ----------------------------------------------------------
+%section {
+  padding: v.$section-padding;
+}
+
+%section-title {
+  @include m.section-title;
+  margin-bottom: v.$spacing-md;
+}
+
+// ----------------------------------------------------------
+// FV
+// ----------------------------------------------------------
+.fv {
+  position: relative;
+  color: v.$color-text-inverse;
+  background-color: v.$color-secondary;
+
+  &__figure {
+    @include m.aspect(430, 700);
+  }
+
+  &__title {
+    @include m.font(v.$font-size-2xl, v.$font-weight-bold, v.$line-height-heading);
+    padding: v.$spacing-md v.$inner-padding 0;
+  }
+
+  &__lead {
+    padding: v.$spacing-sm v.$inner-padding 0;
+  }
+
+  &__cta {
+    @include m.button-base;
+    @include m.font(v.$font-size-md, v.$font-weight-bold, 1);
+    width: calc(100% - #{v.$inner-padding * 2});
+    margin: v.$spacing-md v.$inner-padding v.$spacing-lg;
+    padding: v.$spacing-sm;
+    color: v.$color-text-inverse;
+    background-color: v.$color-primary;
+    border-radius: v.$radius-pill;
+  }
+}
+
+// ----------------------------------------------------------
+// 悩み
+// ----------------------------------------------------------
+.problem {
+  @extend %section;
+  background-color: v.$color-bg-sub;
+
+  &__title {
+    @extend %section-title;
+  }
+
+  &__list {
+    @include m.flex(flex-start, stretch, column);
+    gap: v.$spacing-xs;
+  }
+
+  &__item {
+    padding: v.$spacing-sm;
+    background-color: v.$color-bg;
+    border-radius: v.$radius-md;
+  }
+}
+
+// ----------------------------------------------------------
+// 特徴
+// ----------------------------------------------------------
+.feature {
+  @extend %section;
+
+  &__title {
+    @extend %section-title;
+  }
+
+  &__list {
+    @include m.flex(flex-start, stretch, column);
+    gap: v.$spacing-md;
+  }
+}
+
+.feature-card {
+  &__figure {
+    @include m.aspect(390, 240);
+    border-radius: v.$radius-md;
+  }
+
+  &__title {
+    @include m.font(v.$font-size-lg, v.$font-weight-bold, v.$line-height-heading);
+    margin-top: v.$spacing-sm;
+  }
+
+  &__text {
+    margin-top: v.$spacing-xs;
+    color: v.$color-text-muted;
+  }
+}
+
+// ----------------------------------------------------------
+// 料金
+// ----------------------------------------------------------
+.price {
+  @extend %section;
+  background-color: v.$color-bg-sub;
+
+  &__title {
+    @extend %section-title;
+  }
+
+  &__list {
+    @include m.flex(flex-start, stretch, column);
+    gap: v.$spacing-sm;
+  }
+}
+
+.price-card {
+  padding: v.$spacing-md;
+  text-align: center;
+  background-color: v.$color-bg;
+  border: 1px solid v.$color-border;
+  border-radius: v.$radius-md;
+
+  &__name {
+    @include m.font(v.$font-size-lg, v.$font-weight-bold, v.$line-height-heading);
+  }
+
+  &__amount {
+    margin-top: v.$spacing-xs;
+  }
+
+  &__num {
+    @include m.font-en;
+    @include m.font(v.$font-size-3xl, v.$font-weight-bold, 1);
+    color: v.$color-primary;
+  }
+
+  &__note {
+    @include m.font(v.$font-size-xs);
+    margin-top: v.$spacing-xs;
+    color: v.$color-text-muted;
+  }
+}
+
+// ----------------------------------------------------------
+// 流れ
+// ----------------------------------------------------------
+.flow {
+  @extend %section;
+
+  &__title {
+    @extend %section-title;
+  }
+
+  &__list {
+    @include m.flex(flex-start, stretch, column);
+    gap: v.$spacing-sm;
+  }
+
+  &__item {
+    padding: v.$spacing-sm;
+    border-left: 4px solid v.$color-primary;
+  }
+
+  &__step {
+    @include m.font-en;
+    @include m.font(v.$font-size-sm, v.$font-weight-bold, 1);
+    color: v.$color-primary;
+  }
+
+  &__text {
+    margin-top: v.$spacing-xs;
+  }
+}
+
+// ----------------------------------------------------------
+// FAQ
+// ----------------------------------------------------------
+.faq {
+  @extend %section;
+  background-color: v.$color-bg-sub;
+
+  &__title {
+    @extend %section-title;
+  }
+
+  &__question {
+    @include m.font(v.$font-size-md, v.$font-weight-bold);
+    padding: v.$spacing-sm 0 v.$spacing-xs;
+    border-top: 1px solid v.$color-border;
+
+    &:first-of-type {
+      border-top: none;
+    }
+  }
+
+  &__answer {
+    padding-bottom: v.$spacing-sm;
+    color: v.$color-text-muted;
+  }
+}
+
+// ----------------------------------------------------------
+// アクセス
+// ----------------------------------------------------------
+.access {
+  @extend %section;
+
+  &__title {
+    @extend %section-title;
+  }
+
+  &__map {
+    @include m.aspect(390, 260);
+    border-radius: v.$radius-md;
+  }
+
+  &__address {
+    @include m.font(v.$font-size-sm);
+    margin-top: v.$spacing-sm;
+  }
+}
+
+// ----------------------------------------------------------
+// CTA
+// ----------------------------------------------------------
+.contact {
+  @extend %section;
+  color: v.$color-text-inverse;
+  text-align: center;
+  background-color: v.$color-secondary;
+
+  &__title {
+    @extend %section-title;
+  }
+
+  &__button {
+    @include m.button-base;
+    @include m.font(v.$font-size-md, v.$font-weight-bold, 1);
+    width: 100%;
+    padding: v.$spacing-sm;
+    color: v.$color-text-inverse;
+    background-color: v.$color-primary;
+    border-radius: v.$radius-pill;
+  }
+}
+
+// ----------------------------------------------------------
+// フッター
+// ----------------------------------------------------------
+.footer {
+  @include m.flex(center, center, column);
+  gap: v.$spacing-sm;
+  padding: v.$spacing-md v.$inner-padding;
+  background-color: v.$color-secondary;
+
+  &__logo {
+    max-width: 120px;
+  }
+
+  &__copyright {
+    @include m.font(v.$font-size-xs);
+    color: v.$color-text-inverse;
+  }
+}

@@ -1,0 +1,62 @@
+// ==========================================================
+// 共通変数
+// ※ 色・フォントサイズはFigmaのデザインに合わせて差し替えてください
+// ==========================================================
+@use "sass:map";
+
+// ---- カラー ----
+$color-primary: #e60012; // メインカラー(CTA・アクセント)
+$color-secondary: #1a1a1a; // サブカラー(見出し背景など)
+$color-text: #333333;
+$color-text-inverse: #ffffff;
+$color-text-muted: #777777;
+$color-bg: #ffffff;
+$color-bg-sub: #f5f5f5;
+$color-bg-side: #f0f0f0; // 左右カラム背景
+$color-border: #dddddd;
+
+// ---- フォント ----
+$font-family-base: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans",
+  Meiryo, sans-serif;
+$font-family-en: "Oswald", "Bebas Neue", sans-serif;
+
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-md: 16px;
+$font-size-lg: 20px;
+$font-size-xl: 24px;
+$font-size-2xl: 32px;
+$font-size-3xl: 40px;
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+$line-height-base: 1.6;
+$line-height-heading: 1.3;
+
+// ---- レイアウト ----
+$lp-max-width: 430px; // 中央カラムの最大幅
+$side-width: calc((100vw - #{$lp-max-width}) / 2);
+$section-padding: 40px 20px;
+$inner-padding: 20px;
+
+// ---- 余白 ----
+$spacing-xs: 8px;
+$spacing-sm: 16px;
+$spacing-md: 24px;
+$spacing-lg: 40px;
+$spacing-xl: 64px;
+
+// ---- その他 ----
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-pill: 9999px;
+$transition-base: 0.3s ease;
+
+// ---- ブレイクポイント ----
+$breakpoints: (
+  "sm": 600px,
+  "md": 900px,
+  "lg": 1200px,
+);

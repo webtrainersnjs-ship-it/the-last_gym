@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE LAST GYM</title>
+  <meta name="description" content="THE LAST GYM のランディングページ">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="page">
+
+  <!-- ==============================
+    左カラム:ロゴ(position: fixed)
+  ============================== -->
+  <header class="header">
+    <p class="header__logo">
+      <a class="header__logo-link" href="#top">
+        <img class="header__logo-img" src="./images/logo.svg" alt="THE LAST GYM" width="200" height="60">
+      </a>
+    </p>
+  </header>
+
+  <!-- ==============================
+    中央カラム:LPメインコンテンツ(max-width: 430px / スクロール)
+  ============================== -->
+  <main class="lp" id="top">
+
+    <!-- TODO: 以下の各セクションはFigmaのデザインに合わせてテキスト・画像・構造を差し替える -->
+
+    <!-- FV -->
+    <section class="fv">
+      <figure class="fv__figure">
+        <img class="fv__img" src="./images/fv.jpg" alt="" width="430" height="700">
+      </figure>
+      <h1 class="fv__title">見出し(Figmaに合わせて差し替え)</h1>
+      <p class="fv__lead">リード文(Figmaに合わせて差し替え)</p>
+      <a class="fv__cta" href="#contact">CTAテキスト</a>
+    </section>
+
+    <!-- 悩み -->
+    <section class="problem">
+      <h2 class="problem__title">セクション見出し</h2>
+      <ul class="problem__list">
+        <li class="problem__item">テキスト</li>
+        <li class="problem__item">テキスト</li>
+        <li class="problem__item">テキスト</li>
+      </ul>
+    </section>
+
+    <!-- 特徴 -->
+    <section class="feature" id="feature">
+      <h2 class="feature__title">セクション見出し</h2>
+      <ul class="feature__list">
+        <li class="feature__item">
+          <article class="feature-card">
+            <figure class="feature-card__figure">
+              <img class="feature-card__img" src="./images/feature-01.jpg" alt="" width="390" height="240">
+            </figure>
+            <h3 class="feature-card__title">特徴タイトル</h3>
+            <p class="feature-card__text">説明テキスト</p>
+          </article>
+        </li>
+        <li class="feature__item">
+          <article class="feature-card">
+            <figure class="feature-card__figure">
+              <img class="feature-card__img" src="./images/feature-02.jpg" alt="" width="390" height="240">
+            </figure>
+            <h3 class="feature-card__title">特徴タイトル</h3>
+            <p class="feature-card__text">説明テキスト</p>
+          </article>
+        </li>
+        <li class="feature__item">
+          <article class="feature-card">
+            <figure class="feature-card__figure">
+              <img class="feature-card__img" src="./images/feature-03.jpg" alt="" width="390" height="240">
+            </figure>
+            <h3 class="feature-card__title">特徴タイトル</h3>
+            <p class="feature-card__text">説明テキスト</p>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 料金 -->
+    <section class="price" id="price">
+      <h2 class="price__title">セクション見出し</h2>
+      <ul class="price__list">
+        <li class="price__item">
+          <article class="price-card">
+            <h3 class="price-card__name">プラン名</h3>
+            <p class="price-card__amount"><span class="price-card__num">00,000</span>円/月</p>
+            <p class="price-card__note">補足テキスト</p>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 流れ -->
+    <section class="flow">
+      <h2 class="flow__title">セクション見出し</h2>
+      <ol class="flow__list">
+        <li class="flow__item">
+          <h3 class="flow__step">STEP 1</h3>
+          <p class="flow__text">テキスト</p>
+        </li>
+        <li class="flow__item">
+          <h3 class="flow__step">STEP 2</h3>
+          <p class="flow__text">テキスト</p>
+        </li>
+        <li class="flow__item">
+          <h3 class="flow__step">STEP 3</h3>
+          <p class="flow__text">テキスト</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+      <h2 class="faq__title">セクション見出し</h2>
+      <dl class="faq__list">
+        <dt class="faq__question">質問テキスト</dt>
+        <dd class="faq__answer">回答テキスト</dd>
+        <dt class="faq__question">質問テキスト</dt>
+        <dd class="faq__answer">回答テキスト</dd>
+      </dl>
+    </section>
+
+    <!-- アクセス -->
+    <section class="access" id="access">
+      <h2 class="access__title">セクション見出し</h2>
+      <figure class="access__map">
+        <img class="access__map-img" src="./images/map.jpg" alt="" width="390" height="260">
+        <figcaption class="access__address">住所テキスト</figcaption>
+      </figure>
+    </section>
+
+    <!-- CTA -->
+    <section class="contact" id="contact">
+      <h2 class="contact__title">セクション見出し</h2>
+      <a class="contact__button" href="#">CTAテキスト</a>
+    </section>
+
+    <footer class="footer">
+      <p class="footer__logo">
+        <img class="footer__logo-img" src="./images/logo.svg" alt="THE LAST GYM" width="120" height="36">
+      </p>
+      <small class="footer__copyright">&copy; THE LAST GYM</small>
+    </footer>
+  </main>
+
+  <!-- ==============================
+    右カラム:ナビ + CTA(position: fixed)
+  ============================== -->
+  <aside class="side">
+    <nav class="nav" aria-label="メインナビゲーション">
+      <ul class="nav__list">
+        <li class="nav__item"><a class="nav__link" href="#top">TOP</a></li>
+        <li class="nav__item"><a class="nav__link" href="#feature">FEATURE</a></li>
+        <li class="nav__item"><a class="nav__link" href="#price">PRICE</a></li>
+        <li class="nav__item"><a class="nav__link" href="#faq">FAQ</a></li>
+        <li class="nav__item"><a class="nav__link" href="#access">ACCESS</a></li>
+      </ul>
+    </nav>
+    <a class="side__cta" href="#contact">CTAテキスト</a>
+  </aside>
+
+</body>
+</html>
