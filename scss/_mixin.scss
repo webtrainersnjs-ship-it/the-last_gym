@@ -2,6 +2,7 @@
 // mixin集
 // ==========================================================
 @use "sass:map";
+@use "sass:math";
 @use "variables" as v;
 
 // ---- メディアクエリ ----
@@ -20,24 +21,21 @@
 }
 
 // ---- Flexbox ----
-@mixin flex($justify: flex-start, $align: stretch, $direction: row, $wrap: nowrap) {
+@mixin flex($justify: flex-start, $align: stretch, $direction: row, $gap: 0) {
   display: flex;
   flex-direction: $direction;
-  flex-wrap: $wrap;
   justify-content: $justify;
   align-items: $align;
+  gap: $gap;
+}
+
+// 縦並び・中央揃え(Figmaの auto layout: vertical / center に対応)
+@mixin stack($gap: 0, $align: center) {
+  @include flex(flex-start, $align, column, $gap);
 }
 
 @mixin flex-center {
   @include flex(center, center);
-}
-
-// ---- 中央寄せ(absolute) ----
-@mixin absolute-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 // ---- 画面固定カラム(左右カラム用) ----
@@ -50,16 +48,32 @@
   height: 100dvh;
 }
 
-// ---- 中央コンテンツ幅 ----
-@mixin lp-inner($padding: v.$inner-padding) {
+// ---- セクション共通 ----
+@mixin section($bg: v.$color-white, $py: v.$spacing-xl, $gap: v.$spacing-xl) {
+  @include stack($gap);
+  padding: $py v.$lp-side-padding;
+  background-color: $bg;
+}
+
+// 背景画像をimgで敷くセクション(section側)
+@mixin section-has-bg {
+  position: relative;
+  isolation: isolate;
+}
+
+// 背景として敷くimg(section-has-bg の子)
+@mixin bg-img($position: bottom) {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   width: 100%;
-  max-width: v.$lp-max-width;
-  margin-inline: auto;
-  padding-inline: $padding;
+  height: 100%;
+  object-fit: cover;
+  object-position: $position;
 }
 
 // ---- テキスト ----
-@mixin font($size: v.$font-size-md, $weight: v.$font-weight-normal, $lh: v.$line-height-base) {
+@mixin font($size: v.$font-size-md, $weight: v.$font-weight-regular, $lh: v.$line-height-base) {
   font-size: $size;
   font-weight: $weight;
   line-height: $lh;
@@ -67,32 +81,129 @@
 
 @mixin font-en {
   font-family: v.$font-family-en;
-  letter-spacing: 0.05em;
 }
 
-// 複数行の省略
-@mixin line-clamp($lines: 2) {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: $lines;
-  overflow: hidden;
+@mixin font-sub {
+  font-family: v.$font-family-sub;
 }
 
-// ---- 画像 ----
-@mixin object-fit($fit: cover, $position: center) {
-  width: 100%;
-  height: 100%;
-  object-fit: $fit;
-  object-position: $position;
+// セクション見出し(ラベル + 見出し。Figmaの「Frame 29」パターン)
+@mixin section-title($size: v.$font-size-2xl, $lh: v.$line-height-base) {
+  @include font($size, v.$font-weight-medium, $lh);
+  text-align: center;
+
+  > .tag {
+    display: block;
+    width: fit-content;
+    margin: 0 auto v.$spacing-xs;
+  }
 }
 
-// アスペクト比を保った画像枠
-@mixin aspect($w, $h) {
-  aspect-ratio: #{$w} / #{$h};
-  overflow: hidden;
+// ラベル(ピル型のタグ。Figmaの「Frame 11」コンポーネント)
+@mixin tag($bg: v.$color-brown, $color: v.$color-white) {
+  display: inline-block;
+  padding: 2px 15px;
+  border-radius: 61px;
+  background-color: $bg;
+  color: $color;
+  @include font(v.$font-size-md, v.$font-weight-medium, v.$line-height-base);
+  text-align: center;
+  white-space: nowrap;
+}
 
-  img {
-    @include object-fit;
+// マーカー風の下線(テキストの下にバーを敷く)
+@mixin marker($color: v.$color-brown, $height: 9px, $offset: 0) {
+  background-image: linear-gradient($color, $color);
+  background-repeat: no-repeat;
+  background-size: 100% $height;
+  background-position: 0 calc(100% - #{$offset});
+}
+
+// 引用符(装飾)。Figmaの「Group 29/30」などの “ ” に対応
+@mixin quotes($size: 40px, $color: v.$color-brown, $offset-x: -20px, $offset-y: -10px) {
+  position: relative;
+
+  &::before,
+  &::after {
+    position: absolute;
+    @include font-en;
+    font-size: $size;
+    font-weight: v.$font-weight-bold;
+    line-height: 1;
+    color: $color;
+    pointer-events: none;
+  }
+
+  &::before {
+    content: "\201C";
+    top: $offset-y;
+    left: $offset-x;
+  }
+
+  &::after {
+    content: "\201D";
+    right: $offset-x;
+    bottom: $offset-y;
+  }
+}
+
+// 見出し下の短い区切り線(Figmaの「Line 5」)
+@mixin title-line($width: 35px, $color: v.$color-black, $gap: 0) {
+  &::after {
+    content: "";
+    display: block;
+    width: $width;
+    height: 1px;
+    margin: $gap auto 0;
+    background-color: $color;
+  }
+}
+
+// 下向きのシェブロン矢印(Figmaの「Vector 4 / 5」)
+@mixin chevron-down($width: 17px, $height: 9px, $color: v.$color-black, $thickness: 1px) {
+  $half: math.div($width, 2);
+  $arm: math.hypot($half, $height);
+  $angle: math.atan(math.div($height, $half));
+
+  position: relative;
+  display: block;
+  width: $width;
+  height: $height;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: $arm;
+    height: $thickness;
+    background-color: $color;
+  }
+
+  &::before {
+    left: 0;
+    transform-origin: left top;
+    transform: rotate($angle);
+  }
+
+  &::after {
+    right: 0;
+    transform-origin: right top;
+    transform: rotate(-$angle);
+  }
+}
+
+// 吹き出しのしっぽ(上向き三角形)。Figmaの「Polygon 3」
+@mixin bubble-tail-top($width: 24px, $height: 16px, $color: v.$color-brown) {
+  &::before {
+    content: "";
+    position: absolute;
+    top: -#{$height};
+    left: 50%;
+    transform: translateX(-50%);
+    border-style: solid;
+    border-width: 0 calc(#{$width} / 2) $height;
+    border-color: transparent transparent $color;
   }
 }
 
@@ -104,17 +215,54 @@
   text-decoration: none;
   cursor: pointer;
   border: none;
-  transition: opacity v.$transition-base, transform v.$transition-base;
+  transition: opacity v.$transition-base;
 
   &:hover {
     opacity: 0.8;
   }
 }
 
-// ---- 見出し ----
-@mixin section-title {
-  @include font(v.$font-size-xl, v.$font-weight-bold, v.$line-height-heading);
+// CTAボタン(緑のピル型)。Figmaの「Frame 34」コンポーネント
+@mixin cta-button {
+  @include button-base;
+  @include stack(0);
+  @include font-sub;
+  width: v.$card-width;
+  max-width: 100%;
+  padding: 15px 20px;
+  border-radius: v.$radius-pill;
+  background-color: v.$color-green;
+  color: v.$color-white;
+  font-weight: v.$font-weight-medium;
   text-align: center;
+}
+
+// ---- 画像 ----
+@mixin object-fit($fit: cover, $position: center) {
+  width: 100%;
+  height: 100%;
+  object-fit: $fit;
+  object-position: $position;
+}
+
+// 円形画像
+@mixin circle-img($size: 100px) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+// 横スクロールリスト(スクロールバー非表示)
+@mixin scroll-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 // ---- アクセシビリティ(視覚的に非表示) ----

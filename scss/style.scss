@@ -9,15 +9,34 @@
 // ベース
 // ----------------------------------------------------------
 html {
-  scroll-padding-top: v.$spacing-md;
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: v.$font-family-base;
-  @include m.font(v.$font-size-md, v.$font-weight-normal, v.$line-height-base);
-  color: v.$color-text;
-  background-color: v.$color-bg-side;
+  @include m.font(v.$font-size-md, v.$font-weight-regular, v.$line-height-base);
+  color: v.$color-black;
+  background-color: v.$color-brown-sub;
   -webkit-font-smoothing: antialiased;
+}
+
+// reset.scss が全要素に line-height: 1 を指定しているため、テキスト要素は親の行間を継承させる
+h1,
+h2,
+h3,
+h4,
+p,
+li,
+a,
+span,
+em,
+strong,
+s,
+small,
+address,
+figcaption,
+button {
+  line-height: inherit;
 }
 
 a {
@@ -28,28 +47,76 @@ img {
   display: block;
 }
 
+address {
+  font-style: normal;
+}
+
+// 英数字用フォント(Futura)
+.en {
+  @include m.font-en;
+}
+
+// ラベル(ピル型タグ)
+.tag {
+  @include m.tag;
+}
+
 // ----------------------------------------------------------
 // レイアウト:3カラム
-//   左(header):fixed / 中央(lp):max-width 430px・スクロール / 右(side):fixed
+//   左(sidebar--logo):fixed / 中央(lp):max-width 430px・スクロール / 右(sidebar--nav):fixed
 // ----------------------------------------------------------
-
-// 左カラム:ロゴ
-.header {
-  @include m.fixed-column(left);
-  @include m.flex-center;
+.sidebar {
+  @include m.stack(40px);
+  justify-content: center;
   z-index: 10;
-  padding: v.$spacing-md;
+  padding: 24px;
 
-  &__logo {
-    max-width: 200px;
+  &--logo {
+    @include m.fixed-column(left);
   }
 
-  &__logo-link {
+  &--nav {
+    @include m.fixed-column(right);
+  }
+
+  &__logo {
     display: block;
+    width: 170px;
+    max-width: 100%;
   }
 
   &__logo-img {
     width: 100%;
+    height: auto;
+  }
+
+  &__cta {
+    @include m.cta-button;
+    width: auto;
+    padding: 15px 40px;
+    @include m.font(v.$font-size-md, v.$font-weight-medium, 1);
+  }
+
+  // 左右カラムが確保できない幅では非表示(中央カラムのみ表示)
+  @include m.mq-down(md) {
+    display: none;
+  }
+}
+
+.global-nav {
+  &__list {
+    @include m.stack(15px, flex-start);
+  }
+
+  &__link {
+    display: block;
+    @include m.font(v.$font-size-md, v.$font-weight-medium, 1);
+    text-decoration: none;
+    transition: color v.$transition-base;
+
+    &:hover {
+      color: v.$color-brown;
+    }
   }
 }
 
@@ -61,319 +128,1093 @@ img {
   max-width: v.$lp-max-width;
   min-height: 100vh;
   margin-inline: auto;
-  background-color: v.$color-bg;
-  box-shadow: 0 0 20px rgba(#000, 0.08);
+  background-color: v.$color-white;
+  box-shadow: 0 0 20px rgba(#000, 0.06);
 }
 
-// 右カラム:ナビ + CTA
-.side {
-  @include m.fixed-column(right);
-  @include m.flex(center, center, column);
-  z-index: 10;
-  gap: v.$spacing-lg;
-  padding: v.$spacing-md;
+// ----------------------------------------------------------
+// header
+// ----------------------------------------------------------
+.header {
+  @include m.flex(space-between, center);
+  padding: 10px 15px;
 
-  &__cta {
-    @include m.button-base;
-    @include m.font(v.$font-size-md, v.$font-weight-bold, 1);
-    padding: v.$spacing-sm v.$spacing-lg;
-    color: v.$color-text-inverse;
-    background-color: v.$color-primary;
-    border-radius: v.$radius-pill;
-  }
-}
-
-.nav {
-  &__list {
-    @include m.flex(flex-start, flex-start, column);
-    gap: v.$spacing-sm;
+  &__logo {
+    width: 85px;
+    height: 25px;
   }
 
-  &__link {
-    @include m.font-en;
-    @include m.font(v.$font-size-md, v.$font-weight-medium, 1);
+  &__logo-img {
+    @include m.object-fit;
+  }
+
+  &__menu {
+    @include m.stack(0, stretch);
+    justify-content: space-between;
+    width: 26px;
+    height: 18px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  &__menu-bar {
     display: block;
-    text-decoration: none;
-    transition: color v.$transition-base;
-
-    &:hover {
-      color: v.$color-primary;
-    }
-  }
-}
-
-// 左右カラムは中央カラム(430px)より外側に収まらない幅では非表示
-@include m.mq-down(md) {
-  .header,
-  .side {
-    display: none;
+    height: 1px;
+    background-color: v.$color-black;
   }
 }
 
 // ----------------------------------------------------------
-// セクション共通
-// ----------------------------------------------------------
-%section {
-  padding: v.$section-padding;
-}
-
-%section-title {
-  @include m.section-title;
-  margin-bottom: v.$spacing-md;
-}
-
-// ----------------------------------------------------------
-// FV
+// fv
 // ----------------------------------------------------------
 .fv {
-  position: relative;
-  color: v.$color-text-inverse;
-  background-color: v.$color-secondary;
-
-  &__figure {
-    @include m.aspect(430, 700);
-  }
-
-  &__title {
-    @include m.font(v.$font-size-2xl, v.$font-weight-bold, v.$line-height-heading);
-    padding: v.$spacing-md v.$inner-padding 0;
-  }
-
-  &__lead {
-    padding: v.$spacing-sm v.$inner-padding 0;
-  }
-
-  &__cta {
-    @include m.button-base;
-    @include m.font(v.$font-size-md, v.$font-weight-bold, 1);
-    width: calc(100% - #{v.$inner-padding * 2});
-    margin: v.$spacing-md v.$inner-padding v.$spacing-lg;
-    padding: v.$spacing-sm;
-    color: v.$color-text-inverse;
-    background-color: v.$color-primary;
-    border-radius: v.$radius-pill;
+  &__img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 430 / 774;
+    object-fit: cover;
   }
 }
 
 // ----------------------------------------------------------
-// 悩み
+// campaign
 // ----------------------------------------------------------
-.problem {
-  @extend %section;
-  background-color: v.$color-bg-sub;
-
-  &__title {
-    @extend %section-title;
-  }
-
-  &__list {
-    @include m.flex(flex-start, stretch, column);
-    gap: v.$spacing-xs;
-  }
-
-  &__item {
-    padding: v.$spacing-sm;
-    background-color: v.$color-bg;
-    border-radius: v.$radius-md;
-  }
-}
-
-// ----------------------------------------------------------
-// 特徴
-// ----------------------------------------------------------
-.feature {
-  @extend %section;
-
-  &__title {
-    @extend %section-title;
-  }
-
-  &__list {
-    @include m.flex(flex-start, stretch, column);
-    gap: v.$spacing-md;
-  }
-}
-
-.feature-card {
-  &__figure {
-    @include m.aspect(390, 240);
-    border-radius: v.$radius-md;
-  }
-
-  &__title {
-    @include m.font(v.$font-size-lg, v.$font-weight-bold, v.$line-height-heading);
-    margin-top: v.$spacing-sm;
-  }
-
-  &__text {
-    margin-top: v.$spacing-xs;
-    color: v.$color-text-muted;
-  }
-}
-
-// ----------------------------------------------------------
-// 料金
-// ----------------------------------------------------------
-.price {
-  @extend %section;
-  background-color: v.$color-bg-sub;
-
-  &__title {
-    @extend %section-title;
-  }
-
-  &__list {
-    @include m.flex(flex-start, stretch, column);
-    gap: v.$spacing-sm;
-  }
-}
-
-.price-card {
-  padding: v.$spacing-md;
+.campaign {
+  @include m.section-has-bg;
+  @include m.stack(0);
+  padding: 30px v.$lp-side-padding;
   text-align: center;
-  background-color: v.$color-bg;
-  border: 1px solid v.$color-border;
-  border-radius: v.$radius-md;
 
-  &__name {
-    @include m.font(v.$font-size-lg, v.$font-weight-bold, v.$line-height-heading);
+  &__bg {
+    @include m.bg-img(bottom);
   }
 
-  &__amount {
-    margin-top: v.$spacing-xs;
-  }
-
-  &__num {
-    @include m.font-en;
-    @include m.font(v.$font-size-3xl, v.$font-weight-bold, 1);
-    color: v.$color-primary;
+  &__title {
+    @include m.font(v.$font-size-2xl, v.$font-weight-bold);
+    margin-bottom: 30px;
   }
 
   &__note {
-    @include m.font(v.$font-size-xs);
-    margin-top: v.$spacing-xs;
-    color: v.$color-text-muted;
+    @include m.font(v.$font-size-xs, v.$font-weight-medium, v.$line-height-tight);
+    margin-top: 15px;
   }
 }
 
-// ----------------------------------------------------------
-// 流れ
-// ----------------------------------------------------------
-.flow {
-  @extend %section;
+// 特典ブロック(バッジ + 白カード)
+.benefit {
+  position: relative;
+  width: v.$content-width;
+  max-width: 100%;
+  padding-top: 52px; // バッジ分の余白(バッジ高さ72px - カードへの重なり20px)
 
-  &__title {
-    @extend %section-title;
+  & + & {
+    margin-top: 20px;
   }
 
-  &__list {
-    @include m.flex(flex-start, stretch, column);
-    gap: v.$spacing-sm;
+  &--present {
+    padding-top: 74px; // 円形バッジ(92px)分
   }
 
-  &__item {
-    padding: v.$spacing-sm;
-    border-left: 4px solid v.$color-primary;
-  }
+  &__badge {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 1;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    border-radius: 71px;
+    background-color: v.$color-green;
+    color: v.$color-white;
+    @include m.font(v.$font-size-md, v.$font-weight-medium);
+    white-space: nowrap;
 
-  &__step {
-    @include m.font-en;
-    @include m.font(v.$font-size-sm, v.$font-weight-bold, 1);
-    color: v.$color-primary;
-  }
+    strong {
+      @include m.font(v.$font-size-lg, v.$font-weight-bold);
+    }
 
-  &__text {
-    margin-top: v.$spacing-xs;
-  }
-}
-
-// ----------------------------------------------------------
-// FAQ
-// ----------------------------------------------------------
-.faq {
-  @extend %section;
-  background-color: v.$color-bg-sub;
-
-  &__title {
-    @extend %section-title;
-  }
-
-  &__question {
-    @include m.font(v.$font-size-md, v.$font-weight-bold);
-    padding: v.$spacing-sm 0 v.$spacing-xs;
-    border-top: 1px solid v.$color-border;
-
-    &:first-of-type {
-      border-top: none;
+    &--circle {
+      @include m.flex-center;
+      width: 92px;
+      height: 92px;
+      padding: 23px 14px;
+      font-weight: v.$font-weight-bold;
     }
   }
 
-  &__answer {
-    padding-bottom: v.$spacing-sm;
-    color: v.$color-text-muted;
-  }
-}
-
-// ----------------------------------------------------------
-// アクセス
-// ----------------------------------------------------------
-.access {
-  @extend %section;
-
-  &__title {
-    @extend %section-title;
-  }
-
-  &__map {
-    @include m.aspect(390, 260);
+  &__card {
+    @include m.stack(20px);
+    padding: 30px 20px;
     border-radius: v.$radius-md;
+    background-color: v.$color-white;
   }
 
-  &__address {
-    @include m.font(v.$font-size-sm);
-    margin-top: v.$spacing-sm;
+  &__title {
+    @include m.font(v.$font-size-2xl, v.$font-weight-medium, v.$line-height-tight);
+    color: v.$color-brown;
+  }
+
+  &__plus {
+    display: block;
+    @include m.font(v.$font-size-lg, v.$font-weight-bold, v.$line-height-tight);
+  }
+
+  &__list {
+    @include m.stack(15px, stretch);
+    width: v.$card-width;
+    max-width: 100%;
+  }
+}
+
+// 特典アイテム(枠線付きカード)
+.benefit-item {
+  @include m.stack(9px);
+  padding: 10px;
+  border: 1px solid v.$color-black;
+  border-radius: v.$radius-md;
+  background-color: v.$color-white;
+
+  &__price {
+    @include m.flex(center, center, row, 22px);
+    font-weight: v.$font-weight-medium;
+  }
+
+  &__before {
+    @include m.stack(0);
+    @include m.font(v.$font-size-md, v.$font-weight-medium);
+  }
+
+  &__before-price {
+    font-size: v.$font-size-lg;
+    text-decoration: line-through;
+    text-decoration-color: v.$color-brown;
+    text-decoration-thickness: 2px;
+  }
+
+  &__after {
+    position: relative;
+    padding-left: 22px;
+    @include m.font(v.$font-size-2xl, v.$font-weight-medium, 1);
+    color: v.$color-brown;
+
+    // ▶(Figmaの「Polygon 2」)
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      border-style: solid;
+      border-width: 6.5px 0 6.5px 11px;
+      border-color: transparent transparent transparent v.$color-black;
+    }
+  }
+
+  &__after-num {
+    font-size: v.$font-size-6xl;
+  }
+
+  &__text {
+    @include m.font(v.$font-size-md, v.$font-weight-medium);
+  }
+
+  &__em {
+    display: block;
+    @include m.font(v.$font-size-2xl, v.$font-weight-bold);
+    color: v.$color-brown;
+
+    &--num {
+      @include m.font-en;
+      font-size: v.$font-size-4xl;
+    }
   }
 }
 
 // ----------------------------------------------------------
-// CTA
+// cta
 // ----------------------------------------------------------
-.contact {
-  @extend %section;
-  color: v.$color-text-inverse;
+.cta {
+  @include m.section(v.$color-white, 30px, 20px);
   text-align: center;
-  background-color: v.$color-secondary;
 
   &__title {
-    @extend %section-title;
+    @include m.quotes(36px, v.$color-brown, -16px, -8px);
+    padding: 8px 12px;
+    @include m.font(v.$font-size-xl, v.$font-weight-medium);
+  }
+
+  &__title-main {
+    display: block;
+    font-size: v.$font-size-2xl;
+  }
+
+  &__lead {
+    @include m.font(v.$font-size-md);
   }
 
   &__button {
-    @include m.button-base;
-    @include m.font(v.$font-size-md, v.$font-weight-bold, 1);
-    width: 100%;
-    padding: v.$spacing-sm;
-    color: v.$color-text-inverse;
-    background-color: v.$color-primary;
-    border-radius: v.$radius-pill;
+    @include m.cta-button;
+  }
+
+  &__button-sub {
+    font-size: v.$font-size-md;
+  }
+
+  &__button-main {
+    font-size: v.$font-size-xl;
+  }
+
+  &__features {
+    @include m.flex(space-between, flex-start);
+    width: v.$content-width;
+    max-width: 100%;
+  }
+
+  &__feature {
+    @include m.stack(5px);
+    width: 125px;
+  }
+
+  &__feature-img {
+    @include m.circle-img(100px);
+  }
+
+  &__feature-text {
+    @include m.font(v.$font-size-sm, v.$font-weight-regular, 19px);
+  }
+
+  &__note {
+    @include m.font(v.$font-size-md, v.$font-weight-medium);
   }
 }
 
 // ----------------------------------------------------------
-// フッター
+// before-after
 // ----------------------------------------------------------
-.footer {
-  @include m.flex(center, center, column);
-  gap: v.$spacing-sm;
-  padding: v.$spacing-md v.$inner-padding;
-  background-color: v.$color-secondary;
+.before-after {
+  @include m.section(v.$color-brown-sub, 30px, 30px);
 
-  &__logo {
-    max-width: 120px;
+  &__title {
+    @include m.section-title(v.$font-size-2xl, 33.7px);
   }
 
-  &__copyright {
-    @include m.font(v.$font-size-xs);
-    color: v.$color-text-inverse;
+  &__img {
+    width: 310px;
+    height: 310px;
+    border-radius: 36px;
+    background-color: v.$color-gray;
+    object-fit: cover;
+  }
+}
+
+// ----------------------------------------------------------
+// worries
+// ----------------------------------------------------------
+.worries {
+  padding: 30px v.$lp-side-padding;
+  background-color: v.$color-white;
+
+  // お悩み(上段)
+  &__problem {
+    width: 353px;
+    max-width: 100%;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  &__title {
+    @include m.quotes(36px, v.$color-brown, -6px, -2px);
+    display: inline-block;
+    padding: 0 24px;
+    @include m.font(v.$font-size-2xl, v.$font-weight-bold);
+  }
+
+  &__title-sub {
+    display: block;
+    margin-bottom: 5px;
+    @include m.font(v.$font-size-md, v.$font-weight-medium, 21px);
+  }
+
+  &__lead {
+    margin-top: 5px;
+    @include m.font(v.$font-size-md, v.$font-weight-medium, 21px);
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 9px 16px;
+    margin-top: 30px;
+  }
+
+  // 点線の吹き出し(Figmaの「Group 11〜17」)
+  &__item {
+    @include m.flex-center;
+    position: relative;
+    min-height: 119px;
+    padding: 15px 10px;
+    border: 1px dashed v.$color-brown;
+    border-radius: 60px;
+    background-color: v.$color-white;
+    @include m.font(v.$font-size-sm, v.$font-weight-regular, 25px);
+
+    &:first-child {
+      grid-column: 1 / -1;
+      width: 238px;
+      justify-self: center;
+    }
+
+    // しっぽ
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -7px;
+      width: 12px;
+      height: 12px;
+      border-right: 1px dashed v.$color-brown;
+      border-bottom: 1px dashed v.$color-brown;
+      background-color: v.$color-white;
+      transform: rotate(45deg);
+    }
+
+    &:nth-child(odd)::after {
+      right: 36px;
+    }
+
+    &:nth-child(even)::after {
+      left: 36px;
+    }
+
+    &:first-child::after {
+      right: auto;
+      left: 40px;
+    }
+  }
+
+  // 解決(下段・クリーム背景のボックス)
+  &__solution {
+    @include m.stack(0);
+    margin-top: 111px;
+    padding: 0 20px 22px;
+    border-radius: v.$radius-md;
+    background-color: v.$color-brown-sub;
+    text-align: center;
+  }
+
+  &__figure {
+    @include m.stack(10px);
+  }
+
+  &__figure-img {
+    width: 117px;
+    height: 221px;
+    margin-top: -135px; // イラストをクリーム背景の上にはみ出させる
+    object-fit: contain;
+  }
+
+  &__figure-text {
+    @include m.font(v.$font-size-md, v.$font-weight-regular, 21px);
+  }
+
+  &__solution-title {
+    @include m.section-title(v.$font-size-2xl);
+    margin-top: 34px;
+
+    > .tag {
+      margin-bottom: 15px;
+    }
+  }
+
+  &__solution-list {
+    @include m.stack(0, stretch);
+    width: 310px;
+    max-width: 100%;
+    margin-top: 15px;
+  }
+
+  &__solution-item {
+    @include m.flex(space-between, center);
+    height: 100px;
+
+    &:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+  }
+
+  &__solution-img {
+    @include m.circle-img(100px);
+  }
+
+  &__solution-text {
+    width: 176px;
+    @include m.font(v.$font-size-md, v.$font-weight-medium);
+  }
+
+  // さらに:AIアプリ
+  &__app {
+    @include m.stack(15px);
+    width: 317px;
+    max-width: 100%;
+    margin-top: 38px;
+  }
+
+  &__app-figure {
+    @include m.stack(10px);
+  }
+
+  &__app-img {
+    width: 175px;
+    height: 178px;
+    object-fit: contain;
+  }
+
+  &__app-caption {
+    @include m.font(v.$font-size-xl, v.$font-weight-bold);
+    color: v.$color-brown;
+  }
+
+  &__app-text {
+    margin-top: 5px;
+    @include m.font(v.$font-size-md, v.$font-weight-medium);
+  }
+}
+
+// ----------------------------------------------------------
+// worries-solution
+// ----------------------------------------------------------
+.worries-solution {
+  @include m.stack(20px);
+  margin: 0 v.$lp-side-padding 30px;
+  padding: 20px;
+  border-radius: v.$radius-lg;
+  background-color: v.$color-brown-sub;
+
+  &__title {
+    @include m.font(v.$font-size-2xl, v.$font-weight-medium, 43.7px);
+    text-align: center;
+  }
+
+  &__em {
+    @include m.marker(v.$color-brown, 9px, 4px);
+    font-size: v.$font-size-3xl;
+  }
+
+  &__list {
+    @include m.quotes(36px, v.$color-brown, 8px, 2px);
+    @include m.stack(10px, flex-start);
+    width: v.$card-width;
+    max-width: 100%;
+    padding: 30px 47px;
+    border-radius: v.$radius-lg;
+    background-color: v.$color-white;
+
+    // 引用符は上部の左右に配置
+    &::after {
+      top: 2px;
+      bottom: auto;
+    }
+  }
+
+  &__item {
+    @include m.font(v.$font-size-md);
+    white-space: nowrap;
+
+    &::before {
+      content: "・";
+    }
+  }
+
+  &__text {
+    width: v.$card-width;
+    max-width: 100%;
+    @include m.font(v.$font-size-md);
+  }
+}
+
+// ----------------------------------------------------------
+// reason
+// ----------------------------------------------------------
+.reason {
+  @include m.section(v.$color-brown-sub, 30px, 30px);
+
+  &__title {
+    @include m.quotes(36px, v.$color-brown, -12px, -6px);
+    padding: 10px 14px;
+    @include m.font(v.$font-size-2xl, v.$font-weight-medium);
+    text-align: center;
+  }
+
+  &__list {
+    @include m.stack(50px, stretch);
+    width: 100%;
+  }
+}
+
+.reason-item {
+  @include m.stack(15px);
+
+  &__title {
+    @include m.title-line(35px, v.$color-black, 15px);
+    @include m.font(v.$font-size-xl, v.$font-weight-medium, 32px);
+    text-align: center;
+  }
+
+  &__num {
+    display: block;
+    @include m.font(v.$font-size-3xl, v.$font-weight-medium, 40px);
+  }
+
+  &__text {
+    width: 100%;
+    @include m.font(v.$font-size-md);
+  }
+
+  // 大小2枚の画像を重ねる(Figmaの「Group 45〜48」)
+  &__figure {
+    position: relative;
+    width: v.$content-width;
+    max-width: 100%;
+    height: 270px;
+  }
+
+  &__img {
+    position: absolute;
+    object-fit: cover;
+    background-color: v.$color-gray;
+
+    &--main {
+      top: 0;
+      left: 0;
+      width: 289px;
+      height: 234px;
+    }
+
+    &--sub {
+      top: 117px;
+      right: 0;
+      width: 189px;
+      height: 153px;
+    }
+  }
+
+  &--reverse &__img--main {
+    right: 0;
+    left: auto;
+  }
+
+  &--reverse &__img--sub {
+    right: auto;
+    left: 0;
+  }
+}
+
+// ----------------------------------------------------------
+// strength
+// ----------------------------------------------------------
+.strength {
+  @include m.section-has-bg;
+  @include m.section(transparent, 30px, 20px);
+  text-align: center;
+
+  &__bg {
+    @include m.bg-img(bottom);
+  }
+
+  &__title {
+    @include m.font(v.$font-size-3xl, v.$font-weight-medium, 43.7px);
+
+    .en {
+      display: block;
+    }
+  }
+
+  &__title-main {
+    @include m.marker(v.$color-green, 5px, 2px);
+    padding: 0 6px;
+  }
+
+  &__lead {
+    @include m.font-sub;
+    @include m.font(v.$font-size-md, v.$font-weight-medium, 38px);
+    margin-top: -10px;
+  }
+
+  &__lead-em {
+    display: block;
+    font-size: v.$font-size-2xl;
+    font-weight: v.$font-weight-medium;
+  }
+
+  &__example-label {
+    margin-top: -10px;
+  }
+
+  // 2×2のメニュー例(十字の区切り線付き)
+  &__examples {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 31px 36px;
+    width: v.$card-width;
+    max-width: 100%;
+    margin-top: -10px;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      background-color: v.$color-black;
+    }
+
+    &::before {
+      top: 50%;
+      right: 0;
+      left: 0;
+      height: 1px;
+    }
+
+    &::after {
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+    }
+  }
+
+  &__summary {
+    @include m.font-sub;
+    @include m.font(v.$font-size-md, v.$font-weight-medium, 29px);
+    margin-top: -10px;
+  }
+
+  &__arrow {
+    @include m.chevron-down(58px, 17px, v.$color-black);
+  }
+
+  // AI食事管理アプリの案内(スマホ画像が枠の左にはみ出す)
+  &__app {
+    position: relative;
+    width: 348px;
+    max-width: 100%;
+    padding-left: 38px;
+  }
+
+  &__app-img {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 105px;
+    height: 106px;
+    transform: translateY(-50%);
+    object-fit: contain;
+  }
+
+  &__app-text {
+    @include m.font-sub;
+    @include m.font(v.$font-size-md, v.$font-weight-medium, 29px);
+    padding: 20px 20px 20px 50px;
+    border: 2px solid v.$color-brown;
+    white-space: nowrap;
+    border-radius: v.$radius-md;
+    background-color: v.$color-white;
+  }
+
+  &__app-em {
+    display: block;
+    font-size: v.$font-size-xl;
+    font-weight: v.$font-weight-medium;
+    color: v.$color-brown;
+  }
+
+  &__conclusion {
+    @include m.font-sub;
+    @include m.font(v.$font-size-md, v.$font-weight-medium, 37px);
+  }
+
+  &__conclusion-em {
+    @include m.marker(v.$color-green, 5px, 2px);
+    font-size: v.$font-size-2xl;
+  }
+
+  &__message {
+    @include m.font-sub;
+    @include m.font(v.$font-size-md, v.$font-weight-medium, 37px);
+    color: v.$color-brown;
+  }
+
+  &__message-em {
+    display: block;
+    font-size: v.$font-size-2xl;
+    font-weight: v.$font-weight-medium;
+  }
+}
+
+.strength-example {
+  @include m.stack(10px);
+  padding: 30px 0;
+  @include m.font(v.$font-size-xl, v.$font-weight-medium);
+
+  &__img {
+    height: 122px;
+    width: auto;
+    max-width: 158px;
+    object-fit: contain;
+  }
+}
+
+// ----------------------------------------------------------
+// choose
+// ----------------------------------------------------------
+.choose {
+  @include m.section(v.$color-brown-sub, 50px, 30px);
+
+  &__title {
+    @include m.section-title(v.$font-size-2xl);
+  }
+
+  &__title-em {
+    font-size: v.$font-size-3xl;
+    font-weight: v.$font-weight-medium;
+  }
+
+  &__title-num {
+    font-size: v.$font-size-5xl;
+  }
+
+  &__list {
+    @include m.stack(30px, stretch);
+    width: 100%;
+  }
+}
+
+.choose-item {
+  @include m.stack(20px);
+  padding: 20px;
+  border-radius: v.$radius-lg;
+  background-color: v.$color-white;
+
+  &__title {
+    @include m.title-line(35px, v.$color-black, 5px);
+    width: 293px;
+    max-width: 100%;
+    @include m.font(v.$font-size-xl, v.$font-weight-medium, 32px);
+    text-align: center;
+
+    > .tag {
+      display: block;
+      width: fit-content;
+      margin: 5px auto;
+    }
+  }
+
+  &__num {
+    display: block;
+    @include m.font(v.$font-size-3xl, v.$font-weight-medium, 40px);
+  }
+
+  &__text {
+    width: v.$card-width;
+    max-width: 100%;
+    @include m.font(v.$font-size-md, v.$font-weight-regular, 25px);
+  }
+
+  &__points {
+    @include m.stack(30px, stretch);
+    width: v.$card-width;
+    max-width: 100%;
+
+    &--tight {
+      gap: 10px;
+    }
+  }
+
+  &__arrow {
+    @include m.chevron-down(17px, 9px, v.$color-black);
+  }
+
+  // 結論(テキスト + 画像)
+  &__result {
+    @include m.flex(space-between, center, row, 10px);
+    width: v.$card-width;
+    max-width: 100%;
+  }
+
+  &__result-text {
+    flex: 1;
+    @include m.font(v.$font-size-xl, v.$font-weight-medium, 38px);
+    white-space: nowrap;
+  }
+
+  &__result-em {
+    display: block;
+    @include m.font(v.$font-size-2xl, v.$font-weight-bold, 38px);
+    color: v.$color-brown;
+  }
+
+  &__result-img {
+    flex-shrink: 0;
+    object-fit: contain;
+
+    &--box {
+      border-radius: v.$radius-md;
+      background-color: v.$color-gray;
+      object-fit: cover;
+    }
+  }
+
+  // 結論(吹き出し)
+  &__result--bubble {
+    @include m.bubble-tail-top(24px, 16px, v.$color-brown);
+    display: block;
+    position: relative;
+    margin-top: 16px;
+    padding: 19px 13px;
+    border-radius: v.$radius-md;
+    background-color: v.$color-brown;
+    color: v.$color-white;
+    @include m.font(v.$font-size-xl, v.$font-weight-medium, 25px);
+  }
+
+  &__result--center {
+    text-align: center;
+  }
+}
+
+.choose-point {
+  @include m.stack(10px);
+
+  &__title {
+    @include m.flex(flex-start, center, row, 4px);
+    width: 310px;
+    max-width: 100%;
+    @include m.font(v.$font-size-xl, v.$font-weight-medium, 32px);
+    white-space: nowrap;
+  }
+
+  &__num {
+    @include m.flex-center;
+    flex-shrink: 0;
+    width: 47px;
+    height: 47px;
+    border-radius: 50%;
+    background-color: v.$color-brown;
+    color: v.$color-white;
+    @include m.font(v.$font-size-xl, v.$font-weight-medium, 1);
+  }
+
+  &__img {
+    width: v.$card-width;
+    max-width: 100%;
+    height: 203px;
+    border-radius: v.$radius-lg;
+    background-color: v.$color-gray;
+    object-fit: cover;
+  }
+}
+
+// ----------------------------------------------------------
+// shop
+// ----------------------------------------------------------
+.shop {
+  @include m.section-has-bg;
+  @include m.section(transparent, 50px, 30px);
+
+  &__bg {
+    @include m.bg-img(bottom);
+  }
+
+  &__title {
+    @include m.section-title(v.$font-size-2xl, 25px);
+  }
+
+  // 写真スライダー
+  &__gallery {
+    @include m.flex(center, center, row, 8px);
+  }
+
+  &__gallery-btn {
+    position: relative;
+    flex-shrink: 0;
+    width: 19px;
+    height: 19px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: v.$color-brown;
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      border-top: 1px solid v.$color-white;
+      border-right: 1px solid v.$color-white;
+    }
+
+    &--prev::before {
+      transform: translate(-30%, -50%) rotate(-135deg);
+    }
+
+    &--next::before {
+      transform: translate(-70%, -50%) rotate(45deg);
+    }
+  }
+
+  &__gallery-list {
+    @include m.flex(flex-start, center, row, 35px);
+    @include m.scroll-x;
+    width: 177px;
+    scroll-snap-type: x mandatory;
+  }
+
+  &__gallery-item {
+    flex: 0 0 177px;
+    scroll-snap-align: start;
+  }
+
+  &__gallery-img {
+    width: 177px;
+    height: 177px;
+    border-radius: 24px;
+    background-color: v.$color-gray;
+    object-fit: cover;
+  }
+
+  // 店舗情報カード
+  &__info {
+    @include m.stack(10px, flex-start);
+    width: v.$card-width;
+    max-width: 100%;
+    margin-top: -10px;
+    padding: 20px;
+    border-radius: v.$radius-lg;
+    background-color: v.$color-white;
+  }
+
+  &__catch {
+    @include m.font(v.$font-size-xl, v.$font-weight-medium, 25px);
+    color: v.$color-brown;
+  }
+
+  &__sub {
+    @include m.font(v.$font-size-lg, v.$font-weight-medium, 25px);
+    color: v.$color-brown;
+  }
+
+  &__address {
+    @include m.font(v.$font-size-md, v.$font-weight-regular, 25px);
+  }
+
+  &__map {
+    width: 172px;
+    height: 172px;
+    margin-top: -10px;
+    border-radius: 19px;
+    background-color: v.$color-gray;
+    object-fit: cover;
+  }
+}
+
+// ----------------------------------------------------------
+// flow
+// ----------------------------------------------------------
+.flow {
+  @include m.section(v.$color-brown-sub, 30px, 30px);
+  padding-right: 0;
+  padding-left: 0;
+
+  &__title {
+    @include m.section-title(v.$font-size-2xl);
+  }
+
+  // 横スクロールのステップ一覧
+  &__list {
+    @include m.flex(flex-start, flex-start, row, 19px);
+    @include m.scroll-x;
+    width: 100%;
+    padding-left: 102px;
+
+    // 末尾の余白
+    &::after {
+      content: "";
+      flex: 0 0 1px;
+    }
+  }
+}
+
+.flow-step {
+  @include m.stack(5px);
+  flex: 0 0 225px;
+  padding: 30px 20px;
+  border-radius: 160px;
+  background-color: v.$color-brown;
+  color: v.$color-white;
+  text-align: center;
+
+  &__num {
+    @include m.font(v.$font-size-md, v.$font-weight-medium);
+  }
+
+  &__title {
+    @include m.font(v.$font-size-xl, v.$font-weight-medium);
+  }
+
+  &__img {
+    width: 149px;
+    height: 116px;
+    object-fit: contain;
+  }
+
+  &__text {
+    max-width: 153px;
+    @include m.font(v.$font-size-md);
+  }
+}
+
+// ----------------------------------------------------------
+// faq
+// ----------------------------------------------------------
+.faq {
+  @include m.section(v.$color-white, 30px, 30px);
+
+  &__title {
+    @include m.section-title(v.$font-size-2xl, 33.7px);
+  }
+
+  &__list {
+    @include m.stack(20px, stretch);
+    width: 100%;
+  }
+}
+
+.faq-item {
+  @include m.flex(flex-start, center);
+  position: relative;
+  min-height: 71px;
+  padding: 12px 20px 12px 59px;
+  border-radius: v.$radius-md;
+  background-color: v.$color-brown;
+
+  &__q {
+    @include m.flex-center;
+    position: absolute;
+    top: 16px;
+    left: 12px;
+    width: 40px;
+    height: 39px;
+    border: 1px solid v.$color-brown;
+    border-radius: v.$radius-sm;
+    background-color: v.$color-white;
+    color: v.$color-brown;
+    @include m.font(v.$font-size-xl, v.$font-weight-medium, 1);
+  }
+
+  &__question {
+    color: v.$color-white;
+    @include m.font(v.$font-size-lg, v.$font-weight-medium);
   }
 }

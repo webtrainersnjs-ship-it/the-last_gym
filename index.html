@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>THE LAST GYM</title>
-  <meta name="description" content="THE LAST GYM のランディングページ">
+  <title>THE LAST GYM | 奥沢駅徒歩1分のパーソナルジム</title>
+  <meta name="description" content="THE LAST GYM(奥沢駅徒歩1分)。パーソナルトレーニング・マシンピラティス・筋膜リリース・AI食事管理を一か所で。GRAND OPEN記念キャンペーン実施中。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Noto+Sans+JP:wght@500&family=Jost:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="page">
@@ -12,156 +15,566 @@
   <!-- ==============================
     左カラム:ロゴ(position: fixed)
   ============================== -->
-  <header class="header">
-    <p class="header__logo">
-      <a class="header__logo-link" href="#top">
-        <img class="header__logo-img" src="./images/logo.svg" alt="THE LAST GYM" width="200" height="60">
-      </a>
-    </p>
-  </header>
+  <aside class="sidebar sidebar--logo">
+    <a class="sidebar__logo" href="#top">
+      <img class="sidebar__logo-img" src="./images/logo.png" alt="THE LAST GYM" width="170" height="50">
+    </a>
+  </aside>
 
   <!-- ==============================
     中央カラム:LPメインコンテンツ(max-width: 430px / スクロール)
   ============================== -->
   <main class="lp" id="top">
 
-    <!-- TODO: 以下の各セクションはFigmaのデザインに合わせてテキスト・画像・構造を差し替える -->
+    <!-- header -->
+    <header class="header">
+      <h1 class="header__logo">
+        <img class="header__logo-img" src="./images/logo.png" alt="THE LAST GYM" width="85" height="25">
+      </h1>
+      <button class="header__menu" type="button" aria-label="メニューを開く">
+        <span class="header__menu-bar"></span>
+        <span class="header__menu-bar"></span>
+        <span class="header__menu-bar"></span>
+      </button>
+    </header>
 
-    <!-- FV -->
+    <!-- fv -->
     <section class="fv">
-      <figure class="fv__figure">
-        <img class="fv__img" src="./images/fv.jpg" alt="" width="430" height="700">
-      </figure>
-      <h1 class="fv__title">見出し(Figmaに合わせて差し替え)</h1>
-      <p class="fv__lead">リード文(Figmaに合わせて差し替え)</p>
-      <a class="fv__cta" href="#contact">CTAテキスト</a>
+      <img class="fv__img" src="./images/fv.png" alt="THE LAST GYM メインビジュアル" width="430" height="774">
     </section>
 
-    <!-- 悩み -->
-    <section class="problem">
-      <h2 class="problem__title">セクション見出し</h2>
-      <ul class="problem__list">
-        <li class="problem__item">テキスト</li>
-        <li class="problem__item">テキスト</li>
-        <li class="problem__item">テキスト</li>
+    <!-- campaign -->
+    <section class="campaign" id="campaign">
+      <img class="campaign__bg" src="./images/campaign-bg.png" alt="" width="430" height="1146">
+      <h2 class="campaign__title">GRAND OPEN記念</h2>
+
+      <article class="benefit">
+        <p class="benefit__badge">このページから<strong>初回体験</strong>を<br>ご予約いただいた方<strong>限定</strong></p>
+        <div class="benefit__card">
+          <h3 class="benefit__title">豪華3大特典<span class="benefit__plus">＋</span>数量限定プレゼント</h3>
+          <ul class="benefit__list">
+            <li class="benefit-item">
+              <p class="tag benefit-item__label">体験当日のご入会で</p>
+              <p class="benefit-item__price">
+                <span class="benefit-item__before">入会金<s class="benefit-item__before-price"><span class="en">22,000</span>円</s></span>
+                <span class="benefit-item__after"><em class="en benefit-item__after-num">0</em>円</span>
+              </p>
+            </li>
+            <li class="benefit-item">
+              <p class="tag benefit-item__label">初回体験料が実質<em class="en">0</em>円</p>
+              <p class="benefit-item__text">体験当日入会で、初回体験料金を<strong class="benefit-item__em">全額キャッシュバック</strong></p>
+            </li>
+            <li class="benefit-item">
+              <p class="tag benefit-item__label">体験していない別メニューが<em class="en">50％OFF</em></p>
+              <p class="benefit-item__text">初回体験当日に別メニューの<br>次回体験をご予約で<strong class="benefit-item__em benefit-item__em--num">50％OFF</strong></p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="benefit benefit--present">
+        <p class="benefit__badge benefit__badge--circle">さらに<br>今だけ！</p>
+        <div class="benefit__card">
+          <h3 class="benefit__title">数量限定プレゼント</h3>
+          <ul class="benefit__list">
+            <li class="benefit-item">
+              <p class="tag benefit-item__label">入会特典</p>
+              <p class="benefit-item__text">体験当日のご入会で<strong class="benefit-item__em">プロテイン・サプリを<br>1つプレゼント</strong></p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <p class="campaign__note">※各特典は記載の条件を満たした場合に適用されます。<br>数量限定プレゼントは、なくなり次第終了します。</p>
+    </section>
+
+    <!-- cta -->
+    <section class="cta" id="reserve">
+      <h2 class="cta__title">体験メニューは、<span class="cta__title-main">スタッフが提案します</span></h2>
+      <p class="cta__lead">身体のお悩みや目標を丁寧にヒアリングします。</p>
+      <a class="cta__button" href="#">
+        <span class="cta__button-sub">初回体験<em class="en">50</em>分</span>
+        <span class="cta__button-main">初回体験を予約する</span>
+      </a>
+      <ul class="cta__features">
+        <li class="cta__feature">
+          <img class="cta__feature-img" src="./images/cta-feature-01.png" alt="" width="100" height="100">
+          <p class="cta__feature-text">女性トレーナーが在籍</p>
+        </li>
+        <li class="cta__feature">
+          <img class="cta__feature-img" src="./images/cta-feature-02.png" alt="" width="100" height="100">
+          <p class="cta__feature-text">情報をスタッフ間で共有</p>
+        </li>
+        <li class="cta__feature">
+          <img class="cta__feature-img" src="./images/cta-feature-03.png" alt="" width="100" height="100">
+          <p class="cta__feature-text">目標に合わせて継続サポート</p>
+        </li>
       </ul>
+      <p class="cta__note">無理な勧誘は一切なし！</p>
     </section>
 
-    <!-- 特徴 -->
-    <section class="feature" id="feature">
-      <h2 class="feature__title">セクション見出し</h2>
-      <ul class="feature__list">
-        <li class="feature__item">
-          <article class="feature-card">
-            <figure class="feature-card__figure">
-              <img class="feature-card__img" src="./images/feature-01.jpg" alt="" width="390" height="240">
-            </figure>
-            <h3 class="feature-card__title">特徴タイトル</h3>
-            <p class="feature-card__text">説明テキスト</p>
-          </article>
-        </li>
-        <li class="feature__item">
-          <article class="feature-card">
-            <figure class="feature-card__figure">
-              <img class="feature-card__img" src="./images/feature-02.jpg" alt="" width="390" height="240">
-            </figure>
-            <h3 class="feature-card__title">特徴タイトル</h3>
-            <p class="feature-card__text">説明テキスト</p>
-          </article>
-        </li>
-        <li class="feature__item">
-          <article class="feature-card">
-            <figure class="feature-card__figure">
-              <img class="feature-card__img" src="./images/feature-03.jpg" alt="" width="390" height="240">
-            </figure>
-            <h3 class="feature-card__title">特徴タイトル</h3>
-            <p class="feature-card__text">説明テキスト</p>
-          </article>
-        </li>
+    <!-- before-after -->
+    <section class="before-after" id="before-after">
+      <h2 class="before-after__title"><span class="tag en">Before-After</span><span class="en">THE LAST GYM</span>で<br>変わったお客様の実例</h2>
+      <img class="before-after__img" src="./images/before-after.png" alt="ビフォーアフター事例" width="310" height="310">
+    </section>
+
+    <!-- worries -->
+    <section class="worries" id="worries">
+      <div class="worries__problem">
+        <h2 class="worries__title"><span class="worries__title-sub">もう、</span>ダイエットを<br>繰り返したくない。</h2>
+        <p class="worries__lead">こんなお悩み、ありませんか？</p>
+        <ul class="worries__list">
+          <li class="worries__item">食事制限で痩せても、元の食事に戻すとリバウンドしてしまう</li>
+          <li class="worries__item">マシンピラティスと筋トレ、どちらが自分に合うか分からない</li>
+          <li class="worries__item">パーソナルジムへ通ったけれど、きつくて続かなかった</li>
+          <li class="worries__item">食事管理アプリを使っても、結局どれくらい食べればいいか迷う</li>
+          <li class="worries__item">肩や腰のつらさ、身体の硬さが気になり、運動を始めるのが不安</li>
+        </ul>
+      </div>
+
+      <div class="worries__solution">
+        <figure class="worries__figure">
+          <img class="worries__figure-img" src="./images/worries-illust.png" alt="" width="117" height="221">
+          <figcaption class="worries__figure-text">続かなかったのは、意志ではなく<br>方法が原因かもしれません。</figcaption>
+        </figure>
+
+        <h3 class="worries__solution-title"><span class="tag">そのお悩み</span><span class="en">THE LAST GYM</span>なら<br>まとめて向き合えます！</h3>
+        <ul class="worries__solution-list">
+          <li class="worries__solution-item">
+            <img class="worries__solution-img" src="./images/worries-solution-01.png" alt="" width="100" height="100">
+            <p class="worries__solution-text">体型を変える力をつける</p>
+          </li>
+          <li class="worries__solution-item">
+            <img class="worries__solution-img" src="./images/worries-solution-02.png" alt="" width="100" height="100">
+            <p class="worries__solution-text">姿勢と身体の使い方を<br>整える</p>
+          </li>
+          <li class="worries__solution-item">
+            <img class="worries__solution-img" src="./images/worries-solution-03.png" alt="" width="100" height="100">
+            <p class="worries__solution-text">体型を変える力をつける</p>
+          </li>
+        </ul>
+
+        <div class="worries__app">
+          <p class="tag">さらに</p>
+          <figure class="worries__app-figure">
+            <img class="worries__app-img" src="./images/app-mockup.png" alt="AI食事管理アプリの画面" width="175" height="178">
+            <figcaption class="worries__app-caption">AI管理アプリも！</figcaption>
+          </figure>
+          <p class="worries__app-text">今の身体に合わせて、無理なく続けられる！</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- worries-solution -->
+    <section class="worries-solution">
+      <h2 class="worries-solution__title">身体は変わっていくのに、<br><em class="worries-solution__em">同じ方法だけ</em>を<br>続けていませんか？</h2>
+      <ul class="worries-solution__list">
+        <li class="worries-solution__item">動きにくい身体で筋トレを続ける</li>
+        <li class="worries-solution__item">姿勢だけ整えて筋力が足りない</li>
+        <li class="worries-solution__item">ほぐすだけで身体を支えられない</li>
+        <li class="worries-solution__item">運動だけで食事管理が続かない</li>
       </ul>
+      <p class="worries-solution__text">どの方法にも良さがあります。しかし、身体の状態や悩みは変化するため、一つの方法だけでは合わなくなることがあります。</p>
     </section>
 
-    <!-- 料金 -->
-    <section class="price" id="price">
-      <h2 class="price__title">セクション見出し</h2>
-      <ul class="price__list">
-        <li class="price__item">
-          <article class="price-card">
-            <h3 class="price-card__name">プラン名</h3>
-            <p class="price-card__amount"><span class="price-card__num">00,000</span>円/月</p>
-            <p class="price-card__note">補足テキスト</p>
-          </article>
+    <!-- reason -->
+    <section class="reason" id="reason">
+      <h2 class="reason__title"><em class="en">１</em>つ方法だけでは<br>足りない理由</h2>
+      <ol class="reason__list">
+        <li class="reason-item">
+          <h3 class="reason-item__title"><span class="en reason-item__num">01</span>動きにくいまま鍛える</h3>
+          <p class="reason-item__text">身体のクセや張りをかばったまま運動すると、狙った部分を使いにくく、トレーニングが必要以上につらく感じることがあります。</p>
+          <figure class="reason-item__figure">
+            <img class="reason-item__img reason-item__img--main" src="./images/reason-01-main.png" alt="" width="289" height="234">
+            <img class="reason-item__img reason-item__img--sub" src="./images/reason-01-sub.png" alt="" width="189" height="153">
+          </figure>
         </li>
-      </ul>
-    </section>
-
-    <!-- 流れ -->
-    <section class="flow">
-      <h2 class="flow__title">セクション見出し</h2>
-      <ol class="flow__list">
-        <li class="flow__item">
-          <h3 class="flow__step">STEP 1</h3>
-          <p class="flow__text">テキスト</p>
+        <li class="reason-item reason-item--reverse">
+          <h3 class="reason-item__title"><span class="en reason-item__num">02</span>整えるだけで、<br>支える力をつけない</h3>
+          <p class="reason-item__text">姿勢や身体の使い方を整えても、それを支える筋力が足りなければ、日常生活で元の状態へ戻りやすくなります。</p>
+          <figure class="reason-item__figure">
+            <img class="reason-item__img reason-item__img--main" src="./images/reason-02-main.png" alt="" width="289" height="234">
+            <img class="reason-item__img reason-item__img--sub" src="./images/reason-02-sub.png" alt="" width="189" height="153">
+          </figure>
         </li>
-        <li class="flow__item">
-          <h3 class="flow__step">STEP 2</h3>
-          <p class="flow__text">テキスト</p>
+        <li class="reason-item">
+          <h3 class="reason-item__title"><span class="en reason-item__num">03</span>食事を平均的な目安だけで決める</h3>
+          <p class="reason-item__text">一般的な目安が、自分の身体情報や生活に合うとは限りません。無理な我慢は、続かない原因になります。</p>
+          <figure class="reason-item__figure">
+            <img class="reason-item__img reason-item__img--main" src="./images/reason-03-main.png" alt="" width="289" height="234">
+            <img class="reason-item__img reason-item__img--sub" src="./images/reason-03-sub.png" alt="" width="189" height="153">
+          </figure>
         </li>
-        <li class="flow__item">
-          <h3 class="flow__step">STEP 3</h3>
-          <p class="flow__text">テキスト</p>
+        <li class="reason-item reason-item--reverse">
+          <h3 class="reason-item__title"><span class="en reason-item__num">04</span>目的ごとに別の場所へ通う</h3>
+          <p class="reason-item__text">ジム・ピラティス・身体のケアが別々だと、同じ悩みを何度も伝える必要があります。大切なのは、その時の身体に合った方法を選ぶことです。</p>
+          <figure class="reason-item__figure">
+            <img class="reason-item__img reason-item__img--main" src="./images/reason-04-main.png" alt="" width="289" height="234">
+            <img class="reason-item__img reason-item__img--sub" src="./images/reason-04-sub.png" alt="" width="189" height="153">
+          </figure>
         </li>
       </ol>
     </section>
 
-    <!-- FAQ -->
+    <!-- strength -->
+    <section class="strength" id="strength">
+      <img class="strength__bg" src="./images/strength-bg.png" alt="" width="430" height="1299">
+      <h2 class="strength__title"><span class="en">THE LAST GYM</span><span class="strength__title-main">最大の特長</span></h2>
+      <p class="strength__lead">その時の身体と目標に合わせて、<strong class="strength__lead-em">必要なメニューを選べます。</strong></p>
+
+      <p class="tag strength__example-label">例えば</p>
+      <ol class="strength__examples">
+        <li class="strength-example">
+          <p class="strength-example__count">1回目</p>
+          <img class="strength-example__img" src="./images/example-pilates.png" alt="" width="138" height="122">
+          <p class="strength-example__name">ピラティス</p>
+        </li>
+        <li class="strength-example">
+          <p class="strength-example__count">2回目</p>
+          <img class="strength-example__img" src="./images/example-training.png" alt="" width="112" height="122">
+          <p class="strength-example__name">パーソナル<br>トレーニング</p>
+        </li>
+        <li class="strength-example">
+          <p class="strength-example__count">3回目</p>
+          <img class="strength-example__img" src="./images/example-release.png" alt="" width="158" height="99">
+          <p class="strength-example__name">ジュラシック<br>筋膜リリース</p>
+        </li>
+        <li class="strength-example">
+          <p class="strength-example__count">4回目</p>
+          <img class="strength-example__img" src="./images/example-training.png" alt="" width="112" height="122">
+          <p class="strength-example__name">パーソナル<br>トレーニング</p>
+        </li>
+      </ol>
+      <p class="strength__summary">というように、<br>その時の身体と目標に合わせて選べます。</p>
+
+      <span class="strength__arrow" aria-hidden="true"></span>
+
+      <div class="strength__app">
+        <img class="strength__app-img" src="./images/app-mockup.png" alt="AI食事管理アプリの画面" width="105" height="106">
+        <p class="strength__app-text"><strong class="strength__app-em">食事はAI食事管理アプリ</strong>でサポート。</p>
+      </div>
+
+      <p class="strength__conclusion">必要なことを一か所で続けられるから、<br><em class="strength__conclusion-em">無理なく理想の身体</em>を目指せます。</p>
+      <p class="strength__message">今度こそ、<strong class="strength__message-em">人生最後のダイエットへ。</strong></p>
+    </section>
+
+    <!-- choose -->
+    <section class="choose" id="choose">
+      <h2 class="choose__title"><span class="tag">とことん寄り添う</span><span class="en">THE LAST GYM</span>が<br><strong class="choose__title-em">選ばれる<em class="en choose__title-num">6</em>つの理由</strong></h2>
+      <ol class="choose__list">
+
+        <li class="choose-item">
+          <h3 class="choose-item__title"><span class="en choose-item__num">01</span><span class="tag">選ぶ</span>細かく聞くから、<br>今の自分に必要方法が分かる。</h3>
+          <p class="choose-item__text">体重や運動経験だけを聞いて、すぐにメニューを決めることはありません。</p>
+          <ol class="choose-item__points">
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">01</span>これまでのダイエット方法</h4>
+              <img class="choose-point__img" src="./images/choose-01-01.png" alt="" width="350" height="203">
+            </li>
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">02</span>肩・腰などの身体の不安</h4>
+              <img class="choose-point__img" src="./images/choose-01-02.png" alt="" width="350" height="203">
+            </li>
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">03</span>体型・姿勢の悩み</h4>
+              <img class="choose-point__img" src="./images/choose-01-03.png" alt="" width="350" height="203">
+            </li>
+          </ol>
+          <span class="choose-item__arrow" aria-hidden="true"></span>
+          <div class="choose-item__result">
+            <p class="choose-item__result-text">丁寧なカウンセリングで、<strong class="choose-item__result-em">最適な通い方をご提案</strong></p>
+            <img class="choose-item__result-img" src="./images/choose-01-result.png" alt="" width="97" height="125">
+          </div>
+        </li>
+
+        <li class="choose-item">
+          <h3 class="choose-item__title"><span class="en choose-item__num">02</span><span class="tag">鍛える</span>初心者でも無理なく、<br>見た目を変える力をつける。</h3>
+          <p class="choose-item__text">運動経験や体力に合わせて、一人ひとりに最適なトレーニングをご提案します。</p>
+          <ol class="choose-item__points">
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">01</span>気になる部位を鍛える</h4>
+              <img class="choose-point__img" src="./images/choose-02-01.png" alt="" width="350" height="203">
+            </li>
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">02</span>姿勢を支える筋力づくり</h4>
+              <img class="choose-point__img" src="./images/choose-02-02.png" alt="" width="350" height="203">
+            </li>
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">03</span>自分のペースで続けられる</h4>
+              <img class="choose-point__img" src="./images/choose-02-03.png" alt="" width="350" height="203">
+            </li>
+          </ol>
+          <span class="choose-item__arrow" aria-hidden="true"></span>
+          <p class="choose-item__result choose-item__result--bubble choose-item__result--center">見た目も、動きやすさも変えます</p>
+        </li>
+
+        <li class="choose-item">
+          <h3 class="choose-item__title"><span class="en choose-item__num">03</span><span class="tag">整える</span>マシンピラティスで、<br>姿勢と身体の使い方を整える。</h3>
+          <p class="choose-item__text">呼吸や姿勢を整え、自分のレベルに合わせて身体を動かします。</p>
+          <ol class="choose-item__points">
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">01</span>猫背・反り腰など改善</h4>
+              <img class="choose-point__img" src="./images/choose-03-01.png" alt="" width="350" height="203">
+            </li>
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">02</span>身体のクセを整える</h4>
+              <img class="choose-point__img" src="./images/choose-03-02.png" alt="" width="350" height="203">
+            </li>
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">03</span>初心者でも始めやすい</h4>
+              <img class="choose-point__img" src="./images/choose-03-03.png" alt="" width="350" height="203">
+            </li>
+          </ol>
+          <span class="choose-item__arrow" aria-hidden="true"></span>
+          <div class="choose-item__result">
+            <p class="choose-item__result-text">あなたの最適な、<strong class="choose-item__result-em">メニューをご提案</strong></p>
+            <img class="choose-item__result-img choose-item__result-img--box" src="./images/choose-03-result.png" alt="" width="88" height="118">
+          </div>
+        </li>
+
+        <li class="choose-item">
+          <h3 class="choose-item__title"><span class="en choose-item__num">04</span><span class="tag">ゆるめる</span>ジュラシック筋膜リリースで<br>動きやすい身体へ</h3>
+          <p class="choose-item__text">ローラーカップで筋肉と筋膜をやさしくほぐし、身体の張りや動きにくさを整えます。</p>
+          <ol class="choose-item__points">
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">01</span>身体の張りや動かしにくさに</h4>
+              <img class="choose-point__img" src="./images/choose-04-01.png" alt="" width="350" height="203">
+            </li>
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">02</span>運動しやすい身体づくり</h4>
+              <img class="choose-point__img" src="./images/choose-04-02.png" alt="" width="350" height="203">
+            </li>
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">03</span>頑張った身体のケアに</h4>
+              <img class="choose-point__img" src="./images/choose-04-03.png" alt="" width="350" height="203">
+            </li>
+          </ol>
+          <span class="choose-item__arrow" aria-hidden="true"></span>
+          <p class="choose-item__result choose-item__result--bubble">ローラーカップで筋肉と筋膜をやさしくほぐし、身体の張りや動きにくさを整えます。</p>
+        </li>
+
+        <li class="choose-item">
+          <h3 class="choose-item__title"><span class="en choose-item__num">05</span><span class="tag">食べ方を見直す</span>AI食事管理アプリ</h3>
+          <p class="choose-item__text">食事を記録するだけで、身体に合った食事の目安や予測値を確認できます。</p>
+          <ol class="choose-item__points">
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">01</span>食事を見える化</h4>
+              <img class="choose-point__img" src="./images/choose-05-01.png" alt="" width="350" height="203">
+            </li>
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">02</span>自分に合った食事が分かる</h4>
+              <img class="choose-point__img" src="./images/choose-05-02.png" alt="" width="350" height="203">
+            </li>
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">03</span>無理なく続く食事管理</h4>
+              <img class="choose-point__img" src="./images/choose-05-03.png" alt="" width="350" height="203">
+            </li>
+          </ol>
+          <span class="choose-item__arrow" aria-hidden="true"></span>
+          <p class="choose-item__result choose-item__result--bubble">身体を整え、トレーニングやマシンピラティスの効果を高めます。月の回数内で自由に選択できます。</p>
+        </li>
+
+        <li class="choose-item">
+          <h3 class="choose-item__title"><span class="en choose-item__num">06</span><span class="tag">寄り添う</span>女性ならではの悩みも、<br>安心して相談できる。</h3>
+          <p class="choose-item__text">女性トレーナーが在籍。女性ならではのお悩みも安心して相談できます。</p>
+          <ol class="choose-item__points choose-item__points--tight">
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">01</span>女性トレーナー在籍</h4>
+              <img class="choose-point__img" src="./images/choose-06-01.png" alt="" width="350" height="203">
+            </li>
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">02</span>情報をスタッフ間で共有</h4>
+              <img class="choose-point__img" src="./images/choose-06-02.png" alt="" width="350" height="203">
+            </li>
+            <li class="choose-point">
+              <h4 class="choose-point__title"><span class="en choose-point__num">03</span>目標に合わせてサポート</h4>
+              <img class="choose-point__img" src="./images/choose-06-03.png" alt="" width="350" height="203">
+            </li>
+          </ol>
+          <span class="choose-item__arrow" aria-hidden="true"></span>
+          <p class="choose-item__result choose-item__result--bubble">スタッフ間で情報を共有し、一人ひとりに合ったサポートを行います。</p>
+        </li>
+
+      </ol>
+    </section>
+
+    <!-- shop -->
+    <section class="shop" id="shop">
+      <img class="shop__bg" src="./images/shop-bg.png" alt="" width="430" height="699">
+      <h2 class="shop__title"><span class="tag en">Access</span>店舗情報</h2>
+
+      <div class="shop__gallery">
+        <button class="shop__gallery-btn shop__gallery-btn--prev" type="button" aria-label="前の写真"></button>
+        <ul class="shop__gallery-list">
+          <li class="shop__gallery-item"><img class="shop__gallery-img" src="./images/shop-01.png" alt="店内の様子1" width="177" height="177"></li>
+          <li class="shop__gallery-item"><img class="shop__gallery-img" src="./images/shop-02.png" alt="店内の様子2" width="177" height="177"></li>
+          <li class="shop__gallery-item"><img class="shop__gallery-img" src="./images/shop-03.png" alt="店内の様子3" width="177" height="177"></li>
+        </ul>
+        <button class="shop__gallery-btn shop__gallery-btn--next" type="button" aria-label="次の写真"></button>
+      </div>
+
+      <div class="shop__info">
+        <p class="shop__catch">奥沢駅から徒歩1分</p>
+        <p class="shop__sub">忙しい毎日にも、通いやすい。</p>
+        <address class="shop__address">東京都世田谷区奥沢3丁目32-7<br>AXIS BTビル1F</address>
+      </div>
+
+      <img class="shop__map" src="./images/shop-map.png" alt="店舗周辺の地図" width="172" height="172">
+    </section>
+
+    <!-- flow -->
+    <section class="flow" id="flow">
+      <h2 class="flow__title"><span class="tag en">Flow</span>まずは体験で、<br>最適なスタートを。</h2>
+      <ol class="flow__list">
+        <li class="flow-step">
+          <span class="en flow-step__num">01</span>
+          <h3 class="flow-step__title">ご予約</h3>
+          <img class="flow-step__img" src="./images/flow-reserve.png" alt="" width="149" height="115">
+          <p class="flow-step__text">何を体験するか迷っている場合も、そのままご相談ください。</p>
+        </li>
+        <li class="flow-step">
+          <span class="en flow-step__num">02</span>
+          <h3 class="flow-step__title">ご来店・お着替え</h3>
+          <img class="flow-step__img" src="./images/flow-wear.png" alt="" width="149" height="116">
+          <p class="flow-step__text">初回はレンタルウェアを無料でご利用いただけます。</p>
+        </li>
+        <li class="flow-step">
+          <span class="en flow-step__num">03</span>
+          <h3 class="flow-step__title">カウンセリング</h3>
+          <img class="flow-step__img" src="./images/flow-counseling.png" alt="" width="149" height="116">
+          <p class="flow-step__text">身体のお悩みや生活習慣を丁寧に伺います。</p>
+        </li>
+        <li class="flow-step">
+          <span class="en flow-step__num">04</span>
+          <h3 class="flow-step__title">50分の初回体験</h3>
+          <img class="flow-step__img" src="./images/flow-training.png" alt="" width="149" height="116">
+          <p class="flow-step__text">選んだメニューを、身体の状態に合わせて体験できます。</p>
+        </li>
+        <li class="flow-step">
+          <span class="en flow-step__num">05</span>
+          <h3 class="flow-step__title">今後のご案内</h3>
+          <img class="flow-step__img" src="./images/flow-plan.png" alt="" width="149" height="115">
+          <p class="flow-step__text">あなたに合ったメニューと通い方をご提案します。</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- faq -->
     <section class="faq" id="faq">
-      <h2 class="faq__title">セクション見出し</h2>
-      <dl class="faq__list">
-        <dt class="faq__question">質問テキスト</dt>
-        <dd class="faq__answer">回答テキスト</dd>
-        <dt class="faq__question">質問テキスト</dt>
-        <dd class="faq__answer">回答テキスト</dd>
-      </dl>
+      <h2 class="faq__title"><span class="tag en">Quetion</span>よくある質問</h2>
+      <ul class="faq__list">
+        <li class="faq-item">
+          <span class="en faq-item__q">Q</span>
+          <p class="faq-item__question">1回の予約で3つすべて受けられますか？</p>
+        </li>
+        <li class="faq-item">
+          <span class="en faq-item__q">Q</span>
+          <p class="faq-item__question">どのメニューを選べばいいか分かりません。</p>
+        </li>
+        <li class="faq-item">
+          <span class="en faq-item__q">Q</span>
+          <p class="faq-item__question">運動初心者でも大丈夫ですか？</p>
+        </li>
+        <li class="faq-item">
+          <span class="en faq-item__q">Q</span>
+          <p class="faq-item__question">厳しい食事制限はありますか？</p>
+        </li>
+        <li class="faq-item">
+          <span class="en faq-item__q">Q</span>
+          <p class="faq-item__question">体験時の持ち物はありますか？</p>
+        </li>
+      </ul>
     </section>
 
-    <!-- アクセス -->
-    <section class="access" id="access">
-      <h2 class="access__title">セクション見出し</h2>
-      <figure class="access__map">
-        <img class="access__map-img" src="./images/map.jpg" alt="" width="390" height="260">
-        <figcaption class="access__address">住所テキスト</figcaption>
-      </figure>
+    <!-- campaign(再掲) -->
+    <section class="campaign">
+      <img class="campaign__bg" src="./images/campaign-bg.png" alt="" width="430" height="1146">
+      <h2 class="campaign__title">GRAND OPEN記念</h2>
+
+      <article class="benefit">
+        <p class="benefit__badge">このページから<strong>初回体験</strong>を<br>ご予約いただいた方<strong>限定</strong></p>
+        <div class="benefit__card">
+          <h3 class="benefit__title">豪華3大特典<span class="benefit__plus">＋</span>数量限定プレゼント</h3>
+          <ul class="benefit__list">
+            <li class="benefit-item">
+              <p class="tag benefit-item__label">体験当日のご入会で</p>
+              <p class="benefit-item__price">
+                <span class="benefit-item__before">入会金<s class="benefit-item__before-price"><span class="en">22,000</span>円</s></span>
+                <span class="benefit-item__after"><em class="en benefit-item__after-num">0</em>円</span>
+              </p>
+            </li>
+            <li class="benefit-item">
+              <p class="tag benefit-item__label">初回体験料が実質<em class="en">0</em>円</p>
+              <p class="benefit-item__text">体験当日入会で、初回体験料金を<strong class="benefit-item__em">全額キャッシュバック</strong></p>
+            </li>
+            <li class="benefit-item">
+              <p class="tag benefit-item__label">体験していない別メニューが<em class="en">50％OFF</em></p>
+              <p class="benefit-item__text">初回体験当日に別メニューの<br>次回体験をご予約で<strong class="benefit-item__em benefit-item__em--num">50％OFF</strong></p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="benefit benefit--present">
+        <p class="benefit__badge benefit__badge--circle">さらに<br>今だけ！</p>
+        <div class="benefit__card">
+          <h3 class="benefit__title">数量限定プレゼント</h3>
+          <ul class="benefit__list">
+            <li class="benefit-item">
+              <p class="tag benefit-item__label">入会特典</p>
+              <p class="benefit-item__text">体験当日のご入会で<strong class="benefit-item__em">プロテイン・サプリを<br>1つプレゼント</strong></p>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <p class="campaign__note">※各特典は記載の条件を満たした場合に適用されます。<br>数量限定プレゼントは、なくなり次第終了します。</p>
     </section>
 
-    <!-- CTA -->
-    <section class="contact" id="contact">
-      <h2 class="contact__title">セクション見出し</h2>
-      <a class="contact__button" href="#">CTAテキスト</a>
+    <!-- cta(再掲) -->
+    <section class="cta">
+      <h2 class="cta__title">体験メニューは、<span class="cta__title-main">スタッフが提案します</span></h2>
+      <p class="cta__lead">身体のお悩みや目標を丁寧にヒアリングします。</p>
+      <a class="cta__button" href="#">
+        <span class="cta__button-sub">初回体験<em class="en">50</em>分</span>
+        <span class="cta__button-main">初回体験を予約する</span>
+      </a>
+      <ul class="cta__features">
+        <li class="cta__feature">
+          <img class="cta__feature-img" src="./images/cta-feature-01.png" alt="" width="100" height="100">
+          <p class="cta__feature-text">女性トレーナーが在籍</p>
+        </li>
+        <li class="cta__feature">
+          <img class="cta__feature-img" src="./images/cta-feature-02.png" alt="" width="100" height="100">
+          <p class="cta__feature-text">情報をスタッフ間で共有</p>
+        </li>
+        <li class="cta__feature">
+          <img class="cta__feature-img" src="./images/cta-feature-03.png" alt="" width="100" height="100">
+          <p class="cta__feature-text">目標に合わせて継続サポート</p>
+        </li>
+      </ul>
+      <p class="cta__note">無理な勧誘は一切なし！</p>
     </section>
 
-    <footer class="footer">
-      <p class="footer__logo">
-        <img class="footer__logo-img" src="./images/logo.svg" alt="THE LAST GYM" width="120" height="36">
-      </p>
-      <small class="footer__copyright">&copy; THE LAST GYM</small>
-    </footer>
   </main>
 
   <!-- ==============================
     右カラム:ナビ + CTA(position: fixed)
   ============================== -->
-  <aside class="side">
-    <nav class="nav" aria-label="メインナビゲーション">
-      <ul class="nav__list">
-        <li class="nav__item"><a class="nav__link" href="#top">TOP</a></li>
-        <li class="nav__item"><a class="nav__link" href="#feature">FEATURE</a></li>
-        <li class="nav__item"><a class="nav__link" href="#price">PRICE</a></li>
-        <li class="nav__item"><a class="nav__link" href="#faq">FAQ</a></li>
-        <li class="nav__item"><a class="nav__link" href="#access">ACCESS</a></li>
+  <aside class="sidebar sidebar--nav">
+    <nav class="global-nav" aria-label="グローバルナビゲーション">
+      <ul class="global-nav__list">
+        <li class="global-nav__item"><a class="global-nav__link" href="#campaign">キャンペーン</a></li>
+        <li class="global-nav__item"><a class="global-nav__link" href="#worries">お悩み</a></li>
+        <li class="global-nav__item"><a class="global-nav__link" href="#strength">最大の特長</a></li>
+        <li class="global-nav__item"><a class="global-nav__link" href="#choose">選ばれる理由</a></li>
+        <li class="global-nav__item"><a class="global-nav__link" href="#shop">店舗情報</a></li>
+        <li class="global-nav__item"><a class="global-nav__link" href="#flow">体験の流れ</a></li>
+        <li class="global-nav__item"><a class="global-nav__link" href="#faq">よくある質問</a></li>
       </ul>
     </nav>
-    <a class="side__cta" href="#contact">CTAテキスト</a>
+    <a class="sidebar__cta" href="#reserve">初回体験を予約する</a>
   </aside>
 
 </body>
