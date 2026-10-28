@@ -1,0 +1,2059 @@
+@charset "UTF-8";
+@use "sass:math";
+@use "reset";
+@use "variables" as *;
+@use "mixin" as *;
+
+// ==================================================
+// Base
+// ==================================================
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: $font-ja;
+  font-weight: $fw-medium;
+  line-height: $lh-base;
+  color: $color-black;
+  background-color: $color-table;
+  -webkit-font-smoothing: antialiased;
+
+  // PC では中央カラムのみをスクロールさせる
+  @include mq-pc {
+    overflow: hidden;
+  }
+}
+
+// reset.scss で全要素に指定されている line-height: 1 を、各コンポーネントで指定した値が継承されるようにする
+body * {
+  line-height: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+small {
+  font-size: inherit;
+}
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid $color-main;
+  outline-offset: 2px;
+}
+
+// ==================================================
+// Layout（左：ロゴ / 中央：LP本体 / 右：ナビ・CTA）
+// ==================================================
+.lp {
+  position: relative;
+  width: 100%;
+  max-width: $lp-width;
+  margin-inline: auto;
+  overflow-x: clip;
+  background-color: $color-white;
+
+  @include mq-pc {
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scroll-behavior: smooth;
+
+    @include reduced-motion {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+// 左カラム
+.side-logo {
+  display: none;
+
+  @include mq-pc {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $z-side;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc((100% - #{$lp-width}) / 2);
+    padding: $space-40 $space-20;
+  }
+}
+
+.side-logo__link {
+  display: block;
+}
+
+.side-logo__image {
+  width: clamp(140px, 13vw, 211px);
+  height: auto;
+}
+
+// 右カラム（SP ではドロワーメニュー）
+.side-nav {
+  position: fixed;
+  inset: 0;
+  z-index: $z-drawer;
+  display: flex;
+  flex-direction: column;
+  gap: $space-40;
+  align-items: center;
+  justify-content: center;
+  padding: 80px $space-20 $space-40;
+  overflow-y: auto;
+  visibility: hidden;
+  background-color: $color-white;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+
+  &.is-open {
+    visibility: visible;
+    opacity: 1;
+    transition:
+      opacity 0.3s ease,
+      visibility 0s;
+  }
+
+  @include mq-pc {
+    inset: 0 0 0 auto;
+    z-index: $z-side;
+    width: calc((100% - #{$lp-width}) / 2);
+    padding: $space-40 $space-20;
+    visibility: visible;
+    background-color: transparent;
+    opacity: 1;
+    transition: none;
+  }
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+.side-nav__close {
+  position: absolute;
+  top: 13.5px;
+  right: $gutter;
+  width: 27px;
+  height: 27px;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 32px;
+    height: 3px;
+    background-color: $color-main;
+  }
+
+  &::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  @include mq-pc {
+    display: none;
+  }
+}
+
+.side-nav__close-label {
+  @include visually-hidden;
+}
+
+.side-nav__list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  text-align: center;
+}
+
+.side-nav__link {
+  font-size: $fs-16;
+  letter-spacing: 1.6px;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: $color-main;
+  }
+}
+
+.side-nav__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: $space-20;
+  width: 100%;
+  max-width: $content-narrow;
+}
+
+// ==================================================
+// Component
+// ==================================================
+
+// セクション見出し（英字ラベル + 和文見出し）
+.section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: $space-15;
+  align-items: center;
+  color: $color-black;
+  text-align: center;
+}
+
+.section-heading__en {
+  @include font-en($fw-medium);
+  @include en-label(50px);
+
+  font-size: $fs-16;
+  white-space: nowrap;
+
+  &--wide {
+    &::after {
+      width: 64px;
+    }
+  }
+}
+
+.section-heading__ja {
+  font-size: $fs-30;
+
+  &--about {
+    max-width: $content-narrow;
+    font-size: $fs-24;
+    letter-spacing: $ls-body;
+  }
+
+  &--point {
+    letter-spacing: 1.5px;
+  }
+}
+
+.section-heading__ja-en {
+  @include font-en($fw-medium);
+
+  &--regular {
+    font-weight: $fw-regular;
+  }
+}
+
+.section-heading__ja-num {
+  @include font-en($fw-semibold);
+
+  font-size: $fs-35;
+}
+
+// CTA ボタン
+.cta-button {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  min-height: 82px;
+  padding: 12px 15px 12px 10px;
+  font-size: $fs-20;
+  color: $color-white;
+  text-align: center;
+  transition: opacity 0.3s ease;
+
+  &::after {
+    @include chevron-right(11px, 2px, $color-white);
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &--entry {
+    background-color: $color-main;
+  }
+
+  &--line {
+    background-color: $color-line;
+  }
+}
+
+.cta-button__text {
+  flex: 1;
+}
+
+// 横スクロールする表 + スクロールバー
+.scroll-table {
+  @include inner($content-width);
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-20;
+  align-items: center;
+
+  &--start {
+    gap: 12px;
+    align-items: flex-start;
+  }
+}
+
+.scroll-table__scroller {
+  @include scroll-x;
+
+  width: 100%;
+}
+
+.scroll-table__bar {
+  position: relative;
+  display: block;
+  width: calc(100% - #{$space-40});
+  max-width: $content-narrow;
+  height: 8px;
+  overflow: hidden;
+  background-color: $color-white;
+  border-radius: $radius-pill;
+}
+
+.scroll-table__thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: math.percentage(math.div(188, 350));
+  height: 100%;
+  background-color: $color-main;
+  border-radius: $radius-pill;
+}
+
+// ==================================================
+// Header
+// ==================================================
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 47px;
+  padding: $space-10 $gutter;
+  background-color: $color-white;
+}
+
+.header__logo {
+  display: block;
+}
+
+.header__logo-image {
+  width: 69px;
+  height: 27px;
+}
+
+.header__menu-button {
+  position: relative;
+  width: 27px;
+  height: 20px;
+
+  @include mq-pc {
+    display: none;
+  }
+}
+
+.header__menu-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: $color-main;
+  transform: translateY(-50%);
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: $color-main;
+  }
+
+  &::before {
+    top: -8.5px;
+  }
+
+  &::after {
+    top: 8.5px;
+  }
+}
+
+.header__menu-label {
+  @include visually-hidden;
+}
+
+// ==================================================
+// FV
+// ==================================================
+.fv__image {
+  width: 100%;
+  height: auto;
+}
+
+// ==================================================
+// Campaign
+// ==================================================
+.campaign {
+  display: flex;
+  flex-direction: column;
+  gap: $space-20;
+  align-items: center;
+  padding-bottom: $space-30;
+  color: $color-black;
+  background-color: $color-white;
+}
+
+.campaign__title {
+  width: 100%;
+  padding: $space-10;
+  font-size: $fs-16;
+  line-height: 23px;
+  color: $color-white;
+  text-align: center;
+  letter-spacing: 0.96px;
+  background-color: $color-gray;
+}
+
+.campaign__title-en {
+  @include font-en($fw-medium);
+}
+
+.campaign__lead {
+  @include inner(312.22px);
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-10;
+  align-items: center;
+}
+
+.campaign__deadline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  font-size: $fs-17;
+  font-weight: $fw-bold;
+  line-height: 23.8px;
+  color: $color-main;
+  letter-spacing: 0.68px;
+}
+
+.campaign__deadline-mark {
+  margin-right: 8px;
+}
+
+.campaign__deadline-date {
+  @include font-en($fw-semibold);
+
+  margin-right: 3.7px;
+  font-size: $fs-30;
+  line-height: 31px;
+}
+
+.campaign__notes {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  width: 100%;
+  font-size: $fs-12;
+  line-height: 19.2px;
+}
+
+.campaign__note {
+  display: flex;
+  align-items: center;
+  min-height: 36.19px;
+}
+
+.campaign__list {
+  @include inner($content-narrow, $space-40);
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-10;
+}
+
+.campaign__item {
+  display: flex;
+  gap: $space-10;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 0 14px;
+  letter-spacing: 0.84px;
+  background-color: $color-item;
+
+  &--gift {
+    min-height: 45.59px;
+  }
+
+  &--tall {
+    min-height: 68px;
+  }
+}
+
+.campaign__label {
+  font-size: $fs-15;
+  font-weight: $fw-bold;
+  line-height: 24px;
+}
+
+.campaign__label-sub {
+  font-size: $fs-12;
+  line-height: 19.2px;
+}
+
+.campaign__price {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.campaign__regular,
+.campaign__arrow {
+  font-size: $fs-13;
+  line-height: 20.8px;
+}
+
+.campaign__arrow {
+  margin-inline: 7.6px;
+}
+
+.campaign__free {
+  display: flex;
+  align-items: center;
+  font-size: $fs-14;
+  font-weight: $fw-bold;
+  line-height: 22.4px;
+  color: $color-main;
+}
+
+.campaign__free-num {
+  @include font-en($fw-semibold);
+
+  margin-right: 1.7px;
+  font-size: $fs-28;
+  line-height: 28px;
+}
+
+.campaign__gift {
+  flex-shrink: 0;
+  font-size: $fs-16;
+  font-weight: $fw-bold;
+  line-height: 25.6px;
+  color: $color-main;
+  letter-spacing: 1.28px;
+}
+
+.campaign__perks {
+  @include inner($content-narrow, $space-40);
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-10;
+}
+
+.campaign__perk {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  align-items: flex-start;
+}
+
+.campaign__tag {
+  padding: 3px 10.8px 3px 12px;
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+  line-height: 19.2px;
+  color: $color-white;
+  letter-spacing: 1.2px;
+  background-color: $color-main;
+}
+
+.campaign__perk-text {
+  font-size: $fs-15;
+  font-weight: $fw-bold;
+  line-height: 24px;
+  letter-spacing: 0.9px;
+
+  &--accent {
+    color: $color-main;
+  }
+
+  &--continued {
+    margin-top: -$space-5;
+  }
+
+  &--medium {
+    font-weight: $fw-medium;
+  }
+}
+
+.campaign__perk-small {
+  font-size: $fs-12;
+  font-weight: $fw-medium;
+}
+
+.campaign__terms {
+  @include inner(350.79px, 39.6px);
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-10;
+  font-size: $fs-12;
+  line-height: 21.6px;
+  letter-spacing: 0.48px;
+}
+
+// ==================================================
+// About us
+// ==================================================
+.about {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 805px;
+  padding: $space-40 $gutter;
+  overflow: hidden;
+}
+
+.about__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 28.57% top;
+}
+
+.about__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: $space-25;
+  align-items: center;
+  width: 100%;
+  max-width: $content-width;
+  padding: $space-30 $space-20;
+  background-color: $color-white;
+}
+
+.about__text {
+  max-width: $content-narrow;
+  padding-bottom: 28px;
+  font-size: $fs-16;
+  line-height: 28px;
+  text-align: center;
+  letter-spacing: $ls-body;
+}
+
+.about__accent {
+  color: $color-main;
+}
+
+.about__checks {
+  display: flex;
+  flex-direction: column;
+  gap: $space-15;
+  width: 100%;
+  max-width: 310px;
+}
+
+.about__check {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 16.33px;
+  padding-left: 26.33px;
+  font-size: $fs-16;
+  letter-spacing: 0.817px;
+
+  // チェックアイコン（円 + チェック）
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+  }
+
+  &::before {
+    top: 50%;
+    left: 0;
+    width: 16.33px;
+    height: 16.33px;
+    border: 1px solid $color-black;
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }
+
+  &::after {
+    top: 50%;
+    left: 5.5px;
+    width: 5px;
+    height: 9px;
+    border-right: 1.2px solid $color-black;
+    border-bottom: 1.2px solid $color-black;
+    transform: translateY(-65%) rotate(45deg);
+  }
+
+  &--top {
+    align-items: flex-start;
+
+    &::before {
+      top: 2px;
+      transform: none;
+    }
+
+    &::after {
+      top: 5px;
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.about__arrow {
+  @include double-chevron(21px, 19px, 2.5px);
+}
+
+.about__message {
+  max-width: 310px;
+  font-size: $fs-16;
+  text-align: center;
+  letter-spacing: 0.817px;
+}
+
+// ==================================================
+// CTA
+// ==================================================
+.cta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 745px;
+  padding: 373px 36px 33px;
+  overflow: hidden;
+}
+
+.cta__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.cta__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: $space-20;
+  align-items: center;
+  width: 100%;
+  max-width: 358px;
+}
+
+.cta__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: $space-20;
+  width: 100%;
+  max-width: $content-narrow;
+}
+
+.cta__text {
+  font-size: $fs-16;
+  color: $color-black;
+  text-align: center;
+}
+
+.cta__text-line {
+  color: $color-line;
+}
+
+// ==================================================
+// Worries
+// ==================================================
+$worries-width: 423.5;
+$worries-height: 816.5;
+
+@function worries-x($value) {
+  @return math.percentage(math.div($value, $worries-width));
+}
+
+@function worries-y($value) {
+  @return math.percentage(math.div($value, $worries-height));
+}
+
+.worries {
+  display: flex;
+  flex-direction: column;
+  gap: $space-15;
+  align-items: center;
+  color: $color-black;
+}
+
+.worries__main {
+  display: flex;
+  flex-direction: column;
+  gap: $space-30;
+  align-items: center;
+  width: 100%;
+  padding: $space-30 0;
+  overflow: hidden;
+  background-color: $color-sub;
+}
+
+.worries__title {
+  font-size: $fs-24;
+  text-align: center;
+}
+
+.worries__visual {
+  position: relative;
+  width: math.percentage(math.div($worries-width, 430));
+  aspect-ratio: #{$worries-width} / #{$worries-height};
+}
+
+.worries__woman {
+  position: absolute;
+  top: worries-y(549.5);
+  left: worries-x(104.53);
+  width: worries-x(224);
+  height: auto;
+}
+
+.worries__answer {
+  max-width: $content-narrow;
+  font-size: $fs-24;
+  text-align: center;
+}
+
+.worries__brand {
+  @include font-en($fw-medium);
+
+  font-size: $fs-30;
+  color: $color-main;
+}
+
+.worries__accent {
+  color: $color-main;
+}
+
+.worries__arrow {
+  @include double-chevron(43px, 38px, 4.5px);
+}
+
+.worries__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: $space-20;
+  align-items: center;
+  width: 100%;
+  padding: $space-30 0;
+  background-color: $color-sub;
+}
+
+.worries__lead {
+  font-size: $fs-24;
+  text-align: center;
+}
+
+.worries__card {
+  @include inner($content-narrow, $space-40);
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-10;
+  align-items: center;
+  padding: $space-20 0;
+  font-size: $fs-20;
+  text-align: center;
+  background-color: $color-white;
+  border-radius: $radius-20;
+}
+
+.worries__card-line {
+  &--accent {
+    color: $color-main;
+  }
+}
+
+.worries__closing {
+  font-size: $fs-24;
+  text-align: center;
+}
+
+.worries__closing-num {
+  @include font-en($fw-medium);
+}
+
+// worries-animation：吹き出し画像を左右からフェードイン
+.worries-animation {
+  position: absolute;
+  inset: 0;
+}
+
+.worries-animation__item {
+  position: absolute;
+
+  &--1 {
+    top: 0;
+    left: worries-x(122);
+    width: worries-x(296.5);
+  }
+
+  &--2 {
+    top: worries-y(115);
+    left: 0;
+    width: worries-x(371);
+  }
+
+  &--3 {
+    top: worries-y(251);
+    left: worries-x(54);
+    width: worries-x(369.5);
+  }
+
+  &--4 {
+    top: worries-y(384);
+    left: worries-x(66);
+    width: worries-x(297);
+  }
+}
+
+.worries-animation__image {
+  width: 100%;
+  height: auto;
+}
+
+// JS で .is-ready が付与された場合のみ初期状態（透明）にする
+.worries-animation.is-ready {
+  .worries-animation__item {
+    opacity: 0;
+    transition:
+      opacity 1.4s ease-out,
+      transform 1.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .worries-animation__item--from-left {
+    transform: translateX(-30px);
+  }
+
+  .worries-animation__item--from-right {
+    transform: translateX(30px);
+  }
+
+  .worries-animation__item--2 {
+    transition-delay: 0.3s;
+  }
+
+  .worries-animation__item--3 {
+    transition-delay: 0.6s;
+  }
+
+  .worries-animation__item--4 {
+    transition-delay: 0.9s;
+  }
+}
+
+.worries-animation.is-active {
+  .worries-animation__item {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@include reduced-motion {
+  .worries-animation.is-ready {
+    .worries-animation__item {
+      opacity: 1;
+      transition: none;
+      transform: none;
+    }
+  }
+}
+
+// ==================================================
+// Recommend
+// ==================================================
+.recommend-item {
+  display: flex;
+  flex-direction: column;
+  color: $color-black;
+}
+
+.recommend-item__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $space-25 0;
+  font-size: $fs-24;
+  line-height: 36px;
+  text-align: center;
+  letter-spacing: $ls-title;
+
+  &--first {
+    padding-top: $space-40;
+  }
+}
+
+.recommend-item__title-line {
+  display: block;
+}
+
+.recommend-item__title-box {
+  display: inline-block;
+  padding: 1px 9px;
+  border: 1px solid $color-black;
+}
+
+.recommend-item__image {
+  width: 100%;
+  height: auto;
+}
+
+.recommend-item__body {
+  display: flex;
+  flex-direction: column;
+  gap: $space-25;
+  align-items: center;
+  padding: $space-25 $gutter;
+  background-color: $color-sub;
+
+  &--last {
+    padding-bottom: $space-40;
+  }
+}
+
+.recommend-item__heading {
+  display: flex;
+  flex-direction: column;
+  gap: $space-10;
+  align-items: center;
+  text-align: center;
+}
+
+.recommend-item__label {
+  @include font-en($fw-regular);
+  @include en-label(50px);
+
+  font-size: $fs-16;
+  line-height: 15.48px;
+  letter-spacing: $ls-body;
+}
+
+.recommend-item__heading-text {
+  font-size: $fs-24;
+  letter-spacing: $ls-body;
+}
+
+.recommend-item__texts {
+  display: flex;
+  flex-direction: column;
+  gap: $space-10;
+  width: 100%;
+  max-width: $content-narrow;
+  font-size: $fs-16;
+  line-height: 28px;
+  text-align: center;
+  letter-spacing: $ls-body;
+}
+
+.recommend-item__text {
+  &--accent {
+    color: $color-main;
+  }
+}
+
+.recommend-item__accent {
+  color: $color-main;
+}
+
+.recommend-item__plain {
+  color: $color-black;
+}
+
+.recommend-item__photo {
+  width: 100%;
+  max-width: $content-width;
+  height: auto;
+  aspect-ratio: 390 / 273;
+  object-fit: cover;
+  border-radius: $radius-10;
+}
+
+// ==================================================
+// Point
+// ==================================================
+.point {
+  display: flex;
+  flex-direction: column;
+  gap: $space-25;
+  align-items: center;
+  padding: $space-40 0;
+  color: $color-black;
+  background-color: $color-white;
+}
+
+.point__list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-50;
+  align-items: center;
+  width: 100%;
+}
+
+.point__item {
+  @include inner($content-width);
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-15;
+}
+
+.point__head {
+  display: flex;
+  gap: $space-15;
+  align-items: center;
+}
+
+.point__num {
+  @include font-en($fw-medium);
+
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  color: $color-main;
+  white-space: nowrap;
+}
+
+.point__num-label {
+  margin-right: -36px;
+  font-size: $fs-20;
+  letter-spacing: 1px;
+}
+
+.point__num-value {
+  font-size: $fs-85;
+  color: $color-main-faint;
+}
+
+.point__title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: $fs-20;
+}
+
+.point__title-line {
+  display: block;
+
+  &--mark {
+    padding: 0 $space-5;
+    color: $color-white;
+    background-color: $color-main;
+  }
+}
+
+.point__title-en {
+  @include font-en($fw-medium);
+}
+
+.point__visual {
+  display: grid;
+}
+
+.point__image {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 390 / 256;
+}
+
+.point__captions {
+  display: flex;
+  flex-direction: column;
+  grid-area: 1 / 1;
+  gap: $space-10;
+  align-items: flex-start;
+  align-self: start;
+
+  // 画像に対するキャプションの重なり位置（Figma の座標 / 画像幅 390px）
+  &--first {
+    margin-top: math.percentage(math.div(224.7, 390));
+    margin-left: 2px;
+  }
+
+  &--second {
+    margin-top: math.percentage(math.div(197, 390));
+  }
+
+  &--third {
+    margin-top: math.percentage(math.div(222.4, 390));
+    margin-left: 1px;
+  }
+}
+
+.point__caption {
+  display: block;
+  padding: $space-5;
+  font-size: $fs-20;
+  letter-spacing: $ls-caption;
+  background-color: $color-white;
+  box-shadow: 4px 4px 0 $color-pure-black;
+
+  &--accent {
+    padding-left: 0;
+    color: $color-main;
+  }
+
+  &--flush {
+    padding-left: 0;
+  }
+}
+
+.point__caption-en {
+  @include font-en($fw-medium);
+}
+
+.point__text {
+  font-size: $fs-16;
+  line-height: 28px;
+}
+
+// ==================================================
+// Compare
+// ==================================================
+.compare {
+  display: flex;
+  flex-direction: column;
+  gap: $space-30;
+  align-items: center;
+  padding: $space-40 0;
+  background-color: $color-sub;
+}
+
+.compare__content {
+  display: flex;
+  flex-direction: column;
+  gap: $space-20;
+  align-items: center;
+  width: 100%;
+}
+
+.compare__lead {
+  font-size: $fs-20;
+  color: $color-pure-black;
+  text-align: center;
+}
+
+.compare-table {
+  width: 841px;
+  font-size: $fs-16;
+  font-weight: $fw-regular;
+  color: $color-pure-black;
+  text-align: center;
+  white-space: nowrap;
+  table-layout: fixed;
+  background-color: $color-table;
+  border-spacing: 5px;
+  border-collapse: separate;
+}
+
+.compare-table__col {
+  width: 170px;
+
+  &--head {
+    width: 131px;
+  }
+}
+
+.compare-table__head {
+  height: 50px;
+  padding: 6px $space-10;
+  font-size: $fs-18;
+  font-weight: $fw-medium;
+  color: $color-white;
+  background-color: $color-gray;
+
+  &--riva {
+    @include font-en($fw-regular);
+
+    padding: $space-10 $space-10 6px;
+    font-size: $fs-20;
+    color: $color-black;
+    background-color: $color-sub;
+  }
+}
+
+.compare-table__en {
+  @include font-en($fw-regular);
+}
+
+.compare-table__row-head {
+  height: 63px;
+  padding: 0 $space-10;
+  font-size: $fs-16;
+  font-weight: $fw-medium;
+  color: $color-black;
+  background-color: $color-white;
+}
+
+.compare-table__cell {
+  position: relative;
+  height: 63px;
+  padding: 0 $space-10;
+  vertical-align: middle;
+  background-color: $color-white;
+
+  &--riva {
+    background-color: $color-sub;
+  }
+
+  &--with-mark {
+    padding-left: 38px;
+  }
+}
+
+// 文字サイズの小さい行は、親の行の高さに影響されないようブロック化する
+.compare-table__small,
+.compare-table__xsmall {
+  display: block;
+}
+
+.compare-table__small {
+  font-size: $fs-12;
+}
+
+.compare-table__xsmall {
+  font-size: $fs-10;
+
+  &--accent {
+    color: $color-main;
+  }
+}
+
+// ◎ / ○ / △ / × マーク
+.compare-table__mark {
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  color: $color-pure-black;
+  vertical-align: middle;
+
+  .compare-table__cell--with-mark & {
+    position: absolute;
+    top: 50%;
+    left: $space-10;
+    transform: translateY(-50%);
+  }
+
+  &--red {
+    color: $color-main;
+  }
+
+  &--single,
+  &--double {
+    border: 1px solid currentcolor;
+    border-radius: 50%;
+  }
+
+  &--double {
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border: 1px solid currentcolor;
+      border-radius: 50%;
+    }
+  }
+
+  &--large {
+    width: 28px;
+    height: 28px;
+    border-width: 2px;
+
+    &::after {
+      inset: 4px;
+      border-width: 2px;
+    }
+  }
+
+  &--triangle {
+    width: 22px;
+    height: 19px;
+    background-color: currentcolor;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 2px 1.7px 1px;
+      background-color: $color-white;
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    }
+  }
+
+  &--cross {
+    width: 12px;
+    height: 13px;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 16px;
+      height: 1.5px;
+      background-color: currentcolor;
+    }
+
+    &::before {
+      transform: translate(-50%, -50%) rotate(47deg);
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(-47deg);
+    }
+  }
+}
+
+// ==================================================
+// Lesson
+// ==================================================
+.lesson {
+  display: flex;
+  flex-direction: column;
+  gap: $space-30;
+  align-items: center;
+  padding: $space-40 0;
+  color: $color-black;
+  background-color: $color-white;
+}
+
+.lesson__group {
+  display: flex;
+  flex-direction: column;
+  gap: $space-20;
+  align-items: center;
+  width: 100%;
+}
+
+.lesson__title {
+  font-size: $fs-20;
+  line-height: 25px;
+  text-align: center;
+}
+
+.lesson__photo {
+  @include inner($content-width);
+
+  height: auto;
+  aspect-ratio: 390 / 273;
+  object-fit: cover;
+  border-radius: $radius-10;
+}
+
+.lesson__slider {
+  @include inner(400px, $space-15);
+
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+
+.lesson__nav {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+
+  &--prev {
+    &::before {
+      @include triangle(left);
+    }
+  }
+
+  &--next {
+    &::before {
+      @include triangle(right);
+    }
+  }
+}
+
+.lesson__track {
+  @include scroll-x;
+
+  display: flex;
+  flex: 1;
+  gap: $space-20;
+  min-width: 0;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+
+  @include reduced-motion {
+    scroll-behavior: auto;
+  }
+}
+
+.lesson-card {
+  display: flex;
+  flex: 0 0 100%;
+  flex-direction: column;
+  gap: $space-10;
+  align-items: center;
+  padding: $space-30 $space-20;
+  scroll-snap-align: start;
+  background-color: $color-sub;
+  border-radius: $radius-20;
+}
+
+.lesson-card__label {
+  @include font-en($fw-medium);
+
+  margin-bottom: $space-10;
+  font-size: $fs-16;
+  color: $color-main;
+}
+
+.lesson-card__name {
+  font-size: $fs-20;
+  color: $color-main;
+  text-align: center;
+
+  &--en {
+    @include font-en($fw-medium);
+  }
+}
+
+.lesson-card__name-en {
+  @include font-en($fw-medium);
+}
+
+.lesson-card__text {
+  width: 100%;
+  font-size: $fs-16;
+  line-height: 25px;
+}
+
+// ==================================================
+// Area
+// ==================================================
+.area {
+  display: flex;
+  flex-direction: column;
+  gap: $space-30;
+  align-items: center;
+  padding: $space-40 0;
+  background-color: $color-sub;
+}
+
+.area__slider {
+  @include inner($content-narrow, $space-40);
+  @include scroll-x;
+
+  display: flex;
+  gap: $space-20;
+  scroll-snap-type: x mandatory;
+}
+
+.area__slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+.area__figure {
+  display: flex;
+  flex-direction: column;
+  gap: $space-20;
+  align-items: center;
+}
+
+.area__image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 350 / 197;
+  object-fit: cover;
+}
+
+.area__caption {
+  font-size: $fs-16;
+  line-height: 25px;
+  color: $color-pure-black;
+  text-align: center;
+}
+
+// ==================================================
+// Price
+// ==================================================
+.price {
+  display: flex;
+  flex-direction: column;
+  gap: $space-25;
+  align-items: center;
+  padding: $space-40 0;
+  color: $color-black;
+  background-color: $color-white;
+}
+
+.price__note {
+  font-size: $fs-16;
+}
+
+.price-table {
+  width: 650px;
+  font-weight: $fw-bold;
+  text-align: left;
+  table-layout: fixed;
+  background-color: $color-table;
+  border-spacing: 5px;
+  border-collapse: separate;
+}
+
+.price-table__col {
+  &--group {
+    width: 35px;
+  }
+
+  &--list {
+    width: 170px;
+  }
+
+  &--plan {
+    width: 210px;
+  }
+}
+
+.price-table__head {
+  padding: $space-10;
+  font-size: $fs-16;
+  line-height: 25.6px;
+  color: $color-white;
+  text-align: center;
+  letter-spacing: 1.6px;
+  background-color: $color-gray;
+
+  &--plan {
+    color: $color-black;
+    background-color: $color-sub;
+  }
+}
+
+.price-table__row-head {
+  height: 95px;
+  font-size: $fs-16;
+  text-align: center;
+  background-color: $color-white;
+}
+
+.price-table__group {
+  padding: 4px 0;
+  text-align: center;
+  vertical-align: middle;
+  background-color: $color-sub;
+}
+
+.price-table__group-text {
+  display: inline-block;
+  font-size: $fs-16;
+  line-height: 25.6px;
+  letter-spacing: 1.6px;
+  text-orientation: sideways;
+  writing-mode: vertical-rl;
+}
+
+.price-table__cell {
+  height: 116px;
+  padding-left: $space-10;
+  vertical-align: middle;
+  background-color: $color-white;
+
+  &--fee {
+    height: 95px;
+    color: $color-pure-black;
+  }
+
+  &--center {
+    padding-left: 0;
+    text-align: center;
+  }
+}
+
+.price-table__fee-label,
+.price-table__fee,
+.price-table__fee-sub,
+.price-table__strong,
+.price-table__count,
+.price-table__note {
+  display: block;
+}
+
+.price-table__fee-label {
+  margin-bottom: $space-10;
+  font-size: $fs-14;
+}
+
+.price-table__fee {
+  font-size: $fs-14;
+}
+
+.price-table__fee-num {
+  @include font-en($fw-semibold);
+
+  font-size: $fs-30;
+}
+
+.price-table__fee-unit {
+  font-size: $fs-24;
+}
+
+.price-table__fee-sub {
+  font-size: $fs-14;
+}
+
+.price-table__fee-sub-num {
+  @include font-en($fw-bold);
+}
+
+.price-table__list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: $fs-14;
+}
+
+.price-table__list-small {
+  font-size: $fs-11;
+}
+
+.price-table__strong {
+  margin-bottom: 1px;
+  font-size: $fs-14;
+  line-height: 20.4px;
+  letter-spacing: 0.72px;
+}
+
+.price-table__count {
+  font-size: $fs-14;
+  font-weight: $fw-medium;
+  line-height: 25.5px;
+  letter-spacing: 0.9px;
+}
+
+.price-table__count-strong {
+  font-weight: $fw-bold;
+}
+
+.price-table__note {
+  margin-top: 1px;
+  font-size: $fs-12;
+  font-weight: $fw-medium;
+  line-height: 20.4px;
+}
+
+.price-table__en {
+  @include font-en($fw-medium);
+}
+
+.price-table__anytime {
+  font-size: $fs-15;
+  line-height: 25.5px;
+  letter-spacing: 0.9px;
+}
+
+.price-table__anytime-note {
+  font-size: $fs-12;
+  font-weight: $fw-medium;
+  line-height: 20.4px;
+}
+
+// ==================================================
+// Access
+// ==================================================
+.access {
+  display: flex;
+  flex-direction: column;
+  gap: $space-30;
+  align-items: center;
+  padding: $space-30 0;
+  color: $color-black;
+  background-color: $color-sub;
+}
+
+.access__card {
+  @include inner($content-width);
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-20;
+  align-items: center;
+  padding: $space-20;
+  background-color: $color-white;
+  border-radius: $radius-20;
+}
+
+.access__name {
+  font-size: $fs-24;
+  color: $color-main;
+  text-align: center;
+}
+
+.access__name-en {
+  @include font-en($fw-medium);
+}
+
+// google_map_img：地図画像をグレースケールで表示
+.access__map {
+  width: 100%;
+  max-width: $content-narrow;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 21px;
+}
+
+.access__map-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+}
+
+.access__info {
+  width: 100%;
+  max-width: $content-narrow;
+  text-align: center;
+}
+
+.access__term {
+  font-size: $fs-24;
+  color: $color-main;
+}
+
+.access__desc {
+  margin-top: 2px;
+  font-size: $fs-20;
+
+  & + .access__term {
+    margin-top: $space-20;
+  }
+}
+
+.access__en {
+  @include font-en($fw-medium);
+}
+
+// ==================================================
+// FAQ
+// ==================================================
+.faq {
+  display: flex;
+  flex-direction: column;
+  gap: $space-25;
+  align-items: center;
+  padding: $space-30 0;
+  background-color: $color-white;
+}
+
+.faq__group {
+  display: flex;
+  flex-direction: column;
+  gap: $space-20;
+  align-items: center;
+  width: 100%;
+}
+
+.faq__group-title {
+  font-size: $fs-20;
+  color: $color-pure-black;
+}
+
+.faq__list {
+  @include inner($content-width);
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-20;
+}
+
+.faq__item {
+  overflow: hidden;
+  background-color: $color-sub;
+  border-radius: $radius-15;
+}
+
+.faq__button {
+  display: flex;
+  gap: $space-10;
+  align-items: center;
+  width: 100%;
+  padding: $space-20 $space-10;
+  font-size: $fs-16;
+  font-weight: $fw-medium;
+  color: $color-main;
+  text-align: left;
+  letter-spacing: $ls-faq;
+  border-radius: $radius-15;
+
+  &:focus-visible {
+    outline-offset: -2px;
+  }
+}
+
+.faq__question-text {
+  flex: 1;
+  text-box: trim-both cap alphabetic;
+}
+
+.faq__badge {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-family: $font-qa;
+  font-size: $fs-20;
+  font-weight: $fw-medium;
+  letter-spacing: 0;
+  border-radius: 50%;
+  text-box: trim-both cap alphabetic;
+
+  &--q {
+    color: $color-white;
+    background-color: $color-main;
+  }
+
+  &--a {
+    align-self: flex-start;
+    margin-block: $space-20;
+    color: $color-black;
+    background-color: $color-white;
+  }
+}
+
+// 開閉アイコン（+ / −）
+.faq__icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    margin-top: -0.5px;
+    background-color: $color-main;
+    transition: transform 0.3s ease;
+  }
+
+  &::after {
+    transform: rotate(90deg);
+  }
+
+  .faq__button[aria-expanded="true"] &::after {
+    transform: rotate(0deg);
+  }
+}
+
+.faq__answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows 0.4s ease,
+    visibility 0.4s ease;
+
+  &.is-open {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+.faq__answer-body {
+  display: flex;
+  gap: $space-10;
+  align-items: center;
+  min-height: 0;
+  padding: 0 $space-10;
+  overflow: hidden;
+  font-size: $fs-16;
+  color: $color-black;
+  letter-spacing: $ls-faq;
+}
+
+.faq__answer-text {
+  flex: 1;
+  margin-block: $space-20;
+  text-box: trim-both cap alphabetic;
+}
+
+.faq__link {
+  color: $color-link;
+}
+
+.faq__en {
+  @include font-en($fw-medium);
+}
+
+// ==================================================
+// Footer
+// ==================================================
+.footer {
+  display: flex;
+  justify-content: center;
+  padding: $space-30 0;
+  background-color: $color-white;
+}
+
+.footer__logo {
+  display: block;
+}
+
+.footer__logo-image {
+  width: 116px;
+  height: auto;
+}

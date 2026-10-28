@@ -1,0 +1,13 @@
+{
+  "name": "riva-lp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RIVA 長浜 WOMEN'S FITNESS LP",
+  "scripts": {
+    "build": "sass --no-source-map style.scss style.css",
+    "watch": "sass --watch --no-source-map style.scss:style.css"
+  },
+  "devDependencies": {
+    "sass": "1.80.6"
+  }
+}

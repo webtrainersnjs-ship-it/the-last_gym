@@ -1,0 +1,82 @@
+// ==================================================
+// Variables
+// ==================================================
+
+// Color
+$color-main: #b53f3c;
+$color-black: #291312;
+$color-sub: #f1e4e7;
+$color-white: #fff;
+$color-pure-black: #000;
+$color-gray: #8e7979;
+$color-item: #f6eef0;
+$color-table: #f7f6f4;
+$color-line: #06c755;
+$color-link: #0048ff;
+$color-main-faint: rgba(181, 63, 60, 0.22);
+
+// Font family
+$font-ja: "Zen Kaku Gothic New", sans-serif;
+$font-en: "Josefin Sans", "Zen Kaku Gothic New", sans-serif;
+$font-qa: Futura, "Josefin Sans", sans-serif;
+
+// Font weight
+$fw-regular: 400;
+$fw-medium: 500;
+$fw-semibold: 600;
+$fw-bold: 700;
+
+// Font size
+$fs-10: 10px;
+$fs-11: 11px;
+$fs-12: 12px;
+$fs-13: 13px;
+$fs-14: 14px;
+$fs-15: 15px;
+$fs-16: 16px;
+$fs-17: 17px;
+$fs-18: 18px;
+$fs-20: 20px;
+$fs-24: 24px;
+$fs-28: 28px;
+$fs-30: 30px;
+$fs-35: 35px;
+$fs-85: 85px;
+
+// Line height（Figma の「自動（normal）」相当の値）
+$lh-base: 1.44;
+
+// Letter spacing
+$ls-body: 1.858px;
+$ls-title: 2.494px;
+$ls-caption: 3.698px;
+$ls-faq: 3.2px;
+
+// Spacing
+$space-5: 5px;
+$space-10: 10px;
+$space-15: 15px;
+$space-20: 20px;
+$space-25: 25px;
+$space-30: 30px;
+$space-40: 40px;
+$space-50: 50px;
+
+// Radius
+$radius-10: 10px;
+$radius-15: 15px;
+$radius-20: 20px;
+$radius-pill: 30px;
+
+// Layout
+$lp-width: 430px;
+$content-width: 390px;
+$content-narrow: 350px;
+$gutter: 20px;
+
+// Breakpoint
+$bp-pc: 1024px;
+
+// Z-index
+$z-side: 10;
+$z-drawer: 100;
