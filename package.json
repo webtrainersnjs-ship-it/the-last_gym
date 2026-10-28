@@ -4,8 +4,8 @@
   "private": true,
   "description": "RIVA 長浜 WOMEN'S FITNESS LP",
   "scripts": {
-    "build": "sass --no-source-map style.scss style.css",
-    "watch": "sass --watch --no-source-map style.scss:style.css"
+    "build": "sass --no-source-map scss/style.scss css/style.css",
+    "watch": "sass --watch --no-source-map scss/style.scss:css/style.css"
   },
   "devDependencies": {
     "sass": "1.80.6"
