@@ -265,7 +265,6 @@ button:focus-visible,
   gap: $space-20;
   align-items: center;
   width: 100%;
-  padding: 0 $gutter;
 
   &--start {
     gap: 12px;
@@ -1211,6 +1210,7 @@ $worries-height: 816.5;
   gap: $space-20;
   align-items: center;
   width: 100%;
+  padding: 0 $gutter;
 }
 
 .compare__lead {
@@ -1563,7 +1563,7 @@ $worries-height: 816.5;
   flex-direction: column;
   gap: $space-25;
   align-items: center;
-  padding: $space-40 0;
+  padding: $space-40 $gutter;
   color: $color-black;
   background-color: $color-white;
 }

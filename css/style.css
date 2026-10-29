@@ -302,7 +302,6 @@ button:focus-visible,
   gap: 20px;
   align-items: center;
   width: 100%;
-  padding: 0 20px;
 }
 .scroll-table--start {
   gap: 12px;
@@ -1237,6 +1236,7 @@ button:focus-visible,
   gap: 20px;
   align-items: center;
   width: 100%;
+  padding: 0 20px;
 }
 
 .compare__lead {
@@ -1581,7 +1581,7 @@ button:focus-visible,
   flex-direction: column;
   gap: 25px;
   align-items: center;
-  padding: 40px 0;
+  padding: 40px 20px;
   color: #291312;
   background-color: #fff;
 }
