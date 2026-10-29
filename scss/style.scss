@@ -25,11 +25,6 @@ body {
   color: $color-black;
   background-color: $color-table;
   -webkit-font-smoothing: antialiased;
-
-  // PC では中央カラムのみをスクロールさせる
-  @include mq-pc {
-    overflow: hidden;
-  }
 }
 
 // reset.scss で全要素に指定されている line-height: 1 を、各コンポーネントで指定した値が継承されるようにする
@@ -81,47 +76,11 @@ button:focus-visible,
   background-color: $color-white;
   margin-top: 50px;
   border-radius: 30px 30px 0 0;
-
-  @include mq-pc {
-    height: 100vh;
-    height: 100dvh;
-    overflow-y: auto;
-    overscroll-behavior-y: contain;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    @include reduced-motion {
-      scroll-behavior: auto;
-    }
-  }
-
-  @include mq-sp {
-    margin-top: 0;
-    border-radius: 0 0 0 0;
-  }
 }
 
 // 左カラム
 .side-logo {
   display: none;
-
-  @include mq-pc {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: $z-side;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: calc((100% - #{$lp-width}) / 2);
-    padding: $space-40 $space-20;
-  }
 }
 
 .side-logo__link {
@@ -159,21 +118,6 @@ button:focus-visible,
       opacity 0.3s ease,
       visibility 0s;
   }
-
-  @include mq-pc {
-    inset: 0 0 0 auto;
-    z-index: $z-side;
-    width: calc((100% - #{$lp-width}) / 2);
-    padding: $space-40 $space-20;
-    visibility: visible;
-    background-color: transparent;
-    opacity: 1;
-    transition: none;
-  }
-
-  @include reduced-motion {
-    transition: none;
-  }
 }
 
 .side-nav__close {
@@ -201,10 +145,6 @@ button:focus-visible,
   &::after {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
-
-  @include mq-pc {
-    display: none;
-  }
 }
 
 .side-nav__close-label {
@@ -222,10 +162,6 @@ button:focus-visible,
   font-size: $fs-16;
   letter-spacing: 1.6px;
   transition: color 0.3s ease;
-
-  &:hover {
-    color: $color-main;
-  }
 }
 
 .side-nav__buttons {
@@ -309,10 +245,6 @@ button:focus-visible,
     @include chevron-right(11px, 2px, $color-white);
   }
 
-  &:hover {
-    opacity: 0.8;
-  }
-
   &--entry {
     background-color: $color-main;
   }
@@ -328,12 +260,12 @@ button:focus-visible,
 
 // 横スクロールする表 + スクロールバー
 .scroll-table {
-  @include inner($content-width);
-
   display: flex;
   flex-direction: column;
   gap: $space-20;
   align-items: center;
+  width: 100%;
+  padding: 0 $gutter;
 
   &--start {
     gap: 12px;
@@ -378,10 +310,6 @@ button:focus-visible,
   height: 47px;
   padding: $space-10 $gutter;
   background-color: $color-white;
-
-  @include mq-pc {
-    display: none;
-  }
 }
 
 .header__logo {
@@ -688,7 +616,6 @@ button:focus-visible,
   gap: $space-25;
   align-items: center;
   width: 100%;
-  max-width: $content-width;
   padding: $space-30 $space-20;
   background-color: $color-white;
 }
@@ -805,7 +732,6 @@ button:focus-visible,
   gap: $space-20;
   align-items: center;
   width: 100%;
-  max-width: 358px;
 }
 
 .cta__buttons {
@@ -1019,16 +945,6 @@ $worries-height: 816.5;
   }
 }
 
-@include reduced-motion {
-  .worries-animation.is-ready {
-    .worries-animation__item {
-      opacity: 1;
-      transition: none;
-      transform: none;
-    }
-  }
-}
-
 // ==================================================
 // Recommend
 // ==================================================
@@ -1157,14 +1073,14 @@ $worries-height: 816.5;
   gap: $space-50;
   align-items: center;
   width: 100%;
+  padding: 0 $gutter;
 }
 
 .point__item {
-  @include inner($content-width);
-
   display: flex;
   flex-direction: column;
   gap: $space-15;
+  width: 100%;
 }
 
 .point__head {
@@ -1513,11 +1429,11 @@ $worries-height: 816.5;
 }
 
 .lesson__slider {
-  @include inner(400px, $space-15);
-
   display: flex;
   gap: 7px;
   align-items: center;
+  width: 100%;
+  padding: 0 $space-15;
 }
 
 .lesson__nav {
@@ -1550,10 +1466,6 @@ $worries-height: 816.5;
   min-width: 0;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
-
-  @include reduced-motion {
-    scroll-behavior: auto;
-  }
 }
 
 .lesson-card {
@@ -1835,18 +1747,17 @@ $worries-height: 816.5;
   flex-direction: column;
   gap: $space-30;
   align-items: center;
-  padding: $space-30 0;
+  padding: $space-30 $gutter;
   color: $color-black;
   background-color: $color-sub;
 }
 
 .access__card {
-  @include inner($content-width);
-
   display: flex;
   flex-direction: column;
   gap: $space-20;
   align-items: center;
+  width: 100%;
   padding: $space-20;
   background-color: $color-white;
   border-radius: $radius-20;
@@ -1920,6 +1831,7 @@ $worries-height: 816.5;
   gap: $space-20;
   align-items: center;
   width: 100%;
+  padding: 0 $gutter;
 }
 
 .faq__group-title {
@@ -1928,11 +1840,10 @@ $worries-height: 816.5;
 }
 
 .faq__list {
-  @include inner($content-width);
-
   display: flex;
   flex-direction: column;
   gap: $space-20;
+  width: 100%;
 }
 
 .faq__item {
@@ -2032,10 +1943,6 @@ $worries-height: 816.5;
     grid-template-rows: 1fr;
     visibility: visible;
   }
-
-  @include reduced-motion {
-    transition: none;
-  }
 }
 
 .faq__answer-body {
@@ -2082,4 +1989,113 @@ $worries-height: 816.5;
 .footer__logo-image {
   width: 116px;
   height: auto;
+}
+
+// ==================================================
+// Hover
+// ==================================================
+.side-nav__link:hover {
+  color: $color-main;
+}
+
+.cta-button:hover {
+  opacity: 0.8;
+}
+
+// ==================================================
+// Responsive：PC（$bp-pc 以上）
+// ==================================================
+@include mq-pc {
+  // PC では中央カラムのみをスクロールさせる
+  body {
+    overflow: hidden;
+  }
+
+  .lp {
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .side-logo {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $z-side;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc((100% - #{$lp-width}) / 2);
+    padding: $space-40 $space-20;
+  }
+
+  .side-nav {
+    inset: 0 0 0 auto;
+    z-index: $z-side;
+    width: calc((100% - #{$lp-width}) / 2);
+    padding: $space-40 $space-20;
+    visibility: visible;
+    background-color: transparent;
+    opacity: 1;
+    transition: none;
+  }
+
+  .side-nav__close {
+    display: none;
+  }
+
+  .header {
+    display: none;
+  }
+
+  // PC かつ「視差効果を減らす」設定時
+  @include reduced-motion {
+    .lp {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+// ==================================================
+// Responsive：タブレット・スマートフォン（$bp-pc 未満）
+// ==================================================
+@include mq-sp {
+  .lp {
+    margin-top: 0;
+    border-radius: 0 0 0 0;
+  }
+}
+
+// ==================================================
+// Reduced motion（視差効果を減らす設定時）
+// ==================================================
+@include reduced-motion {
+  .side-nav {
+    transition: none;
+  }
+
+  .worries-animation.is-ready {
+    .worries-animation__item {
+      opacity: 1;
+      transition: none;
+      transform: none;
+    }
+  }
+
+  .lesson__track {
+    scroll-behavior: auto;
+  }
+
+  .faq__answer {
+    transition: none;
+  }
 }
