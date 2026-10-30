@@ -25,6 +25,12 @@ body {
   color: $color-black;
   background-color: $color-table;
   -webkit-font-smoothing: antialiased;
+
+  // .lp の margin-top が body に相殺（margin collapse）されないようにする
+  display: flow-root;
+
+  // PC では中央カラムのみをスクロールさせる
+  overflow: hidden;
 }
 
 // reset.scss で全要素に指定されている line-height: 1 を、各コンポーネントで指定した値が継承されるようにする
@@ -71,15 +77,35 @@ button:focus-visible,
   position: relative;
   width: 100%;
   max-width: $lp-width;
-  margin: 50px auto 0;
+  height: calc(100vh - #{$lp-margin-top});
+  height: calc(100dvh - #{$lp-margin-top});
+  margin: $lp-margin-top auto 0;
   overflow-x: clip;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   background-color: $color-white;
   border-radius: 30px 30px 0 0;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 // 左カラム
 .side-logo {
-  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $z-side;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc((100% - #{$lp-width}) / 2);
+  padding: $space-40 $space-20;
 }
 
 .side-logo__link {
@@ -94,21 +120,20 @@ button:focus-visible,
 // 右カラム（SP ではドロワーメニュー）
 .side-nav {
   position: fixed;
-  inset: 0;
-  z-index: $z-drawer;
+  inset: 0 0 0 auto;
+  z-index: $z-side;
   display: flex;
   flex-direction: column;
   gap: $space-40;
   align-items: center;
   justify-content: center;
-  padding: 80px $space-20 $space-40;
+  width: calc((100% - #{$lp-width}) / 2);
+  padding: $space-40 $space-20;
   overflow-y: auto;
-  visibility: hidden;
-  background-color: $color-white;
-  opacity: 0;
-  transition:
-    opacity 0.3s ease,
-    visibility 0.3s ease;
+  visibility: visible;
+  background-color: transparent;
+  opacity: 1;
+  transition: none;
 
   &.is-open {
     visibility: visible;
@@ -121,6 +146,7 @@ button:focus-visible,
 
 .side-nav__close {
   position: absolute;
+  display: none;
   top: 13.5px;
   right: $gutter;
   width: 27px;
@@ -302,7 +328,7 @@ button:focus-visible,
 // Header
 // ==================================================
 .header {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: space-between;
   height: 47px;
@@ -1993,7 +2019,6 @@ $worries-height: 816.5;
   justify-content: center;
   padding: $space-30 0;
   background-color: $color-white;
-  margin-bottom: 50px;
 }
 
 .footer__logo {
@@ -2017,79 +2042,57 @@ $worries-height: 816.5;
 }
 
 // ==================================================
-// Responsive：PC（$bp-pc 以上）
+// Responsive：タブレット・スマートフォン（$bp-tab 以下）
 // ==================================================
-@include mq-pc {
-
-  // PC では中央カラムのみをスクロールさせる
+@include mq-tab {
+  // 中央カラムではなくページ全体をスクロールさせる
   body {
-    overflow: hidden;
+    overflow: visible;
   }
 
   .lp {
-    height: 100vh;
-    height: 100dvh;
-    overflow-y: auto;
-    overscroll-behavior-y: contain;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    height: auto;
+    overflow-y: visible;
+    overscroll-behavior-y: auto;
+    scroll-behavior: auto;
+    scrollbar-width: auto;
+    -ms-overflow-style: auto;
+    border-radius: 0 0 0 0;
   }
 
   .side-logo {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: $z-side;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: calc((100% - #{$lp-width}) / 2);
-    padding: $space-40 $space-20;
+    display: none;
   }
 
+  // 右カラムをドロワーメニューとして使用
   .side-nav {
-    inset: 0 0 0 auto;
-    z-index: $z-side;
-    width: calc((100% - #{$lp-width}) / 2);
-    padding: $space-40 $space-20;
-    visibility: visible;
-    background-color: transparent;
-    opacity: 1;
-    transition: none;
+    inset: 0;
+    z-index: $z-drawer;
+    width: auto;
+    padding: 80px $space-20 $space-40;
+    visibility: hidden;
+    background-color: $color-white;
+    opacity: 0;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
   }
 
   .side-nav__close {
-    display: none;
+    display: block;
   }
 
   .header {
-    display: none;
-  }
-
-  // PC かつ「視差効果を減らす」設定時
-  @include reduced-motion {
-    .lp {
-      scroll-behavior: auto;
-    }
+    display: flex;
   }
 }
 
 // ==================================================
-// Responsive：タブレット・スマートフォン（$bp-pc 未満）
+// Responsive：スマートフォン（$bp-sp 以下）
 // ==================================================
 @include mq-sp {
   .lp {
-    margin: 47px auto 0;
-    border-radius: 0 0 0 0;
-  }
-  .footer{
-    margin-bottom: 0;
+    margin: $lp-margin-top-sp auto 0;
   }
 }
 
@@ -2097,6 +2100,10 @@ $worries-height: 816.5;
 // Reduced motion（視差効果を減らす設定時）
 // ==================================================
 @include reduced-motion {
+  .lp {
+    scroll-behavior: auto;
+  }
+
   .side-nav {
     transition: none;
   }

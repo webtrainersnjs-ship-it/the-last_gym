@@ -4,16 +4,17 @@
 @use "sass:math";
 @use "variables" as *;
 
-// Media query（PC: $bp-pc 以上）
-@mixin mq-pc {
-  @media (min-width: $bp-pc) {
+// Media query（max-width 基準。PC のスタイルはメディアクエリ外に記述する）
+// タブレット・スマートフォン（$bp-tab 以下）
+@mixin mq-tab {
+  @media screen and (max-width: $bp-tab) {
     @content;
   }
 }
 
-// Media query（タブレット・スマートフォン: $bp-pc 未満）
+// スマートフォン（$bp-sp 以下）
 @mixin mq-sp {
-  @media (max-width: ($bp-pc - 1px)) {
+  @media screen and (max-width: $bp-sp) {
     @content;
   }
 }

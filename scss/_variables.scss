@@ -73,9 +73,12 @@ $lp-width: 430px;
 $content-width: 390px;
 $content-narrow: 350px;
 $gutter: 20px;
+$lp-margin-top: 50px; // 中央カラム上部の余白（PC）
+$lp-margin-top-sp: 47px; // 中央カラム上部の余白（SP：固定ヘッダーの高さ）
 
 // Breakpoint
-$bp-pc: 1024px;
+$bp-tab: 1023px; // タブレット以下
+$bp-sp: 767px; // スマートフォン以下
 
 // Z-index
 $z-side: 10;
