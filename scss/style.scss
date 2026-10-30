@@ -71,10 +71,9 @@ button:focus-visible,
   position: relative;
   width: 100%;
   max-width: $lp-width;
-  margin-inline: auto;
+  margin: 50px auto 0;
   overflow-x: clip;
   background-color: $color-white;
-  margin-top: 50px;
   border-radius: 30px 30px 0 0;
 }
 
@@ -309,6 +308,13 @@ button:focus-visible,
   height: 47px;
   padding: $space-10 $gutter;
   background-color: $color-white;
+  position: fixed;
+  width: 100%;
+  max-width: 430px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
 }
 
 .header__logo {
@@ -1523,7 +1529,7 @@ $worries-height: 816.5;
 .area__slider {
   @include inner($content-narrow, $space-40);
   @include scroll-x;
-
+  scroll-behavior: smooth;
   display: flex;
   gap: $space-20;
   scroll-snap-type: x mandatory;
@@ -1626,12 +1632,20 @@ $worries-height: 816.5;
 }
 
 .price-table__group-text {
-  display: inline-block;
+  // display: inline-block;
+  // font-size: $fs-16;
+  // line-height: 25.6px;
+  // letter-spacing: 1.6px;
+  // text-orientation: sideways;
+  // writing-mode: vertical-rl;
+ display: block;
+  width: 1em;               // 1文字分の幅にして強制的に折り返す
+  margin-inline: auto;
   font-size: $fs-16;
-  line-height: 25.6px;
-  letter-spacing: 1.6px;
-  text-orientation: sideways;
-  writing-mode: vertical-rl;
+  line-height: 1.3;
+  letter-spacing: 0;        // 縦並びでは字間は不要
+  word-break: break-all;
+  overflow-wrap: anywhere;
 }
 
 .price-table__cell {
@@ -2006,6 +2020,7 @@ $worries-height: 816.5;
 // Responsive：PC（$bp-pc 以上）
 // ==================================================
 @include mq-pc {
+
   // PC では中央カラムのみをスクロールさせる
   body {
     overflow: hidden;
@@ -2070,8 +2085,11 @@ $worries-height: 816.5;
 // ==================================================
 @include mq-sp {
   .lp {
-    margin-top: 0;
+    margin: 47px auto 0;
     border-radius: 0 0 0 0;
+  }
+  .footer{
+    margin-bottom: 0;
   }
 }
 
@@ -2091,7 +2109,7 @@ $worries-height: 816.5;
     }
   }
 
-  .lesson__track {
+  .lesson__track .area__slider {
     scroll-behavior: auto;
   }
 
