@@ -29,7 +29,8 @@ body {
 }
 
 a:not([class]) {
-  text-decoration-skip-ink: auto;
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
 }
 
 img, picture {
@@ -41,7 +42,8 @@ img, picture {
 input, button, textarea, select {
   font: inherit;
   -webkit-appearance: none;
-  appearance: none;
+  -moz-appearance: none;
+       appearance: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -210,7 +212,7 @@ button {
 .section-title__heading {
   font-family: "Shippori Mincho", serif;
   font-size: 2.4rem;
-  font-weight: 700;
+  font-weight: 500;
   line-height: normal;
   color: #4c4948;
 }
@@ -254,7 +256,7 @@ button {
   width: 100%;
   max-width: 390px;
   margin-inline: auto;
-  padding: 10px 20px;
+  padding: 50px 20px 0;
 }
 .cta__group {
   display: flex;
@@ -299,10 +301,9 @@ button {
   position: relative;
   display: block;
   width: 100%;
-  height: 61px;
-  padding: 20px 19% 0 13.71%;
+  padding: 20px;
   font-family: "Shippori Mincho", serif;
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 500;
   line-height: 21.6px;
   letter-spacing: 0.48px;
@@ -356,7 +357,7 @@ button {
   width: 100%;
   padding: 10px;
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 500;
   line-height: normal;
   text-align: center;
@@ -410,6 +411,7 @@ button {
   width: 100%;
   line-height: 26px;
   color: #fff;
+  font-weight: 300;
 }
 
 .traial-card {
@@ -493,6 +495,7 @@ button {
 .before-after__text {
   width: 100%;
   line-height: 26px;
+  font-weight: 400;
 }
 .before-after__photo {
   width: 250px;
@@ -521,7 +524,8 @@ button {
 .worries__cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 4.84%;
+  -moz-column-gap: 4.84%;
+       column-gap: 4.84%;
   row-gap: 9px;
   width: 100%;
   max-width: 351px;
@@ -638,6 +642,7 @@ button {
 }
 .worries__text > p {
   line-height: 27px;
+  font-weight: 300;
 }
 
 .worries-card--center {
@@ -794,9 +799,8 @@ button {
   width: 100%;
 }
 .flow-card__text {
-  width: 100%;
-  max-width: 350px;
   line-height: 27px;
+  padding: 0 20px;
 }
 .flow-card__text--black {
   color: #000;
@@ -828,7 +832,7 @@ button {
   align-items: center;
   gap: 59px;
   width: 100%;
-  padding: 15px 10px;
+  padding: 20px;
   font-family: "Noto Sans JP", sans-serif;
   font-size: 1.6rem;
   font-weight: 500;
@@ -884,7 +888,7 @@ button {
   overflow: hidden;
 }
 .faq__answer-text {
-  padding: 15px 10px;
+  padding: 20px;
   font-family: "Noto Sans JP", sans-serif;
   font-size: 1.4rem;
   font-weight: 400;
@@ -994,7 +998,7 @@ button {
 .first-step__text {
   font-family: "Noto Sans JP", sans-serif;
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 400;
   line-height: normal;
   text-align: center;
   color: #fff;
@@ -1201,4 +1205,4 @@ button {
   .campaign__badge {
     font-size: min(2.4rem, 5.58vw);
   }
-}
+}/*# sourceMappingURL=style.css.map */

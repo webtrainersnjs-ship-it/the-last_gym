@@ -165,7 +165,7 @@ button {
   }
 
   &__heading {
-    @include font($font-mincho, $fz-lg, 700);
+    @include font($font-mincho, $fz-lg, 500);
     color: $color-text;
   }
 
@@ -206,7 +206,7 @@ button {
   width: 100%;
   max-width: $inner-width + $gutter * 2;
   margin-inline: auto;
-  padding: 10px $gutter;
+  padding: $section-space $gutter 0;
 
   &__group {
     @include stack(11px, center);
@@ -255,9 +255,8 @@ button {
   position: relative;
   display: block;
   width: 100%;
-  height: 61px;
-  padding: 20px 19% 0 13.71%;
-  @include font($font-mincho, $fz-lg, 500, 21.6px);
+  padding: 20px;
+  @include font($font-mincho, $fz-md, 500, 21.6px);
   letter-spacing: $ls-button;
   text-align: center;
   color: $color-white;
@@ -313,7 +312,7 @@ button {
   &__badge {
     width: 100%;
     padding: 10px;
-    @include font($font-sans, $fz-lg, 500);
+    @include font($font-sans, $fz-md, 500);
     text-align: center;
     color: $color-white;
     background: $gradient-badge;
@@ -366,6 +365,7 @@ button {
     width: 100%;
     line-height: 26px;
     color: $color-white;
+    font-weight: 300;
   }
 }
 
@@ -420,6 +420,7 @@ button {
   &__text {
     width: 100%;
     line-height: 26px;
+    font-weight: 400;
   }
 
   &__photo {
@@ -581,6 +582,7 @@ button {
     // reset で全要素の line-height が 1 のため子要素にも指定
     > p {
       line-height: 27px;
+      font-weight: 300;
     }
   }
 }
@@ -703,9 +705,8 @@ button {
   }
 
   &__text {
-    width: 100%;
-    max-width: $inner-width;
     line-height: 27px;
+    padding: 0 20px;
 
     &--black {
       color: $color-black;
@@ -737,7 +738,7 @@ button {
     align-items: center;
     gap: 59px;
     width: 100%;
-    padding: 15px 10px;
+    padding: 20px;
     @include font($font-sans, $fz-base, 500, 24.7px);
     text-align: left;
     color: $color-text;
@@ -802,7 +803,7 @@ button {
   }
 
   &__answer-text {
-    padding: 15px 10px;
+    padding: 20px;
     @include font($font-sans, $fz-sm, 400, 24.7px);
     background-color: $color-white;
     border-radius: $radius-box;
@@ -918,7 +919,7 @@ button {
   }
 
   &__text {
-    @include font($font-sans, $fz-md, 600);
+    @include font($font-sans, $fz-md, 400);
     text-align: center;
     color: $color-white;
   }
