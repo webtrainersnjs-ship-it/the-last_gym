@@ -391,11 +391,19 @@
             <h2 class="section-title__heading">走る日も、<br>LOX-Fitを拠点に。</h2>
           </hgroup>
           <div class="add__body">
-            <ul class="add__slider">
-              <li class="add__slide"><img class="add__img" src="images/add/add1.png" alt="ロッカーと洗面台" width="350" height="263"></li>
-              <li class="add__slide"><img class="add__img" src="images/add/add2.png" alt="シャワールーム" width="350" height="263"></li>
-              <li class="add__slide"><img class="add__img" src="images/add/add3.png" alt="ドレッサー" width="350" height="263"></li>
-            </ul>
+            <div class="add__slider-wrap">
+              <ul class="add__slider js-slider" id="add-slider">
+                <li class="add__slide"><img class="add__img" src="images/add/add1.png" alt="ロッカーと洗面台" width="350" height="263"></li>
+                <li class="add__slide"><img class="add__img" src="images/add/add2.png" alt="シャワールーム" width="350" height="263"></li>
+                <li class="add__slide"><img class="add__img" src="images/add/add3.png" alt="ドレッサー" width="350" height="263"></li>
+              </ul>
+              <button class="add__arrow add__arrow--prev js-slider-prev" type="button" aria-label="前の画像へ" aria-controls="add-slider">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4M10 6l-6 6 6 6"/></svg>
+              </button>
+              <button class="add__arrow add__arrow--next js-slider-next" type="button" aria-label="次の画像へ" aria-controls="add-slider">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+              </button>
+            </div>
             <p class="add__text">虎ノ門店は、ランニングステーションとしてもご利用いただけます。<br>会員以外の方も利用可能です。ご予約はhacomonoから。</p>
           </div>
         </div>

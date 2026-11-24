@@ -66,10 +66,10 @@
   };
 
   // ------------------------------------------------------------------------
-  // .worries-card 左右フェードイン（IntersectionObserver）
+  // .worries-card / .choose-card 左右フェードイン（IntersectionObserver）
   // ------------------------------------------------------------------------
-  const initWorriesCards = () => {
-    const cards = document.querySelectorAll('.worries-card');
+  const initFadeInCards = () => {
+    const cards = document.querySelectorAll('.worries-card, .choose-card__item');
     if (!cards.length) return;
 
     if (!('IntersectionObserver' in window)) {
@@ -97,8 +97,8 @@
     if (window.CSS && CSS.supports('animation-timeline: view()')) return;
 
     const pageStacks = [...document.querySelectorAll('.traial-card, .flow-card')];
-    const innerStacks = [...document.querySelectorAll('.worries-img')];
-    if (!pageStacks.length && !innerStacks.length) return;
+    const boxStacks = [...document.querySelectorAll('.worries-img')];
+    if (!pageStacks.length && !boxStacks.length) return;
 
     const scaleItems = (items, step, progressOf) => {
       const n = items.length;
@@ -119,11 +119,21 @@
       scaleItems([...list.children], readStep(list), (i, n) => clamp((progress - i / n) * n));
     };
 
-    // 要素内スクロール連動
-    const updateInnerStack = (scroller) => {
-      const max = scroller.scrollHeight - scroller.clientHeight;
-      const progress = max > 0 ? scroller.scrollTop / max : 0;
-      scaleItems([...scroller.children], readStep(scroller), (i, n) => clamp((progress - i / (n - 1)) * (n - 1)));
+    // 350×350 の枠内スタック（.worries-img）：ページスクロール連動（view-timeline の contain 相当）
+    const updateBoxStack = (box) => {
+      const style = getComputedStyle(box);
+      const gap = parseFloat(style.getPropertyValue('--stack-gap')) || 0;
+      const range = (parseFloat(style.getPropertyValue('--stack-range')) || 100) / 100;
+      const rect = box.getBoundingClientRect();
+      const travel = window.innerHeight - rect.height;
+      const progress = travel > 0 ? clamp((window.innerHeight - rect.bottom) / travel / range) : 1;
+      const items = [...box.children];
+      const n = items.length;
+      items.forEach((item, i) => {
+        const arrived = i === 0 ? 1 : clamp(progress / (i / (n - 1)));
+        item.style.translate = `0 ${(1 - arrived) * i * (rect.height + gap)}px`;
+      });
+      scaleItems(items, readStep(box), (i) => clamp((progress - i / (n - 1)) * (n - 1)));
     };
 
     let ticking = false;
@@ -132,19 +142,56 @@
       ticking = true;
       requestAnimationFrame(() => {
         pageStacks.forEach(updatePageStack);
-        innerStacks.forEach(updateInnerStack);
+        boxStacks.forEach(updateBoxStack);
         ticking = false;
       });
     };
 
     window.addEventListener('scroll', requestUpdate, { passive: true });
     window.addEventListener('resize', requestUpdate);
-    innerStacks.forEach((scroller) => scroller.addEventListener('scroll', requestUpdate, { passive: true }));
     requestUpdate();
+  };
+
+  // ------------------------------------------------------------------------
+  // .add__slider 左右矢印（スクロール・スワイプ操作はそのまま維持）
+  // ------------------------------------------------------------------------
+  const initSlider = () => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    document.querySelectorAll('.js-slider').forEach((slider) => {
+      const wrap = slider.parentElement;
+      const prev = wrap.querySelector('.js-slider-prev');
+      const next = wrap.querySelector('.js-slider-next');
+      const count = slider.children.length;
+      if (!prev || !next || !count) return;
+
+      const step = () => slider.firstElementChild.getBoundingClientRect().width + (parseFloat(getComputedStyle(slider).columnGap) || 0);
+      const current = () => Math.round(slider.scrollLeft / step());
+      const goTo = (index) => {
+        slider.scrollTo({
+          left: clamp(index, 0, count - 1) * step(),
+          behavior: reduceMotion.matches ? 'auto' : 'smooth',
+        });
+      };
+
+      // 端では押せないことを示す（フォーカスは保持するため disabled ではなく aria-disabled）
+      const updateArrows = () => {
+        const max = slider.scrollWidth - slider.clientWidth;
+        prev.setAttribute('aria-disabled', String(slider.scrollLeft <= 1));
+        next.setAttribute('aria-disabled', String(slider.scrollLeft >= max - 1));
+      };
+
+      prev.addEventListener('click', () => goTo(current() - 1));
+      next.addEventListener('click', () => goTo(current() + 1));
+      slider.addEventListener('scroll', updateArrows, { passive: true });
+      window.addEventListener('resize', updateArrows);
+      updateArrows();
+    });
   };
 
   initMenu();
   initFaq();
-  initWorriesCards();
+  initFadeInCards();
   initCardStackFallback();
+  initSlider();
 })();

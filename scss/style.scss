@@ -591,26 +591,26 @@ button {
   }
 }
 
-// 内部スクロールのカードスタック（Figma: 350×350 の縦スクロール枠）------------------
+// 350×350 の枠内で重なるカードスタック（Figma: 350×350 の縦スクロール枠）-------------
+// 枠自体はスクロールさせず、ページ全体のスクロール（view-timeline）に連動して
+// 下で待機している画像が順にせり上がり、背面の画像が縮小する
 .worries-img {
   --n: 3;
-  @include stack(49px);
+  --stack-gap: 49px; // 画像同士の間隔（Figma の縦並び間隔）
+  --stack-range: 75%; // 枠が画面内に収まっている区間のうち、アニメーションに使う割合
+  position: relative;
   width: 100%;
   max-width: $inner-width;
   aspect-ratio: 1;
   margin: 14.88px auto 0;
-  overflow-y: auto;
-  scrollbar-width: none;
-  scroll-timeline: --worries-img block;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  overflow: clip;
+  view-timeline: --worries-img block;
 
   &__item {
-    position: sticky;
+    position: absolute;
     top: 0;
-    flex-shrink: 0;
+    left: 0;
+    width: 100%;
     transform-origin: 50% 0;
 
     @for $i from 1 through 3 {
@@ -624,11 +624,13 @@ button {
     }
   }
 
-  @supports (animation-timeline: scroll()) {
+  @supports (animation-timeline: view()) {
     &__item {
-      animation: card-stack-scale linear forwards;
-      animation-timeline: --worries-img;
-      animation-range: calc(var(--i) / (var(--n) - 1) * 100%) calc((var(--i) + 1) / (var(--n) - 1) * 100%);
+      animation: worries-img-slide linear both, worries-img-scale linear forwards;
+      animation-timeline: --worries-img, --worries-img;
+      animation-range:
+        contain 0% contain calc(var(--i) / (var(--n) - 1) * var(--stack-range)),
+        contain calc(var(--i) / (var(--n) - 1) * var(--stack-range)) contain calc((var(--i) + 1) / (var(--n) - 1) * var(--stack-range));
     }
   }
 }
@@ -816,6 +818,50 @@ button {
     @include stack(20px, center);
   }
 
+  // スライダーと左右矢印の配置基準
+  &__slider-wrap {
+    position: relative;
+    width: 100%;
+    max-width: $inner-width;
+  }
+
+  // 写真の上に重ねる左右矢印
+  &__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    color: $color-white;
+    background-color: rgba($color-text, 0.4);
+    border: 2px solid $color-white;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba($color-black, 0.25);
+    transform: translateY(-50%);
+    transition: opacity $duration-hover;
+
+    &--prev {
+      left: 10px;
+    }
+
+    &--next {
+      right: 10px;
+    }
+
+    &[aria-disabled="true"] {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
   // Figma: 横スクロール枠（スライダー）
   &__slider {
     display: flex;
@@ -952,6 +998,23 @@ button {
   }
 }
 
+// .worries-img：待機位置（下）から枠内へせり上がる／背面になった画像を縮小
+@keyframes worries-img-slide {
+  from {
+    translate: 0 calc(var(--i) * (100% + var(--stack-gap)));
+  }
+
+  to {
+    translate: 0 0;
+  }
+}
+
+@keyframes worries-img-scale {
+  to {
+    scale: calc(1 - var(--stack-step, #{$stack-step}) * (var(--n) - 1 - var(--i)));
+  }
+}
+
 // .worries-card：左右からのフェードイン（JS有効時のみ初期状態を非表示に）
 .js .worries-card {
   opacity: 0;
@@ -962,6 +1025,25 @@ button {
   }
 
   &--right {
+    transform: translateX(24px);
+  }
+
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// .choose-card：左右交互のフェードイン（奇数枚目は左から、偶数枚目は右から）
+.js .choose-card__item {
+  opacity: 0;
+  transition: opacity $duration-fade ease-out, transform $duration-fade ease-out;
+
+  &:nth-child(odd) {
+    transform: translateX(-24px);
+  }
+
+  &:nth-child(even) {
     transform: translateX(24px);
   }
 
@@ -993,7 +1075,8 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .js .worries-card {
+  .js .worries-card,
+  .js .choose-card__item {
     transition: none;
   }
 }
@@ -1004,7 +1087,8 @@ button {
 @media (hover: hover) {
   .cta-button:hover,
   .side-nav__link:hover,
-  .header__logo:hover {
+  .header__logo:hover,
+  .add__arrow:not([aria-disabled="true"]):hover {
     opacity: 0.8;
   }
 }
