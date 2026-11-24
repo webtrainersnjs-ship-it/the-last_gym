@@ -1,0 +1,1072 @@
+@use "reset";
+@use "variables" as *;
+@use "mixin" as *;
+
+// ==========================================================================
+// Base
+// ==========================================================================
+body {
+  @include font($font-sans, $fz-base);
+  color: $color-text;
+  background-color: $color-sub;
+  overflow-x: clip;
+
+  &.is-menu-open {
+    overflow: hidden;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+// ==========================================================================
+// Layout：3カラム（左ロゴ固定／中央LP／右ナビ・CTA固定）
+// ==========================================================================
+.side-logo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $z-side;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc((100% - #{$lp-width}) / 2);
+  height: 100vh;
+  height: 100dvh;
+  padding: $gutter;
+
+  &__link {
+    display: block;
+  }
+
+  &__img {
+    width: 160px;
+  }
+}
+
+.lp {
+  max-width: $lp-width;
+  min-height: 100vh;
+  margin-inline: auto;
+  background-color: $color-white;
+  overflow-x: clip;
+}
+
+.side-nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: $z-side;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  width: calc((100% - #{$lp-width}) / 2);
+  height: 100vh;
+  height: 100dvh;
+  padding: 40px $gutter;
+  overflow-y: auto;
+
+  &__close {
+    display: none;
+  }
+
+  &__list {
+    @include stack(12px, center);
+  }
+
+  &__link {
+    @include font($font-en, $fz-num, 400, 1.6);
+    letter-spacing: $ls-num;
+    color: $color-main;
+    transition: opacity $duration-hover;
+  }
+
+  &__cta {
+    @include stack(20px);
+    width: 100%;
+    max-width: $inner-width;
+  }
+}
+
+// ==========================================================================
+// Header
+// ==========================================================================
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px $gutter;
+  background-color: $color-white;
+
+  &__logo {
+    display: block;
+    width: 121px;
+    transition: opacity $duration-hover;
+  }
+
+  // PC では右カラムにナビがあるため非表示（タブレット・SPで表示）
+  &__menu {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    // 見た目（20×14px）を変えずにタップ領域を広げる
+    margin: -15px (-$gutter) -15px 0;
+    padding: 15px $gutter;
+  }
+
+  &__menu-bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background-color: $color-text;
+  }
+}
+
+// ==========================================================================
+// Components
+// ==========================================================================
+// セクション見出し --------------------------------------------------------
+.section-title {
+  @include stack(4px);
+
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: $fz-label;
+    letter-spacing: $ls-label;
+    color: $color-main;
+  }
+
+  &__dash {
+    @include font($font-sans, $fz-label, 400, 15.44px);
+  }
+
+  &__en {
+    @include font($font-en, $fz-label, 400, 17.2px);
+  }
+
+  &__heading {
+    @include font($font-mincho, $fz-lg, 700);
+    color: $color-text;
+  }
+
+  // CAMPAIGN のみラベル枠の高さが 27px（Figma 準拠）
+  &--light &__label {
+    min-height: 27px;
+    color: $color-label-light;
+  }
+
+  &--white &__label,
+  &--white &__heading {
+    color: $color-white;
+  }
+}
+
+// カード見出し（POINT / FLOW）---------------------------------------------
+.card-heading {
+  @include stack(4px);
+  width: 100%;
+  text-align: center;
+
+  &__num {
+    @include font($font-en, $fz-num, 400, 36px);
+    letter-spacing: $ls-num;
+    color: $color-main;
+  }
+
+  &__title {
+    @include font($font-sans, $fz-md, 600);
+    color: $color-text;
+  }
+}
+
+// CTA --------------------------------------------------------------------
+// 親の左右 padding に関わらず内側 350px になるよう、自身の padding で余白を管理
+.cta {
+  @include stack(20px);
+  width: 100%;
+  max-width: $inner-width + $gutter * 2;
+  margin-inline: auto;
+  padding: 10px $gutter;
+
+  &__group {
+    @include stack(11px, center);
+  }
+
+  &__text {
+    width: 100%;
+    max-width: 313px;
+    @include font($font-mincho, $fz-base, 500, 26px);
+    text-align: center;
+    color: $color-text;
+  }
+
+  &__line {
+    display: block;
+    line-height: 26px;
+
+    & + & {
+      margin-top: 5px;
+    }
+  }
+
+  &__accent {
+    color: $color-gold;
+
+    &--num {
+      font-size: $fz-md;
+    }
+  }
+
+  &__divider {
+    width: 254px;
+  }
+
+  &--white &__text {
+    color: $color-white;
+  }
+
+  // 青背景上の CTA では、ピンクボタン下の影が白（Figma 準拠）
+  &--white .cta-button--pink {
+    box-shadow: 0 2px 0 $color-white;
+  }
+}
+
+.cta-button {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 61px;
+  padding: 20px 19% 0 13.71%;
+  @include font($font-mincho, $fz-lg, 500, 21.6px);
+  letter-spacing: $ls-button;
+  text-align: center;
+  color: $color-white;
+  background-color: $color-main;
+  border-radius: $radius-pill;
+  box-shadow: 0 2px 0 $color-pink;
+  transition: opacity $duration-hover;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    width: 12.12px;
+    height: 9.81px;
+    background: url("../images/icons/cta-arrow.svg") no-repeat center / contain;
+    transform: translateY(-50%) rotate(90deg);
+  }
+
+  &--pink {
+    background-color: $color-pink;
+    box-shadow: 0 2px 0 $color-main;
+  }
+
+  &--white {
+    color: $color-main;
+    background-color: $color-white;
+
+    &::after {
+      background-image: url("../images/icons/cta-arrow-blue.svg");
+    }
+  }
+}
+
+// ==========================================================================
+// FV
+// ==========================================================================
+.fv__img {
+  width: 100%;
+}
+
+// ==========================================================================
+// CAMPAIGN
+// ==========================================================================
+.campaign {
+  @include stack(20px);
+  padding: $section-space $gutter;
+
+  &__box {
+    @include stack(13px, center);
+  }
+
+  &__badge {
+    width: 100%;
+    padding: 10px;
+    @include font($font-sans, $fz-lg, 500);
+    text-align: center;
+    color: $color-white;
+    background: $gradient-badge;
+    border: 2px solid $color-gold-dark;
+    border-radius: $radius-box;
+  }
+
+  &__offers {
+    @include stack(10px, center);
+    width: 100%;
+  }
+
+  &__img {
+    width: 100%;
+    max-width: $inner-width;
+  }
+
+  &__plus {
+    width: 35px;
+  }
+
+  &__arrow {
+    display: flex;
+    flex-direction: column;
+    margin-top: -2px;
+
+    img {
+      width: 29px;
+    }
+
+    img + img {
+      margin-top: -4.07px;
+    }
+  }
+}
+
+// ==========================================================================
+// TRIAL
+// ==========================================================================
+.traial {
+  @include panel($color-main);
+  @include stack(20px);
+  padding: $section-space $gutter;
+
+  &__body {
+    @include stack(20px, center);
+  }
+
+  &__lead {
+    width: 100%;
+    line-height: 26px;
+    color: $color-white;
+  }
+}
+
+.traial-card {
+  @include card-stack(3);
+  @include stack(43px);
+  width: 100%;
+  max-width: $inner-width;
+
+  &__item {
+    // 重なった際に背面カードの文字が透けないよう背景色を指定
+    background-color: $color-main;
+  }
+
+  &__figure {
+    @include stack(8px, center);
+  }
+
+  &__img {
+    width: 100%;
+    border-radius: $radius-card;
+
+    &--round-lg {
+      border-radius: 26px;
+    }
+  }
+
+  &__caption {
+    width: 100%;
+    line-height: 26px;
+    text-align: center;
+    color: $color-white;
+  }
+}
+
+// ==========================================================================
+// BEFORE-AFTER
+// ==========================================================================
+.before-after {
+  background-color: $color-main;
+
+  &__inner {
+    @include panel($color-sub);
+    @include stack(20px);
+    padding: $section-space $gutter;
+  }
+
+  &__body {
+    @include stack(20px, center);
+  }
+
+  &__text {
+    width: 100%;
+    line-height: 26px;
+  }
+
+  &__photo {
+    width: 250px;
+    max-width: 100%;
+    aspect-ratio: 1;
+    background-color: $color-placeholder;
+    border-radius: 12px;
+  }
+
+  &__notes {
+    width: 100%;
+  }
+
+  &__note {
+    font-size: $fz-xs;
+    line-height: 19px;
+  }
+}
+
+// ==========================================================================
+// WORRIES
+// ==========================================================================
+.worries {
+  @include panel($color-white);
+  @include stack(30px);
+  padding: $section-space $gutter;
+
+  &__cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 4.84%;
+    row-gap: 9px;
+    width: 100%;
+    max-width: 351px;
+    margin-inline: auto;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  // 3つの背景シェイプが重なり合うブロック
+  &__story {
+    margin-inline: -$gutter;
+  }
+
+  &__block {
+    position: relative;
+    padding-inline: $gutter;
+
+    // 影付き背景シェイプ（SVGは左右4px・下8pxの影領域を含む）
+    &::before {
+      content: "";
+      position: absolute;
+      right: -4px;
+      bottom: -8px;
+      left: -4px;
+      z-index: -1;
+      background: no-repeat center / 100% 100%;
+    }
+
+    &--choice {
+      z-index: 3;
+      padding-bottom: 68.5px;
+
+      &::before {
+        top: 141.49px;
+        background-image: url("../images/icons/worries-bg-choice.svg");
+      }
+    }
+
+    &--point {
+      z-index: 2;
+      margin-top: 22.41px;
+      padding-top: 129.2px;
+      padding-bottom: 66.57px;
+
+      &::before {
+        top: 0;
+        background-image: url("../images/icons/worries-bg-point.svg");
+      }
+    }
+
+    &--what {
+      z-index: 1;
+      @include stack(20px, center);
+      margin-top: -74.27px;
+      padding-top: 134.75px;
+      padding-bottom: 58.4px;
+
+      &::before {
+        top: 0;
+        background-image: url("../images/icons/worries-bg-what.svg");
+      }
+    }
+  }
+
+  &__woman {
+    width: 103.67px;
+    margin-left: calc(50% - 46.44px);
+  }
+
+  &__catch {
+    margin-top: 31px;
+    @include font($font-mincho, $fz-md, 600);
+    text-align: center;
+  }
+
+  &__line {
+    position: absolute;
+    left: calc(50% - 2.5px);
+    z-index: 1;
+
+    &--first {
+      top: calc(100% + 50.89px);
+    }
+
+    &--second {
+      top: calc(100% - 40.12px);
+    }
+  }
+
+  &__point {
+    @include stack(20px, center);
+    background-color: $color-white;
+    border-radius: 14px;
+  }
+
+  &__heading {
+    @include font($font-mincho, $fz-md, 700);
+    text-align: center;
+    color: $color-text;
+
+    &--white {
+      color: $color-white;
+    }
+  }
+
+  &__img {
+    width: 100%;
+    max-width: $inner-width;
+    border-radius: $radius-card;
+
+    &--sm-radius {
+      border-radius: 16px;
+    }
+  }
+
+  &__text {
+    width: 100%;
+    max-width: $inner-width;
+    line-height: 27px;
+
+    &--white {
+      max-width: none;
+      color: $color-white;
+    }
+
+    // reset で全要素の line-height が 1 のため子要素にも指定
+    > p {
+      line-height: 27px;
+    }
+  }
+}
+
+// 悩みカード（左右フェードイン）-------------------------------------------------
+.worries-card {
+  &--center {
+    grid-column: 1 / -1;
+    width: 67.8%;
+    margin-left: 17.38%;
+  }
+
+  &:nth-child(n + 4) {
+    margin-top: 18px;
+  }
+}
+
+// 内部スクロールのカードスタック（Figma: 350×350 の縦スクロール枠）------------------
+.worries-img {
+  --n: 3;
+  @include stack(49px);
+  width: 100%;
+  max-width: $inner-width;
+  aspect-ratio: 1;
+  margin: 14.88px auto 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  scroll-timeline: --worries-img block;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &__item {
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+    transform-origin: 50% 0;
+
+    @for $i from 1 through 3 {
+      &:nth-child(#{$i}) {
+        --i: #{$i - 1};
+      }
+    }
+
+    img {
+      width: 100%;
+    }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    &__item {
+      animation: card-stack-scale linear forwards;
+      animation-timeline: --worries-img;
+      animation-range: calc(var(--i) / (var(--n) - 1) * 100%) calc((var(--i) + 1) / (var(--n) - 1) * 100%);
+    }
+  }
+}
+
+// ==========================================================================
+// WHY LOX-Fit
+// ==========================================================================
+.choose {
+  @include panel($color-sub);
+  @include stack(30px);
+  margin-top: $section-space;
+  padding: $section-space $gutter;
+}
+
+.choose-card {
+  @include stack(20px);
+
+  &__item {
+    @include stack(20px, center);
+    padding: 20px;
+    background-color: $color-white;
+    border-radius: $radius-card;
+  }
+
+  &__img {
+    width: 100%;
+    border-radius: $radius-card;
+  }
+
+  &__text {
+    width: 100%;
+    line-height: 27px;
+  }
+}
+
+// ==========================================================================
+// FLOW
+// ==========================================================================
+.flow {
+  background-color: $color-sub;
+
+  &__inner {
+    @include panel($color-main);
+    @include stack(30px);
+    padding: $section-space $gutter;
+  }
+}
+
+.flow-card {
+  @include card-stack(6);
+  @include stack(20px);
+
+  &__item {
+    @include stack(20px, center);
+    padding-bottom: 20px;
+    background-color: $color-white;
+    border-radius: $radius-card;
+    overflow: hidden;
+  }
+
+  &__img {
+    width: 100%;
+  }
+
+  &__text {
+    width: 100%;
+    max-width: $inner-width;
+    line-height: 27px;
+
+    &--black {
+      color: $color-black;
+    }
+  }
+}
+
+// ==========================================================================
+// FAQ
+// ==========================================================================
+.faq {
+  background-color: $color-main;
+
+  &__inner {
+    @include panel($color-sub);
+    @include stack(30px);
+    padding: $section-space $gutter;
+  }
+
+  &__list {
+    @include stack(30px);
+    width: 100%;
+    max-width: $inner-width;
+    margin-inline: auto;
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    gap: 59px;
+    width: 100%;
+    padding: 15px 10px;
+    @include font($font-sans, $fz-base, 500, 24.7px);
+    text-align: left;
+    color: $color-text;
+    background-color: $color-white;
+    border-radius: $radius-box;
+  }
+
+  &__q-text {
+    flex: 1;
+    line-height: 24.7px;
+  }
+
+  // ＋ / − アイコン
+  &__icon {
+    position: relative;
+    flex-shrink: 0;
+    width: 17.64px;
+    height: 17.64px;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      background-color: $color-main;
+    }
+
+    &::before {
+      top: 8.28px;
+      left: 0;
+      width: 100%;
+      height: 1.09px;
+    }
+
+    &::after {
+      top: 0;
+      left: 7.73px;
+      width: 1.09px;
+      height: 100%;
+      transition: transform $duration-accordion;
+    }
+  }
+
+  &__button[aria-expanded="true"] &__icon::after {
+    transform: scaleY(0);
+  }
+
+  &__answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition: grid-template-rows $duration-accordion ease, visibility $duration-accordion;
+
+    &.is-open {
+      grid-template-rows: 1fr;
+      visibility: visible;
+    }
+  }
+
+  &__answer-body {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  &__answer-text {
+    padding: 15px 10px;
+    @include font($font-sans, $fz-sm, 400, 24.7px);
+    background-color: $color-white;
+    border-radius: $radius-box;
+  }
+}
+
+// ==========================================================================
+// ADDITIONAL SERVICE
+// ==========================================================================
+.add {
+  background-color: $color-sub;
+
+  &__inner {
+    @include panel($color-white);
+    @include stack(30px);
+    padding: $section-space $gutter;
+  }
+
+  &__body {
+    @include stack(20px, center);
+  }
+
+  // Figma: 横スクロール枠（スライダー）
+  &__slider {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: $inner-width;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+  }
+
+  &__img {
+    width: 100%;
+    border-radius: $radius-card;
+  }
+
+  &__text {
+    width: 100%;
+    line-height: 23px;
+  }
+}
+
+// ==========================================================================
+// YOUR FIRST STEP
+// ==========================================================================
+.first-step {
+  @include panel($color-main);
+  @include stack(30px);
+  padding: $section-space $gutter;
+
+  &__visual {
+    @include stack(10px, center);
+  }
+
+  &__clock {
+    width: 100%;
+    max-width: 344px;
+  }
+
+  &__text {
+    @include font($font-sans, $fz-md, 600);
+    text-align: center;
+    color: $color-white;
+  }
+
+  &__offers {
+    @include stack(20px, center);
+  }
+
+  &__img {
+    width: 100%;
+  }
+}
+
+// ==========================================================================
+// SHOP INFO
+// ==========================================================================
+.shop {
+  background-color: $color-main;
+
+  &__inner {
+    @include panel($color-sub);
+    @include stack(30px);
+    padding: $section-space $gutter;
+  }
+
+  &__card {
+    @include stack(20px, center);
+    padding: 20px;
+    background-color: $color-white;
+    border-radius: $radius-card;
+  }
+
+  &__name {
+    @include font($font-sans, $fz-md, 500);
+    text-align: center;
+    color: $color-main;
+  }
+
+  &__map {
+    width: 100%;
+    border-radius: $radius-card;
+  }
+
+  &__info {
+    @include stack(20px);
+    width: 100%;
+  }
+
+  &__row {
+    @include stack(10px);
+    text-align: center;
+  }
+
+  &__term,
+  &__desc {
+    line-height: 22px;
+  }
+
+  &__term {
+    font-weight: 500;
+  }
+}
+
+// ==========================================================================
+// Footer
+// ==========================================================================
+.footer {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+
+  &__logo {
+    width: 160px;
+  }
+}
+
+// ==========================================================================
+// Animations
+// ==========================================================================
+// Scroll-driven Card Stack（.traial-card / .flow-card / .worries-img 共通）
+@keyframes card-stack-scale {
+  to {
+    transform: scale(calc(1 - var(--stack-step, #{$stack-step}) * (var(--n) - 1 - var(--i))));
+  }
+}
+
+// .worries-card：左右からのフェードイン（JS有効時のみ初期状態を非表示に）
+.js .worries-card {
+  opacity: 0;
+  transition: opacity $duration-fade ease-out, transform $duration-fade ease-out;
+
+  &--left {
+    transform: translateX(-24px);
+  }
+
+  &--right {
+    transform: translateX(24px);
+  }
+
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// .Line-animation：グラデーションが流れ続けるライン
+.Line-animation {
+  display: block;
+  width: 5px;
+  height: 78.34px;
+  background: linear-gradient(180deg, $color-gold 0%, $color-gold-dark 25%, $color-gold 50%, $color-gold-dark 75%, $color-gold 100%);
+  background-size: 100% 200%;
+  border-radius: 2.5px;
+  animation: line-gradient 2.4s linear infinite;
+}
+
+@keyframes line-gradient {
+  from {
+    background-position: 50% 100%;
+  }
+
+  to {
+    background-position: 50% 0%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .worries-card {
+    transition: none;
+  }
+}
+
+// ==========================================================================
+// Hover（ホバー可能なデバイスのみ）
+// ==========================================================================
+@media (hover: hover) {
+  .cta-button:hover,
+  .side-nav__link:hover,
+  .header__logo:hover {
+    opacity: 0.8;
+  }
+}
+
+// ==========================================================================
+// Responsive
+// ==========================================================================
+// Tablet / SP：左右固定カラムを非表示、右カラムはハンバーガーメニューに
+@include mq($bp-tab) {
+  .side-logo {
+    display: none;
+  }
+
+  .side-nav {
+    left: 0;
+    z-index: $z-drawer;
+    width: auto;
+    background-color: $color-sub;
+    visibility: hidden;
+
+    &.is-open {
+      visibility: visible;
+    }
+
+    &__close {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      display: block;
+      width: 44px;
+      height: 44px;
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 22px;
+        height: 2px;
+        background-color: $color-text;
+      }
+
+      &::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+
+      &::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
+    }
+  }
+
+  .header__menu {
+    display: flex;
+  }
+}
+
+// SP：画面幅が 430px 以下
+@include mq($bp-sp) {
+  .campaign__badge {
+    font-size: min(#{$fz-lg}, 5.58vw);
+  }
+}

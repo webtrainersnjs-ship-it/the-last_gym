@@ -1,0 +1,62 @@
+// ==========================================================================
+// Variables（Figma のカラー・フォント・余白を集約）
+// ==========================================================================
+
+// Colors ---------------------------------------------------------------
+$color-main: #2b5caa; // main-color
+$color-sub: #e6f2ff; // sub
+$color-text: #4c4948; // black-kc
+$color-label-light: #508ade; // CAMPAIGN ラベル
+$color-gold: #e8c287;
+$color-gold-dark: #ad9042;
+$color-pink: #e63a69;
+$color-white: #fff;
+$color-black: #000;
+$color-placeholder: #d9d9d9;
+$gradient-badge: linear-gradient(180deg, #538de1 0%, #205599 100%);
+
+// Fonts ----------------------------------------------------------------
+$font-sans: "Noto Sans JP", sans-serif;
+$font-mincho: "Shippori Mincho", serif;
+$font-en: "Scheherazade New", serif;
+
+$fz-xs: 12px;
+$fz-sm: 14px;
+$fz-base: 16px;
+$fz-label: 13.2px;
+$fz-num: 17.6px;
+$fz-md: 20px;
+$fz-lg: 24px;
+
+$ls-label: 5.292px;
+$ls-num: 1.764px;
+$ls-button: 0.48px;
+
+// Layout ---------------------------------------------------------------
+$lp-width: 430px; // 中央カラム最大幅
+$inner-width: 350px; // カード・ボタン等の基準幅
+$gutter: 20px; // 左右余白
+$section-space: 50px; // セクション上下余白
+
+$radius-section: 40px;
+$radius-card: 20px;
+$radius-box: 10px;
+$radius-pill: 80px;
+
+// Breakpoints（max-width 方式）--------------------------------------------
+$bp-tab: 1099px; // これ以下で左右固定カラムを非表示
+$bp-sp: 430px; // これ以下で中央カラムが画面幅いっぱい
+
+// z-index --------------------------------------------------------------
+$z-side: 10;
+$z-drawer: 100;
+
+// Card stack -----------------------------------------------------------
+$stack-top: 40px; // カードが張り付く位置
+$stack-offset: 12px; // 重なったカードのずらし幅
+$stack-step: 0.05; // 背面カード1枚ごとの縮小率
+
+// Transition -----------------------------------------------------------
+$duration-hover: 0.3s;
+$duration-accordion: 0.4s;
+$duration-fade: 1.2s;

@@ -1,0 +1,64 @@
+// ==========================================================================
+// Mixins
+// ==========================================================================
+@use "variables" as *;
+
+// メディアクエリ（max-width 方式で統一）
+@mixin mq($bp) {
+  @media (max-width: $bp) {
+    @content;
+  }
+}
+
+// フォント指定
+@mixin font($family, $size, $weight: 400, $line-height: normal) {
+  font-family: $family;
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $line-height;
+}
+
+// 上端のみ角丸のセクションパネル
+@mixin panel($bg) {
+  background-color: $bg;
+  border-radius: $radius-section $radius-section 0 0;
+}
+
+// 子要素を縦並びで等間隔に配置
+@mixin stack($gap, $align: stretch) {
+  display: flex;
+  flex-direction: column;
+  align-items: $align;
+  gap: $gap;
+}
+
+// Scroll-driven Card Stack（ページスクロール連動）
+// 子の li を sticky で積み重ね、ビュータイムラインで背面カードを縮小する
+@mixin card-stack($count) {
+  --stack-top: #{$stack-top};
+  --stack-offset: #{$stack-offset};
+  --stack-step: #{$stack-step};
+  --n: #{$count};
+  view-timeline: --card-stack block;
+  view-timeline-inset: var(--stack-top) 0;
+
+  > li {
+    position: sticky;
+    top: calc(var(--stack-top) + var(--i) * var(--stack-offset));
+    transform-origin: 50% 0;
+  }
+
+  @for $i from 1 through $count {
+    > li:nth-child(#{$i}) {
+      --i: #{$i - 1};
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    > li {
+      animation: card-stack-scale linear forwards;
+      animation-timeline: --card-stack;
+      animation-range: exit-crossing calc(var(--i) / var(--n) * 100%) exit-crossing calc((var(--i) + 1) / var(--n) * 100%);
+    }
+  }
+}

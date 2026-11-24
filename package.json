@@ -1,0 +1,13 @@
+{
+  "name": "kc-peaks-lp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "KC-PEAKS LP (LOX-Fit 虎ノ門店)",
+  "scripts": {
+    "build:css": "sass scss/style.scss css/style.css --no-source-map --style=expanded",
+    "watch:css": "sass --watch scss/style.scss:css/style.css --no-source-map --style=expanded"
+  },
+  "devDependencies": {
+    "sass": "^1.80.0"
+  }
+}
