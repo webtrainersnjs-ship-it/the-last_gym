@@ -733,22 +733,59 @@ button {
     margin-inline: auto;
   }
 
+  // ---- .faq__item 内（Q / A 表記付きのカード）------------------------------
+  // 参考デザインの形状を、LP のメインカラーで表現
+  $faq-color: $color-main;
+  $faq-radius: 8px;
+  $faq-label-size: 38px;
+
   &__button {
     display: flex;
     align-items: center;
-    gap: 59px;
+    gap: 18px;
     width: 100%;
-    padding: 20px;
-    @include font($font-sans, $fz-base, 500, 24.7px);
+    padding: 20px 20px 20px 14px;
+    @include font($font-sans, $fz-base, 500, 27px);
+    letter-spacing: 0.04em;
     text-align: left;
-    color: $color-text;
-    background-color: $color-white;
-    border-radius: $radius-box;
+    color: $color-white;
+    background-color: $faq-color;
+    border-radius: $faq-radius;
+    // 閉じるときは回答が畳み終わってから下側の角を丸める
+    transition: border-radius 0s $duration-accordion;
+
+    &[aria-expanded="true"] {
+      border-radius: $faq-radius $faq-radius 0 0;
+      transition-delay: 0s;
+    }
   }
 
   &__q-text {
     flex: 1;
-    line-height: 24.7px;
+    line-height: 27px;
+  }
+
+  // Q / A のラベル
+  &__label {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: $faq-label-size;
+    height: $faq-label-size;
+    @include font($font-sans, $fz-md, 500, 1);
+    letter-spacing: 0;
+    border-radius: 4px;
+
+    &--q {
+      color: $faq-color;
+      background-color: $color-white;
+    }
+
+    &--a {
+      color: $color-white;
+      background-color: $faq-color;
+    }
   }
 
   // ＋ / − アイコン
@@ -762,7 +799,7 @@ button {
     &::after {
       content: "";
       position: absolute;
-      background-color: $color-main;
+      background-color: $color-white;
     }
 
     &::before {
@@ -803,10 +840,17 @@ button {
   }
 
   &__answer-text {
-    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 20px 20px 20px 13px;
     @include font($font-sans, $fz-sm, 400, 24.7px);
+    letter-spacing: 0.04em;
+    color: $faq-color;
     background-color: $color-white;
-    border-radius: $radius-box;
+    border: 1px solid $faq-color;
+    border-top: 0;
+    border-radius: 0 0 $faq-radius $faq-radius;
   }
 }
 

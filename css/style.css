@@ -830,21 +830,49 @@ button {
 .faq__button {
   display: flex;
   align-items: center;
-  gap: 59px;
+  gap: 18px;
   width: 100%;
-  padding: 20px;
+  padding: 20px 20px 20px 14px;
   font-family: "Noto Sans JP", sans-serif;
   font-size: 1.6rem;
   font-weight: 500;
-  line-height: 24.7px;
+  line-height: 27px;
+  letter-spacing: 0.04em;
   text-align: left;
-  color: #4c4948;
-  background-color: #fff;
-  border-radius: 10px;
+  color: #fff;
+  background-color: #2b5caa;
+  border-radius: 8px;
+  transition: border-radius 0s 0.4s;
+}
+.faq__button[aria-expanded=true] {
+  border-radius: 8px 8px 0 0;
+  transition-delay: 0s;
 }
 .faq__q-text {
   flex: 1;
-  line-height: 24.7px;
+  line-height: 27px;
+}
+.faq__label {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  border-radius: 4px;
+}
+.faq__label--q {
+  color: #2b5caa;
+  background-color: #fff;
+}
+.faq__label--a {
+  color: #fff;
+  background-color: #2b5caa;
 }
 .faq__icon {
   position: relative;
@@ -855,7 +883,7 @@ button {
 .faq__icon::before, .faq__icon::after {
   content: "";
   position: absolute;
-  background-color: #2b5caa;
+  background-color: #fff;
 }
 .faq__icon::before {
   top: 8.28px;
@@ -888,13 +916,20 @@ button {
   overflow: hidden;
 }
 .faq__answer-text {
-  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 20px 20px 20px 13px;
   font-family: "Noto Sans JP", sans-serif;
   font-size: 1.4rem;
   font-weight: 400;
   line-height: 24.7px;
+  letter-spacing: 0.04em;
+  color: #2b5caa;
   background-color: #fff;
-  border-radius: 10px;
+  border: 1px solid #2b5caa;
+  border-top: 0;
+  border-radius: 0 0 8px 8px;
 }
 
 .add {
