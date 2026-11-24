@@ -29,7 +29,6 @@ body {
 }
 
 a:not([class]) {
-  -webkit-text-decoration-skip: ink;
   text-decoration-skip-ink: auto;
 }
 
@@ -42,7 +41,6 @@ img, picture {
 input, button, textarea, select {
   font: inherit;
   -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
 }
 
@@ -55,10 +53,14 @@ input, button, textarea, select {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
   }
-} 
+}
+html {
+  font-size: 62.5%;
+}
+
 body {
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 400;
   line-height: normal;
   color: #4c4948;
@@ -106,6 +108,7 @@ button {
   min-height: 100vh;
   margin-inline: auto;
   background-color: #fff;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
   overflow-x: clip;
 }
 
@@ -136,7 +139,7 @@ button {
 }
 .side-nav__link {
   font-family: "Scheherazade New", serif;
-  font-size: 17.6px;
+  font-size: 1.76rem;
   font-weight: 400;
   line-height: 1.6;
   letter-spacing: 1.764px;
@@ -153,7 +156,7 @@ button {
 }
 
 .header {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: space-between;
   padding: 15px 20px;
@@ -188,25 +191,25 @@ button {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 13.2px;
+  font-size: 1.32rem;
   letter-spacing: 5.292px;
   color: #2b5caa;
 }
 .section-title__dash {
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 13.2px;
+  font-size: 1.32rem;
   font-weight: 400;
   line-height: 15.44px;
 }
 .section-title__en {
   font-family: "Scheherazade New", serif;
-  font-size: 13.2px;
+  font-size: 1.32rem;
   font-weight: 400;
   line-height: 17.2px;
 }
 .section-title__heading {
   font-family: "Shippori Mincho", serif;
-  font-size: 24px;
+  font-size: 2.4rem;
   font-weight: 700;
   line-height: normal;
   color: #4c4948;
@@ -229,7 +232,7 @@ button {
 }
 .card-heading__num {
   font-family: "Scheherazade New", serif;
-  font-size: 17.6px;
+  font-size: 1.76rem;
   font-weight: 400;
   line-height: 36px;
   letter-spacing: 1.764px;
@@ -237,7 +240,7 @@ button {
 }
 .card-heading__title {
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 600;
   line-height: normal;
   color: #4c4948;
@@ -263,7 +266,7 @@ button {
   width: 100%;
   max-width: 313px;
   font-family: "Shippori Mincho", serif;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 500;
   line-height: 26px;
   text-align: center;
@@ -280,7 +283,7 @@ button {
   color: #e8c287;
 }
 .cta__accent--num {
-  font-size: 20px;
+  font-size: 2rem;
 }
 .cta__divider {
   width: 254px;
@@ -299,7 +302,7 @@ button {
   height: 61px;
   padding: 20px 19% 0 13.71%;
   font-family: "Shippori Mincho", serif;
-  font-size: 24px;
+  font-size: 2.4rem;
   font-weight: 500;
   line-height: 21.6px;
   letter-spacing: 0.48px;
@@ -353,7 +356,7 @@ button {
   width: 100%;
   padding: 10px;
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 24px;
+  font-size: 2.4rem;
   font-weight: 500;
   line-height: normal;
   text-align: center;
@@ -502,7 +505,7 @@ button {
   width: 100%;
 }
 .before-after__note {
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 19px;
 }
 
@@ -581,7 +584,7 @@ button {
 .worries__catch {
   margin-top: 31px;
   font-family: "Shippori Mincho", serif;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 600;
   line-height: normal;
   text-align: center;
@@ -607,7 +610,7 @@ button {
 }
 .worries__heading {
   font-family: "Shippori Mincho", serif;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 700;
   line-height: normal;
   text-align: center;
@@ -827,7 +830,7 @@ button {
   width: 100%;
   padding: 15px 10px;
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-weight: 500;
   line-height: 24.7px;
   text-align: left;
@@ -883,7 +886,7 @@ button {
 .faq__answer-text {
   padding: 15px 10px;
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 14px;
+  font-size: 1.4rem;
   font-weight: 400;
   line-height: 24.7px;
   background-color: #fff;
@@ -990,7 +993,7 @@ button {
 }
 .first-step__text {
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 600;
   line-height: normal;
   text-align: center;
@@ -1029,7 +1032,7 @@ button {
 }
 .shop__name {
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 500;
   line-height: normal;
   text-align: center;
@@ -1186,12 +1189,16 @@ button {
   .side-nav__close::after {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
+  .header,
   .header__menu {
     display: flex;
   }
 }
 @media (max-width: 430px) {
+  .lp {
+    box-shadow: none;
+  }
   .campaign__badge {
-    font-size: min(24px, 5.58vw);
+    font-size: min(2.4rem, 5.58vw);
   }
 }

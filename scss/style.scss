@@ -5,6 +5,11 @@
 // ==========================================================================
 // Base
 // ==========================================================================
+// 1rem = 10px
+html {
+  font-size: 62.5%;
+}
+
 body {
   @include font($font-sans, $fz-base);
   color: $color-text;
@@ -58,6 +63,7 @@ button {
   min-height: 100vh;
   margin-inline: auto;
   background-color: $color-white;
+  box-shadow: $shadow-lp;
   overflow-x: clip;
 }
 
@@ -103,7 +109,8 @@ button {
 // Header
 // ==========================================================================
 .header {
-  display: flex;
+  // PC では左右カラムにロゴ・ナビがあるため非表示（タブレット・SPで表示）
+  display: none;
   align-items: center;
   justify-content: space-between;
   padding: 15px $gutter;
@@ -1142,6 +1149,7 @@ button {
     }
   }
 
+  .header,
   .header__menu {
     display: flex;
   }
@@ -1149,6 +1157,11 @@ button {
 
 // SP：画面幅が 430px 以下
 @include mq($bp-sp) {
+  // 画面幅いっぱいの表示では左右の境界がないため影なし
+  .lp {
+    box-shadow: none;
+  }
+
   .campaign__badge {
     font-size: min(#{$fz-lg}, 5.58vw);
   }

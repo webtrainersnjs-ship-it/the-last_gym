@@ -189,7 +189,36 @@
     });
   };
 
+  // ------------------------------------------------------------------------
+  // 右カラム（メニュー）のページ内リンクをスムーススクロール
+  // スクロールしているのはドキュメント全体（html）。左右カラムは position: fixed のため
+  // 中央だけが動いて見える。.lp 自体はスクロールコンテナではないので window をスクロールする。
+  // ※ reset の scroll-behavior: smooth は html:focus-within のときだけ有効で、
+  //   クリックでリンクにフォーカスが移らない場合は瞬時のジャンプになるため JS で制御する
+  // ------------------------------------------------------------------------
+  const initSmoothScroll = () => {
+    const nav = document.getElementById('side-nav');
+    if (!nav) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    // initMenu の後に登録し、タブレット・SPのドロワーを閉じてからスクロールさせる
+    nav.addEventListener('click', (event) => {
+      const link = event.target.closest('a[href^="#"]');
+      const id = link?.getAttribute('href').slice(1);
+      const target = id ? document.getElementById(id) : null;
+      if (!target) return;
+
+      event.preventDefault();
+      window.scrollTo({
+        top: target.getBoundingClientRect().top + window.scrollY,
+        behavior: reduceMotion.matches ? 'auto' : 'smooth',
+      });
+      history.pushState(null, '', `#${id}`);
+    });
+  };
+
   initMenu();
+  initSmoothScroll();
   initFaq();
   initFadeInCards();
   initCardStackFallback();

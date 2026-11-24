@@ -16,17 +16,18 @@ $color-placeholder: #d9d9d9;
 $gradient-badge: linear-gradient(180deg, #538de1 0%, #205599 100%);
 
 // Fonts ----------------------------------------------------------------
+// font-size は rem（html の font-size: 62.5% により 1rem = 10px）
 $font-sans: "Noto Sans JP", sans-serif;
 $font-mincho: "Shippori Mincho", serif;
 $font-en: "Scheherazade New", serif;
 
-$fz-xs: 12px;
-$fz-sm: 14px;
-$fz-base: 16px;
-$fz-label: 13.2px;
-$fz-num: 17.6px;
-$fz-md: 20px;
-$fz-lg: 24px;
+$fz-xs: 1.2rem; // 12px
+$fz-sm: 1.4rem; // 14px
+$fz-base: 1.6rem; // 16px
+$fz-label: 1.32rem; // 13.2px
+$fz-num: 1.76rem; // 17.6px
+$fz-md: 2rem; // 20px
+$fz-lg: 2.4rem; // 24px
 
 $ls-label: 5.292px;
 $ls-num: 1.764px;
@@ -55,6 +56,9 @@ $z-drawer: 100;
 $stack-top: 40px; // カードが張り付く位置
 $stack-offset: 12px; // 重なったカードのずらし幅
 $stack-step: 0.05; // 背面カード1枚ごとの縮小率
+
+// Shadow ---------------------------------------------------------------
+$shadow-lp: 0 0 24px rgba($color-black, 0.1); // 中央カラム左右の影
 
 // Transition -----------------------------------------------------------
 $duration-hover: 0.3s;
