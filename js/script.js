@@ -119,24 +119,21 @@
       scaleItems([...list.children], readStep(list), (i, n) => clamp((progress - i / n) * n));
     };
 
-    // 350×350 の枠内スタック（.worries-img）：.worries__pin の固定区間の進行に連動（CSS と同じ区間設定）
+    // 350×350 の枠内スタック（.worries-img）：ページスクロール連動（view-timeline の contain 相当）
     const updateBoxStack = (box) => {
-      const pin = box.closest('.worries__pin');
-      if (!pin) return;
       const style = getComputedStyle(box);
       const gap = parseFloat(style.getPropertyValue('--stack-gap')) || 0;
-      const hold = parseFloat(style.getPropertyValue('--stack-hold')) || 0;
-      const distance = parseFloat(getComputedStyle(pin, '::before').height) || 0;
-      const pinBottom = pin.getBoundingClientRect().bottom;
-      const progress = distance > 0 ? clamp((window.innerHeight + distance - pinBottom) / distance) : 1;
+      const range = (parseFloat(style.getPropertyValue('--stack-range')) || 100) / 100;
+      const rect = box.getBoundingClientRect();
+      const travel = window.innerHeight - rect.height;
+      const progress = travel > 0 ? clamp((window.innerHeight - rect.bottom) / travel / range) : 1;
       const items = [...box.children];
-      const seg = 1 / (items.length - 1);
-      const local = (start, end) => clamp((progress - start) / (end - start));
+      const n = items.length;
       items.forEach((item, i) => {
-        const arrived = i === 0 ? 1 : local((i - 1) * seg + hold, i * seg - hold);
-        item.style.translate = `0 ${(1 - arrived) * (box.clientHeight + gap)}px`;
+        const arrived = i === 0 ? 1 : clamp(progress / (i / (n - 1)));
+        item.style.translate = `0 ${(1 - arrived) * i * (rect.height + gap)}px`;
       });
-      scaleItems(items, readStep(box), (i) => local(i * seg + hold, (i + 1) * seg - hold));
+      scaleItems(items, readStep(box), (i) => clamp((progress - i / (n - 1)) * (n - 1)));
     };
 
     let ticking = false;
@@ -192,35 +189,7 @@
     });
   };
 
-  // ------------------------------------------------------------------------
-  // 右カラム（メニュー）のページ内リンクをスムーススクロール
-  // 中央カラムはページ全体（window）のスクロールで動くため、window をスクロールする
-  // ※ reset の scroll-behavior は html:focus-within 時のみ有効で、リンクにフォーカスが
-  //   移らないブラウザでは瞬時のジャンプになるため JS で制御する
-  // ------------------------------------------------------------------------
-  const initSmoothScroll = () => {
-    const nav = document.getElementById('side-nav');
-    if (!nav) return;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-    // initMenu の後に登録し、ドロワーを閉じてからスクロールさせる
-    nav.addEventListener('click', (event) => {
-      const link = event.target.closest('a[href^="#"]');
-      const id = link?.getAttribute('href').slice(1);
-      const target = id ? document.getElementById(id) : null;
-      if (!target) return;
-
-      event.preventDefault();
-      window.scrollTo({
-        top: target.getBoundingClientRect().top + window.scrollY,
-        behavior: reduceMotion.matches ? 'auto' : 'smooth',
-      });
-      history.pushState(null, '', `#${id}`);
-    });
-  };
-
   initMenu();
-  initSmoothScroll();
   initFaq();
   initFadeInCards();
   initCardStackFallback();
