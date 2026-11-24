@@ -487,8 +487,7 @@ button {
 
     &--point {
       z-index: 2;
-      margin-top: 22.41px;
-      padding-top: 129.2px;
+      margin-top: 66px;
       padding-bottom: 66.57px;
 
       &::before {
@@ -528,7 +527,7 @@ button {
     z-index: 1;
 
     &--first {
-      top: calc(100% + 50.89px);
+      top: calc(100% + -39.11px);
     }
 
     &--second {

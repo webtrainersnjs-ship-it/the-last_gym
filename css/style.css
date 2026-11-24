@@ -518,7 +518,8 @@ button {
 .worries__cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 4.84%;
+  -moz-column-gap: 4.84%;
+       column-gap: 4.84%;
   row-gap: 9px;
   width: 100%;
   max-width: 351px;
@@ -553,8 +554,7 @@ button {
 }
 .worries__block--point {
   z-index: 2;
-  margin-top: 22.41px;
-  padding-top: 129.2px;
+  margin-top: 66px;
   padding-bottom: 66.57px;
 }
 .worries__block--point::before {
@@ -593,7 +593,7 @@ button {
   z-index: 1;
 }
 .worries__line--first {
-  top: calc(100% + 50.89px);
+  top: calc(100% - 39.11px);
 }
 .worries__line--second {
   top: calc(100% - 40.12px);
@@ -1133,4 +1133,4 @@ button {
   .campaign__badge {
     font-size: min(24px, 5.58vw);
   }
-}
+}/*# sourceMappingURL=style.css.map */
