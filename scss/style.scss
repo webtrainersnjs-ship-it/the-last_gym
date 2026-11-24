@@ -58,6 +58,7 @@ button {
   min-height: 100vh;
   margin-inline: auto;
   background-color: $color-white;
+  box-shadow: $shadow-lp;
   overflow-x: clip;
 }
 
@@ -103,7 +104,8 @@ button {
 // Header
 // ==========================================================================
 .header {
-  display: flex;
+  // PC では左右カラムにロゴ・ナビがあるため非表示（タブレット・SPで表示）
+  display: none;
   align-items: center;
   justify-content: space-between;
   padding: 15px $gutter;
@@ -460,6 +462,20 @@ button {
     margin-inline: -$gutter;
   }
 
+  // .worries-img を読むためのスクロール距離を確保する領域
+  // ::before の余白分だけスクロールする間、--choice ブロックが画面下端に固定され、
+  // その進行（view-timeline）に合わせて .worries-img のカードが重なる
+  &__pin {
+    --pin-distance: 140vh;
+    view-timeline: --worries-img block;
+
+    &::before {
+      content: "";
+      display: block;
+      height: var(--pin-distance);
+    }
+  }
+
   &__block {
     position: relative;
     padding-inline: $gutter;
@@ -476,6 +492,9 @@ button {
     }
 
     &--choice {
+      // .worries__pin 内で画面下端に固定し、その間に .worries-img のカードを重ねる
+      position: sticky;
+      bottom: 0;
       z-index: 3;
       padding-bottom: 68.5px;
 
@@ -592,21 +611,27 @@ button {
 }
 
 // 350×350 の枠内で重なるカードスタック（Figma: 350×350 の縦スクロール枠）-------------
-// 枠自体はスクロールさせず、ページ全体のスクロール（view-timeline）に連動して
-// 下で待機している画像が順にせり上がり、背面の画像が縮小する
+// 枠自体はスクロールさせず、ページ全体のスクロール（.worries__pin の view-timeline）に連動して
+// 下から画像が順にせり上がり、背面の画像が縮小する
+// 固定区間（--pin-distance）を (--n - 1) 区間に分け、各区間の前後 --stack-hold は静止させて読める時間を確保
 .worries-img {
   --n: 3;
   --stack-gap: 49px; // 画像同士の間隔（Figma の縦並び間隔）
-  --stack-range: 75%; // 枠が画面内に収まっている区間のうち、アニメーションに使う割合
+  --stack-hold: 0.1; // 各区間の前後で画像を静止させる割合
   position: relative;
   width: 100%;
   max-width: $inner-width;
   aspect-ratio: 1;
   margin: 14.88px auto 0;
   overflow: clip;
-  view-timeline: --worries-img block;
 
   &__item {
+    // 区間の長さ（n=3 のとき 0.5）と、この画像がせり上がる区間・縮小する区間
+    --seg: calc(1 / (var(--n) - 1));
+    --slide-start: calc((var(--i) - 1) * var(--seg) + var(--stack-hold));
+    --slide-end: calc(var(--i) * var(--seg) - var(--stack-hold));
+    --shrink-start: calc(var(--i) * var(--seg) + var(--stack-hold));
+    --shrink-end: calc((var(--i) + 1) * var(--seg) - var(--stack-hold));
     position: absolute;
     top: 0;
     left: 0;
@@ -624,13 +649,14 @@ button {
     }
   }
 
+  // entry-crossing 100% = 固定区間の終わり（.worries__pin の下端が画面下端に到達）
   @supports (animation-timeline: view()) {
     &__item {
-      animation: worries-img-slide linear both, worries-img-scale linear forwards;
+      animation: worries-img-slide linear both, worries-img-scale linear both;
       animation-timeline: --worries-img, --worries-img;
       animation-range:
-        contain 0% contain calc(var(--i) / (var(--n) - 1) * var(--stack-range)),
-        contain calc(var(--i) / (var(--n) - 1) * var(--stack-range)) contain calc((var(--i) + 1) / (var(--n) - 1) * var(--stack-range));
+        entry-crossing calc(100% - var(--pin-distance) * (1 - var(--slide-start))) entry-crossing calc(100% - var(--pin-distance) * (1 - var(--slide-end))),
+        entry-crossing calc(100% - var(--pin-distance) * (1 - var(--shrink-start))) entry-crossing calc(100% - var(--pin-distance) * (1 - var(--shrink-end)));
     }
   }
 }
@@ -998,10 +1024,10 @@ button {
   }
 }
 
-// .worries-img：待機位置（下）から枠内へせり上がる／背面になった画像を縮小
+// .worries-img：待機位置（枠のすぐ下）から枠内へせり上がる／背面になった画像を縮小
 @keyframes worries-img-slide {
   from {
-    translate: 0 calc(var(--i) * (100% + var(--stack-gap)));
+    translate: 0 calc(min(var(--i), 1) * (100% + var(--stack-gap)));
   }
 
   to {
@@ -1142,6 +1168,7 @@ button {
     }
   }
 
+  .header,
   .header__menu {
     display: flex;
   }

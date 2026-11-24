@@ -106,6 +106,7 @@ button {
   min-height: 100vh;
   margin-inline: auto;
   background-color: #fff;
+  box-shadow: 0 0 24px rgba(43, 92, 170, 0.12);
   overflow-x: clip;
 }
 
@@ -153,7 +154,7 @@ button {
 }
 
 .header {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: space-between;
   padding: 15px 20px;
@@ -530,6 +531,15 @@ button {
 .worries__story {
   margin-inline: -20px;
 }
+.worries__pin {
+  --pin-distance: 140vh;
+  view-timeline: --worries-img block;
+}
+.worries__pin::before {
+  content: "";
+  display: block;
+  height: var(--pin-distance);
+}
 .worries__block {
   position: relative;
   padding-inline: 20px;
@@ -544,6 +554,8 @@ button {
   background: no-repeat center/100% 100%;
 }
 .worries__block--choice {
+  position: sticky;
+  bottom: 0;
   z-index: 3;
   padding-bottom: 68.5px;
 }
@@ -649,16 +661,20 @@ button {
 .worries-img {
   --n: 3;
   --stack-gap: 49px;
-  --stack-range: 75%;
+  --stack-hold: 0.1;
   position: relative;
   width: 100%;
   max-width: 350px;
   aspect-ratio: 1;
   margin: 14.88px auto 0;
   overflow: clip;
-  view-timeline: --worries-img block;
 }
 .worries-img__item {
+  --seg: calc(1 / (var(--n) - 1));
+  --slide-start: calc((var(--i) - 1) * var(--seg) + var(--stack-hold));
+  --slide-end: calc(var(--i) * var(--seg) - var(--stack-hold));
+  --shrink-start: calc(var(--i) * var(--seg) + var(--stack-hold));
+  --shrink-end: calc((var(--i) + 1) * var(--seg) - var(--stack-hold));
   position: absolute;
   top: 0;
   left: 0;
@@ -679,9 +695,9 @@ button {
 }
 @supports (animation-timeline: view()) {
   .worries-img__item {
-    animation: worries-img-slide linear both, worries-img-scale linear forwards;
+    animation: worries-img-slide linear both, worries-img-scale linear both;
     animation-timeline: --worries-img, --worries-img;
-    animation-range: contain 0% contain calc(var(--i) / (var(--n) - 1) * var(--stack-range)), contain calc(var(--i) / (var(--n) - 1) * var(--stack-range)) contain calc((var(--i) + 1) / (var(--n) - 1) * var(--stack-range));
+    animation-range: entry-crossing calc(100% - var(--pin-distance) * (1 - var(--slide-start))) entry-crossing calc(100% - var(--pin-distance) * (1 - var(--slide-end))), entry-crossing calc(100% - var(--pin-distance) * (1 - var(--shrink-start))) entry-crossing calc(100% - var(--pin-distance) * (1 - var(--shrink-end)));
   }
 }
 
@@ -1076,7 +1092,7 @@ button {
 }
 @keyframes worries-img-slide {
   from {
-    translate: 0 calc(var(--i) * (100% + var(--stack-gap)));
+    translate: 0 calc(min(var(--i), 1) * (100% + var(--stack-gap)));
   }
   to {
     translate: 0 0;
@@ -1186,6 +1202,7 @@ button {
   .side-nav__close::after {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
+  .header,
   .header__menu {
     display: flex;
   }
