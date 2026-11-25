@@ -59,6 +59,8 @@ button {
 }
 
 .lp {
+  border-radius: 20px 20px 0 0;
+  margin-top: 50px;
   max-width: $lp-width;
   min-height: 100vh;
   margin-inline: auto;
@@ -224,7 +226,7 @@ button {
     display: block;
     line-height: 26px;
 
-    & + & {
+    &+& {
       margin-top: 5px;
     }
   }
@@ -296,6 +298,7 @@ button {
 // ==========================================================================
 .fv__img {
   width: 100%;
+  border-radius: 20px 20px 0 0;
 }
 
 // ==========================================================================
@@ -343,7 +346,7 @@ button {
       width: 29px;
     }
 
-    img + img {
+    img+img {
       margin-top: -4.07px;
     }
   }
@@ -580,7 +583,7 @@ button {
     }
 
     // reset で全要素の line-height が 1 のため子要素にも指定
-    > p {
+    >p {
       line-height: 27px;
       font-weight: 300;
     }
@@ -1004,6 +1007,7 @@ button {
 
   &__map {
     width: 100%;
+    max-height: 350px;
     border-radius: $radius-card;
   }
 
@@ -1127,6 +1131,7 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .js .worries-card,
   .js .choose-card__item {
     transition: none;
@@ -1137,6 +1142,7 @@ button {
 // Hover（ホバー可能なデバイスのみ）
 // ==========================================================================
 @media (hover: hover) {
+
   .cta-button:hover,
   .side-nav__link:hover,
   .header__logo:hover,
@@ -1153,6 +1159,20 @@ button {
   .side-logo {
     display: none;
   }
+
+  .fv {
+    padding-top: 46px;
+
+    .fv__img {
+      border-radius: 0 0 0 0;
+    }
+  }
+
+  .lp {
+    margin-top: 0;
+    border-radius: 0 0 0 0;
+  }
+
 
   .side-nav {
     left: 0;
@@ -1198,10 +1218,19 @@ button {
   .header__menu {
     display: flex;
   }
+
+  .header {
+    position: fixed;
+    width: 100%;
+    max-width: 430px;
+    z-index: 9999;
+  }
+
 }
 
 // SP：画面幅が 430px 以下
 @include mq($bp-sp) {
+
   // 画面幅いっぱいの表示では左右の境界がないため影なし
   .lp {
     box-shadow: none;

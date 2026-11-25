@@ -106,6 +106,8 @@ button {
 }
 
 .lp {
+  border-radius: 20px 20px 0 0;
+  margin-top: 50px;
   max-width: 430px;
   min-height: 100vh;
   margin-inline: auto;
@@ -338,6 +340,7 @@ button {
 
 .fv__img {
   width: 100%;
+  border-radius: 20px 20px 0 0;
 }
 
 .campaign {
@@ -1079,6 +1082,7 @@ button {
 }
 .shop__map {
   width: 100%;
+  max-height: 350px;
   border-radius: 20px;
 }
 .shop__info {
@@ -1195,6 +1199,16 @@ button {
   .side-logo {
     display: none;
   }
+  .fv {
+    padding-top: 46px;
+  }
+  .fv .fv__img {
+    border-radius: 0 0 0 0;
+  }
+  .lp {
+    margin-top: 0;
+    border-radius: 0 0 0 0;
+  }
   .side-nav {
     left: 0;
     z-index: 100;
@@ -1231,6 +1245,12 @@ button {
   .header,
   .header__menu {
     display: flex;
+  }
+  .header {
+    position: fixed;
+    width: 100%;
+    max-width: 430px;
+    z-index: 9999;
   }
 }
 @media (max-width: 430px) {
