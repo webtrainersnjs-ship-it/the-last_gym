@@ -1045,6 +1045,33 @@ button {
 }
 
 // ==========================================================================
+// Background「30」（PC：中央 LP の背後に大きな数字）
+// ==========================================================================
+// HTML は追加せず body の疑似要素で表示。position: fixed + z-index: -1 で、
+// 通常フローの .lp（白背景）より背面・ページ背景（body の背景色）より前面に描画される。
+body::before {
+  content: "30";
+  content: "30" / ""; // 装飾のため読み上げ対象外
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; // 画面外にはみ出してもスクロールを発生させない
+  font-family: $font-sans;
+  // 画面幅の約6割、かつ縦は画面内に収まる大きさ
+  font-size: min(58vw, 100vh);
+  font-weight: 900;
+  line-height: 1;
+  padding-bottom: 0.125em; // 数字のグリフが行内でやや下寄りのため、上下中央に見えるよう補正
+  letter-spacing: -0.04em;
+  color: rgba($color-white, 0.75);
+  pointer-events: none;
+  user-select: none;
+}
+
+// ==========================================================================
 // Animations
 // ==========================================================================
 // Scroll-driven Card Stack（.traial-card / .flow-card / .worries-img 共通）
@@ -1158,6 +1185,11 @@ button {
 @include mq($bp-tab) {
   .side-logo {
     display: none;
+  }
+
+  // 背景の「30」は左右に余白のある PC のみ表示
+  body::before {
+    content: none;
   }
 
   .fv {

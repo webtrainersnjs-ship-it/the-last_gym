@@ -1115,6 +1115,27 @@ button {
   width: 160px;
 }
 
+body::before {
+  content: "30";
+  content: "30"/"";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: min(58vw, 100vh);
+  font-weight: 900;
+  line-height: 1;
+  padding-bottom: 0.125em;
+  letter-spacing: -0.04em;
+  color: rgba(255, 255, 255, 0.75);
+  pointer-events: none;
+  user-select: none;
+}
+
 @keyframes card-stack-scale {
   to {
     transform: scale(calc(1 - var(--stack-step, 0.05) * (var(--n) - 1 - var(--i))));
@@ -1198,6 +1219,9 @@ button {
 @media (max-width: 1099px) {
   .side-logo {
     display: none;
+  }
+  body::before {
+    content: none;
   }
   .fv {
     padding-top: 46px;
