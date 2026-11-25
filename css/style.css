@@ -660,7 +660,7 @@ button {
 .worries-img {
   --n: 3;
   --stack-gap: 49px;
-  --stack-range: 75%;
+  --stack-range: 90%;
   position: relative;
   width: 100%;
   max-width: 350px;
@@ -1251,6 +1251,13 @@ button {
     width: 100%;
     max-width: 430px;
     z-index: 9999;
+  }
+  .traial-card,
+  .flow-card {
+    --stack-top: 86.64px;
+  }
+  .worries-img {
+    --stack-range: 83%;
   }
 }
 @media (max-width: 430px) {

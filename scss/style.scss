@@ -609,7 +609,7 @@ button {
 .worries-img {
   --n: 3;
   --stack-gap: 49px; // 画像同士の間隔（Figma の縦並び間隔）
-  --stack-range: 75%; // 枠が画面内に収まっている区間のうち、アニメーションに使う割合
+  --stack-range: 90%; // 枠が画面内に収まっている区間のうち、アニメーションに使う割合（大きいほどゆっくり）
   position: relative;
   width: 100%;
   max-width: $inner-width;
@@ -1224,6 +1224,18 @@ button {
     width: 100%;
     max-width: 430px;
     z-index: 9999;
+  }
+
+  // Card Stack：固定ヘッダー（高さ 46.64px）の下でカードを積み重ねる
+  // --stack-top は sticky の位置・view-timeline の基準・JS 代替処理で共通に使用
+  .traial-card,
+  .flow-card {
+    --stack-top: #{$stack-top + 46.64px};
+  }
+
+  // .worries-img：固定ヘッダーがあるため、最後の画像がヘッダーの下で止まる範囲で速度を設定
+  .worries-img {
+    --stack-range: 83%;
   }
 
 }
