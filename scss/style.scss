@@ -608,7 +608,7 @@ button {
 // 下で待機している画像が順にせり上がり、背面の画像が縮小する
 .worries-img {
   --n: 3;
-  --stack-gap: 49px; // 画像同士の間隔（Figma の縦並び間隔）
+  --stack-gap: 100px; // 画像同士の間隔（Figma の縦並び間隔）
   --stack-range: 90%; // 枠が画面内に収まっている区間のうち、アニメーションに使う割合（大きいほどゆっくり）
   position: relative;
   width: 100%;
@@ -1235,7 +1235,7 @@ button {
 
   // .worries-img：固定ヘッダーがあるため、最後の画像がヘッダーの下で止まる範囲で速度を設定
   .worries-img {
-    --stack-range: 83%;
+    --stack-range: 70%;
   }
 
 }

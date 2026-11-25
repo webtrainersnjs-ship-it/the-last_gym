@@ -659,7 +659,7 @@ button {
 
 .worries-img {
   --n: 3;
-  --stack-gap: 49px;
+  --stack-gap: 100px;
   --stack-range: 90%;
   position: relative;
   width: 100%;
@@ -1257,7 +1257,7 @@ button {
     --stack-top: 86.64px;
   }
   .worries-img {
-    --stack-range: 83%;
+    --stack-range: 70%;
   }
 }
 @media (max-width: 430px) {
