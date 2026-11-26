@@ -139,6 +139,23 @@ button {
     width: 20px;
     height: 2px;
     background-color: $color-text;
+    transition: transform $duration-hover, opacity $duration-hover;
+  }
+
+  // メニューを開いている間はアイコンを「×」に（aria-expanded と常に連動）
+  // 線の間隔（2px＋4px）ぶん上下の線を中央へ寄せて回転、中央の線は消す
+  &__menu[aria-expanded="true"] &__menu-bar {
+    &:nth-child(1) {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    &:nth-child(2) {
+      opacity: 0;
+    }
+
+    &:nth-child(3) {
+      transform: translateY(-6px) rotate(-45deg);
+    }
   }
 }
 

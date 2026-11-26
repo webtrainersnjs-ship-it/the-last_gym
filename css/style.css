@@ -183,6 +183,16 @@ button {
   width: 20px;
   height: 2px;
   background-color: #4c4948;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.header__menu[aria-expanded=true] .header__menu-bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.header__menu[aria-expanded=true] .header__menu-bar:nth-child(2) {
+  opacity: 0;
+}
+.header__menu[aria-expanded=true] .header__menu-bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
 }
 
 .section-title {

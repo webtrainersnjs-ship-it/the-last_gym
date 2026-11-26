@@ -21,9 +21,9 @@
       menuButton.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
     };
 
+    // ハンバーガーボタンで開閉を切り替え（開いている間は「×」表示。固定ヘッダーがメニューより前面にあるため常に押せる）
     menuButton.addEventListener('click', () => {
-      setOpen(true);
-      closeButton?.focus();
+      setOpen(!nav.classList.contains('is-open'));
     });
 
     closeButton?.addEventListener('click', () => {
