@@ -1,0 +1,25 @@
+# ============================================================
+# 予約フォーム中継のセキュリティ設定（.htaccess 追記用スニペット）
+# 既存の .htaccess がある場合は「上書きせず」この内容を末尾に追記してください。
+# 無い場合はこの内容で .htaccess を新規作成してください。
+# 注意: Xserver(FastCGI)では php_value/php_flag を書くと500になるため使わない。
+# ============================================================
+
+# ディレクトリ一覧表示を禁止
+Options -Indexes
+
+# 中継ログ・設定ファイルへの直接アクセスを禁止
+# （form-config.php は reserve.php が内部で読み込むため、外部公開は不要）
+<FilesMatch "^(reserve\.log|form-config\.php)$">
+  Require all denied
+</FilesMatch>
+
+# 一時ファイル類も露出させない
+<FilesMatch "\.(log|json|bak|netrc|env)$">
+  Require all denied
+</FilesMatch>
+
+# セキュリティヘッダ（mod_headers があれば付与）
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+</IfModule>

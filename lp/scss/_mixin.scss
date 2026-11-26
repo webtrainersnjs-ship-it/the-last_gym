@@ -1,0 +1,65 @@
+@charset "utf-8";
+
+// 色の設定
+$mainColor: #007ec3;
+$subColor: #e6f0f7;
+$acColor: #ebcd00;
+$acColor2: #FF7A00;
+$baseColor: #fff;
+$black: #000;
+// 背景画像のパスの設定
+$imgPath: "../img/";
+
+// 文字の設定
+// pc-ipad用テキスト
+@mixin jp-mainText {
+  font-weight: 500;
+  font-size: 1.6rem;
+  color: $black;
+  text-align: justify;
+  line-height: 1.7;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+@mixin jp-bigText {
+  font-weight: 500;
+  font-size: 3rem;
+  color: $black;
+  text-align: justify;
+  line-height: 1.5;
+  text-align: center;
+}
+@mixin jp-mediumText {
+  font-weight: 500;
+  font-size: 2.4rem;
+  color: $black;
+  text-align: justify;
+  line-height: 1.5;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+@mixin jp-smallText {
+  font-weight: 500;
+  font-size: 2rem;
+  color: $black;
+  text-align: justify;
+  line-height: 1.3;
+  text-align: center;
+}
+@mixin en-Text {
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: 400;
+  font-size: 3rem;
+  color: $black;
+  text-align: justify;
+  line-height: 1;
+  text-align: center;
+  text-transform: capitalize;
+}
+@mixin flex{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+}
+
