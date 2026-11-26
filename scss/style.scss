@@ -776,7 +776,7 @@ button {
     justify-content: center;
     width: $faq-label-size;
     height: $faq-label-size;
-    @include font($font-sans, $fz-md, 500, 1);
+    @include font($font-en, $fz-md, 500, 1);
     letter-spacing: 0;
     border-radius: 4px;
 
@@ -1066,7 +1066,7 @@ body::before {
   line-height: 1;
   padding-bottom: 0.125em; // 数字のグリフが行内でやや下寄りのため、上下中央に見えるよう補正
   letter-spacing: -0.04em;
-  color: rgba($color-white, 0.75);
+  color: rgba($color-white, 1);
   pointer-events: none;
   user-select: none;
 }
