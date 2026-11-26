@@ -675,6 +675,13 @@ button {
       animation-range: entry-crossing calc(100% - var(--pin-distance)) entry-crossing 100%;
     }
   }
+
+  // JS 有効時：横スライドは script.js（requestAnimationFrame で滑らかに追従）で描画するため、
+  // CSS のスクロール連動アニメーションは止める（JS 無効時は上記の CSS で動作）
+  &.is-js-slide &__item {
+    animation: none;
+    will-change: translate;
+  }
 }
 
 // ==========================================================================

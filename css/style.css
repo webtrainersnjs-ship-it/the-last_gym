@@ -713,6 +713,10 @@ button {
     animation-range: entry-crossing calc(100% - var(--pin-distance)) entry-crossing 100%;
   }
 }
+.worries-img.is-js-slide .worries-img__item {
+  animation: none;
+  will-change: translate;
+}
 
 .choose {
   background-color: #e6f2ff;

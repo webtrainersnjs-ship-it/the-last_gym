@@ -123,8 +123,7 @@
       scaleItems([...list.children], readStep(list), (i, n) => clamp((progress - i / n) * n));
     };
 
-    // 横スライド（.worries-img）：.worries__pin の固定区間の進行に合わせて画像を左へ送る
-    // CSS のキーフレームと同じ区間：0〜10% 静止 → 45% で2枚目 → 55% まで静止 → 90% で3枚目 → 100% まで静止
+    // .worries__pin の固定区間の進行度（PC のセクション上部の固定に使用）
     const updateBoxStack = (box) => {
       const pin = box.closest('.worries__pin');
       if (!pin) return;
@@ -133,13 +132,7 @@
       const offset = parseFloat(getComputedStyle(pin.querySelector('.worries__block--choice')).bottom) || 0;
       const progress = distance > 0 ? clamp((window.innerHeight - offset + distance - pin.getBoundingClientRect().bottom) / distance) : 1;
 
-      if (!supportsTimeline) {
-        const gap = parseFloat(getComputedStyle(box).getPropertyValue('--stack-gap')) || 0;
-        const current = clamp((progress - 0.1) / 0.35) + clamp((progress - 0.55) / 0.35);
-        [...box.children].forEach((item, i) => {
-          item.style.translate = `${(i - current) * (box.clientWidth + gap)}px 0`;
-        });
-      }
+      // 画像の横スライド自体は initWorriesSlide（全ブラウザ共通）で描画
 
       // PC：固定中はセクション上部（見出し・吹き出し）もスクロール量と同じだけ下へずらして止めて見せる
       const section = box.closest('.worries');
@@ -229,10 +222,86 @@
     });
   };
 
+  // ------------------------------------------------------------------------
+  // .worries-img 横スライド（スクロール量に連動）
+  // 目標位置は CSS のキーフレームと同じ区間（0〜10% 静止 → 45% で2枚目 → 55% まで静止 → 90% で3枚目 → 100% まで静止）。
+  // マウスホイールの1ノッチ（約100px）で画像が1フレームで大きく飛ぶのを防ぐため、
+  // requestAnimationFrame で目標位置へ滑らかに追従させる（スクロールを止めると目標位置でぴったり止まる）。
+  // ※ JS 無効時は CSS のスクロール連動アニメーションで動作
+  // ------------------------------------------------------------------------
+  const initWorriesSlide = () => {
+    const box = document.querySelector('.worries-img');
+    const pin = box?.closest('.worries__pin');
+    if (!box || !pin) return;
+    const block = pin.querySelector('.worries__block--choice');
+    const items = [...box.children];
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const SMOOTH_TIME = 0.12; // 追従の速さ（秒）。小さいほど機敏、大きいほど滑らか
+
+    box.classList.add('is-js-slide'); // CSS 側のスクロール連動アニメーションを止め、JS で描画
+
+    // レイアウト値は毎フレーム読まず、読み込み時とリサイズ時にだけ取得
+    let metrics;
+    const measure = () => {
+      metrics = {
+        distance: parseFloat(getComputedStyle(pin, '::before').height) || 0,
+        offset: parseFloat(getComputedStyle(block).bottom) || 0, // 固定位置（PC：画面中央、SP・タブレット：0）
+        step: box.clientWidth + (parseFloat(getComputedStyle(box).getPropertyValue('--stack-gap')) || 0),
+      };
+    };
+
+    // 現在のスクロール位置での目標（何枚目を表示しているか：0〜2）
+    const target = () => {
+      const { distance, offset } = metrics;
+      const progress = distance > 0 ? clamp((window.innerHeight - offset + distance - pin.getBoundingClientRect().bottom) / distance) : 1;
+      return clamp((progress - 0.1) / 0.35) + clamp((progress - 0.55) / 0.35);
+    };
+
+    let current = null;
+    let frame = 0;
+    let lastTime = 0;
+    const render = () => {
+      items.forEach((item, i) => {
+        item.style.translate = `${((i - current) * metrics.step).toFixed(2)}px 0`;
+      });
+    };
+    const tick = (time) => {
+      const goal = target();
+      const dt = lastTime ? Math.min((time - lastTime) / 1000, 0.1) : 1 / 60;
+      lastTime = time;
+      if (current === null || reduceMotion.matches) {
+        current = goal;
+      } else {
+        current += (goal - current) * (1 - Math.exp(-dt / SMOOTH_TIME)); // フレームレートに依存しない補間
+        if (Math.abs(goal - current) < 0.0005) current = goal;
+      }
+      render();
+      if (current !== goal) {
+        frame = requestAnimationFrame(tick);
+      } else {
+        frame = 0;
+        lastTime = 0;
+      }
+    };
+    const request = () => {
+      if (!frame) frame = requestAnimationFrame(tick);
+    };
+
+    measure();
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', () => {
+      measure();
+      current = null; // 画面サイズ変更時は補間せず正しい位置へ
+      request();
+    });
+    request();
+  };
+
   initMenu();
   initSmoothScroll();
   initFaq();
   initFadeInCards();
   initCardStackFallback();
+  initWorriesSlide();
   initSlider();
 })();
