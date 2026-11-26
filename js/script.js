@@ -120,13 +120,15 @@
     };
 
     // 350×350 の枠内スタック（.worries-img）：ページスクロール連動（view-timeline の contain 相当）
+    // 進行度は .worries__pin の固定区間（::before の高さ分）のスクロール量から算出（CSS と同じ）
     const updateBoxStack = (box) => {
+      const pin = box.closest('.worries__pin');
+      if (!pin) return;
       const style = getComputedStyle(box);
       const gap = parseFloat(style.getPropertyValue('--stack-gap')) || 0;
-      const range = (parseFloat(style.getPropertyValue('--stack-range')) || 100) / 100;
       const rect = box.getBoundingClientRect();
-      const travel = window.innerHeight - rect.height;
-      const progress = travel > 0 ? clamp((window.innerHeight - rect.bottom) / travel / range) : 1;
+      const distance = parseFloat(getComputedStyle(pin, '::before').height) || 0;
+      const progress = distance > 0 ? clamp((window.innerHeight + distance - pin.getBoundingClientRect().bottom) / distance) : 1;
       const items = [...box.children];
       const n = items.length;
       items.forEach((item, i) => {

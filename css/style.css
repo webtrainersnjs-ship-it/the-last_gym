@@ -540,6 +540,16 @@ button {
 .worries__story {
   margin-inline: -20px;
 }
+.worries__pin {
+  --stack-range: 0.9;
+  --pin-distance: calc(var(--stack-range) * (100vh - min(350px, 100vw - 40px)));
+  view-timeline: --worries-img block;
+}
+.worries__pin::before {
+  content: "";
+  display: block;
+  height: var(--pin-distance);
+}
 .worries__block {
   position: relative;
   padding-inline: 20px;
@@ -554,6 +564,8 @@ button {
   background: no-repeat center/100% 100%;
 }
 .worries__block--choice {
+  position: sticky;
+  bottom: 0;
   z-index: 3;
   padding-bottom: 68.5px;
 }
@@ -660,14 +672,12 @@ button {
 .worries-img {
   --n: 3;
   --stack-gap: 100px;
-  --stack-range: 90%;
   position: relative;
   width: 100%;
   max-width: 350px;
   aspect-ratio: 1;
   margin: 14.88px auto 0;
   overflow: clip;
-  view-timeline: --worries-img block;
 }
 .worries-img__item {
   position: absolute;
@@ -692,7 +702,7 @@ button {
   .worries-img__item {
     animation: worries-img-slide linear both, worries-img-scale linear forwards;
     animation-timeline: --worries-img, --worries-img;
-    animation-range: contain 0% contain calc(var(--i) / (var(--n) - 1) * var(--stack-range)), contain calc(var(--i) / (var(--n) - 1) * var(--stack-range)) contain calc((var(--i) + 1) / (var(--n) - 1) * var(--stack-range));
+    animation-range: entry-crossing calc(100% - var(--pin-distance)) entry-crossing calc(100% - var(--pin-distance) * (1 - var(--i) / (var(--n) - 1))), entry-crossing calc(100% - var(--pin-distance) * (1 - var(--i) / (var(--n) - 1))) entry-crossing calc(100% - var(--pin-distance) * (1 - (var(--i) + 1) / (var(--n) - 1)));
   }
 }
 
@@ -1282,8 +1292,8 @@ body::before {
   .flow-card {
     --stack-top: 86.64px;
   }
-  .worries-img {
-    --stack-range: 70%;
+  .worries__pin {
+    --stack-range: 0.7;
   }
 }
 @media (max-width: 430px) {

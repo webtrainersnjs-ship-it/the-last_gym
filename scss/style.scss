@@ -471,6 +471,22 @@ button {
     margin-inline: -$gutter;
   }
 
+  // .worries-img のスクロール固定（.traial-card / .flow-card と同じく sticky + view-timeline）
+  // ::before の余白（= アニメーションに使うスクロール量）をスクロールする間、
+  // --choice ブロックを画面下端に固定し、その進行に合わせて .worries-img のカードを重ねる
+  &__pin {
+    // アニメーションに使うスクロール量 = 割合 ×（画面の高さ − 画像枠の高さ）※従来と同じ速度
+    --stack-range: 0.9;
+    --pin-distance: calc(var(--stack-range) * (100vh - min(#{$inner-width}, 100vw - #{$gutter * 2})));
+    view-timeline: --worries-img block;
+
+    &::before {
+      content: "";
+      display: block;
+      height: var(--pin-distance);
+    }
+  }
+
   &__block {
     position: relative;
     padding-inline: $gutter;
@@ -487,6 +503,9 @@ button {
     }
 
     &--choice {
+      // .worries__pin 内で画面下端に固定（アニメーション中は画面が止まる）
+      position: sticky;
+      bottom: 0;
       z-index: 3;
       padding-bottom: 68.5px;
 
@@ -609,14 +628,12 @@ button {
 .worries-img {
   --n: 3;
   --stack-gap: 100px; // 画像同士の間隔（Figma の縦並び間隔）
-  --stack-range: 90%; // 枠が画面内に収まっている区間のうち、アニメーションに使う割合（大きいほどゆっくり）
   position: relative;
   width: 100%;
   max-width: $inner-width;
   aspect-ratio: 1;
   margin: 14.88px auto 0;
   overflow: clip;
-  view-timeline: --worries-img block;
 
   &__item {
     position: absolute;
@@ -640,9 +657,11 @@ button {
     &__item {
       animation: worries-img-slide linear both, worries-img-scale linear forwards;
       animation-timeline: --worries-img, --worries-img;
+      // 固定区間（.worries__pin の下端が画面下端に届くまでの --pin-distance）の中で、従来と同じ割合で進行
+      // entry-crossing 100% = 固定の終わり、100% - --pin-distance = 固定の始まり
       animation-range:
-        contain 0% contain calc(var(--i) / (var(--n) - 1) * var(--stack-range)),
-        contain calc(var(--i) / (var(--n) - 1) * var(--stack-range)) contain calc((var(--i) + 1) / (var(--n) - 1) * var(--stack-range));
+        entry-crossing calc(100% - var(--pin-distance)) entry-crossing calc(100% - var(--pin-distance) * (1 - var(--i) / (var(--n) - 1))),
+        entry-crossing calc(100% - var(--pin-distance) * (1 - var(--i) / (var(--n) - 1))) entry-crossing calc(100% - var(--pin-distance) * (1 - (var(--i) + 1) / (var(--n) - 1)));
     }
   }
 }
@@ -1266,8 +1285,8 @@ body::before {
   }
 
   // .worries-img：固定ヘッダーがあるため、最後の画像がヘッダーの下で止まる範囲で速度を設定
-  .worries-img {
-    --stack-range: 70%;
+  .worries__pin {
+    --stack-range: 0.7;
   }
 
 }
