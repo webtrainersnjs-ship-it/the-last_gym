@@ -108,3 +108,37 @@ $(document).ready(function () {
     }
   });
 });
+
+// キャンペーン期限（.campaign 内の .time-limit）を当月の月末日に自動更新
+(function () {
+  function getMonthEndText() {
+    var now = new Date();
+    // 翌月の0日 = 当月の最終日（うるう年も自動で考慮される）
+    var lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    return (lastDay.getMonth() + 1) + '/' + lastDay.getDate();
+  }
+
+  function updateTimeLimit() {
+    var text = getMonthEndText();
+    var targets = document.querySelectorAll('.campaign .time-limit .time p > span');
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].textContent !== text) {
+        targets[i].textContent = text;
+      }
+    }
+  }
+
+  // ページを開いたまま月をまたいだ場合も切り替わるよう、定期的に再判定
+  function scheduleNextUpdate() {
+    var now = new Date();
+    var nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    var wait = Math.min(nextMonth - now + 1000, 60 * 60 * 1000);
+    setTimeout(function () {
+      updateTimeLimit();
+      scheduleNextUpdate();
+    }, wait);
+  }
+
+  updateTimeLimit();
+  scheduleNextUpdate();
+})();
