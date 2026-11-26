@@ -94,11 +94,15 @@
   // （カードの sticky による重なり自体は CSS のみで動作）
   // ------------------------------------------------------------------------
   const initCardStackFallback = () => {
-    if (window.CSS && CSS.supports('animation-timeline: view()')) return;
+    const supportsTimeline = window.CSS && CSS.supports('animation-timeline: view()');
+    // PC の .worries セクション上部の固定は timeline-scope も必要（非対応なら JS で代替）
+    const supportsScope = window.CSS && CSS.supports('timeline-scope: none');
+    if (supportsTimeline && supportsScope) return;
 
-    const pageStacks = [...document.querySelectorAll('.traial-card, .flow-card')];
+    const pageStacks = supportsTimeline ? [] : [...document.querySelectorAll('.traial-card, .flow-card')];
     const boxStacks = [...document.querySelectorAll('.worries-img')];
     if (!pageStacks.length && !boxStacks.length) return;
+    const tabletQuery = window.matchMedia('(max-width: 1099px)');
 
     const scaleItems = (items, step, progressOf) => {
       const n = items.length;
@@ -119,18 +123,28 @@
       scaleItems([...list.children], readStep(list), (i, n) => clamp((progress - i / n) * n));
     };
 
-    // 350×350 の枠内スタック（.worries-img）：ページスクロール連動（view-timeline の contain 相当）
     // 横スライド（.worries-img）：.worries__pin の固定区間の進行に合わせて画像を左へ送る
     // CSS のキーフレームと同じ区間：0〜10% 静止 → 45% で2枚目 → 55% まで静止 → 90% で3枚目 → 100% まで静止
     const updateBoxStack = (box) => {
       const pin = box.closest('.worries__pin');
       if (!pin) return;
-      const gap = parseFloat(getComputedStyle(box).getPropertyValue('--stack-gap')) || 0;
       const distance = parseFloat(getComputedStyle(pin, '::before').height) || 0;
-      const progress = distance > 0 ? clamp((window.innerHeight + distance - pin.getBoundingClientRect().bottom) / distance) : 1;
-      const current = clamp((progress - 0.1) / 0.35) + clamp((progress - 0.55) / 0.35);
-      [...box.children].forEach((item, i) => {
-        item.style.translate = `${(i - current) * (box.clientWidth + gap)}px 0`;
+      // 固定位置（--choice ブロックの bottom）：PC は画面中央、SP・タブレットは 0（画面下端）
+      const offset = parseFloat(getComputedStyle(pin.querySelector('.worries__block--choice')).bottom) || 0;
+      const progress = distance > 0 ? clamp((window.innerHeight - offset + distance - pin.getBoundingClientRect().bottom) / distance) : 1;
+
+      if (!supportsTimeline) {
+        const gap = parseFloat(getComputedStyle(box).getPropertyValue('--stack-gap')) || 0;
+        const current = clamp((progress - 0.1) / 0.35) + clamp((progress - 0.55) / 0.35);
+        [...box.children].forEach((item, i) => {
+          item.style.translate = `${(i - current) * (box.clientWidth + gap)}px 0`;
+        });
+      }
+
+      // PC：固定中はセクション上部（見出し・吹き出し）もスクロール量と同じだけ下へずらして止めて見せる
+      const section = box.closest('.worries');
+      section?.querySelectorAll('.worries__title, .worries__cards').forEach((el) => {
+        el.style.translate = tabletQuery.matches ? '' : `0 ${progress * distance}px`;
       });
     };
 

@@ -516,6 +516,7 @@ button {
 }
 
 .worries {
+  --pin-distance: 150vh;
   background-color: #fff;
   border-radius: 40px 40px 0 0;
   display: flex;
@@ -523,6 +524,14 @@ button {
   align-items: stretch;
   gap: 30px;
   padding: 50px 20px;
+  timeline-scope: --worries-img;
+}
+@supports (animation-timeline: view()) and (timeline-scope: none) {
+  .worries__title, .worries__cards {
+    animation: worries-above-hold linear both;
+    animation-timeline: --worries-img;
+    animation-range: entry-crossing calc(100% - var(--pin-distance)) entry-crossing 100%;
+  }
 }
 .worries__cards {
   display: grid;
@@ -541,8 +550,9 @@ button {
   margin-inline: -20px;
 }
 .worries__pin {
-  --pin-distance: 150vh;
+  --pin-offset: calc((100vh - 738.7px) / 2);
   view-timeline: --worries-img block;
+  view-timeline-inset: 0 var(--pin-offset);
 }
 .worries__pin::before {
   content: "";
@@ -564,7 +574,7 @@ button {
 }
 .worries__block--choice {
   position: sticky;
-  bottom: 0;
+  bottom: var(--pin-offset);
   z-index: 3;
   padding-bottom: 68.5px;
 }
@@ -1151,6 +1161,14 @@ body::before {
     transform: scale(calc(1 - var(--stack-step, 0.05) * (var(--n) - 1 - var(--i))));
   }
 }
+@keyframes worries-above-hold {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 var(--pin-distance);
+  }
+}
 @keyframes worries-img-slide {
   0%, 10% {
     translate: calc(var(--i) * (100% + var(--stack-gap))) 0;
@@ -1227,6 +1245,13 @@ body::before {
 @media (max-width: 1099px) {
   .side-logo {
     display: none;
+  }
+  .worries__pin {
+    --pin-offset: 0px;
+  }
+  .worries__title,
+  .worries__cards {
+    animation: none;
   }
   body::before {
     content: none;

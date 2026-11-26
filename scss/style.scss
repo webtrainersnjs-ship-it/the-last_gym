@@ -448,9 +448,22 @@ button {
 // WORRIES
 // ==========================================================================
 .worries {
+  --pin-distance: 150vh; // .worries-img の横スライドに使うスクロール量（大きいほどゆっくり）
   @include panel($color-white);
   @include stack(30px);
   padding: $section-space $gutter;
+  timeline-scope: --worries-img; // セクション上部（見出し・吹き出し）からも固定区間のタイムラインを参照
+
+  // PC：固定中はセクション上部も同じ量だけ下へずらし、画面上で止まって見えるようにする（上部に白い余白を出さない）
+  // ※ SP・タブレットでは Responsive で無効化
+  @supports (animation-timeline: view()) and (timeline-scope: none) {
+    &__title,
+    &__cards {
+      animation: worries-above-hold linear both;
+      animation-timeline: --worries-img;
+      animation-range: entry-crossing calc(100% - var(--pin-distance)) entry-crossing 100%;
+    }
+  }
 
   &__cards {
     display: grid;
@@ -475,8 +488,10 @@ button {
   // ::before の余白（--pin-distance）をスクロールする間、--choice ブロックを画面下端に固定し、
   // その進行に合わせて .worries-img の画像を横にスライドさせる
   &__pin {
-    --pin-distance: 150vh; // 横スライドに使うスクロール量（大きいほどゆっくり）
+    // PC：固定位置を画面の上下中央に（--choice ブロックの高さ 738.7px）。SP・タブレットでは 0（画面下端）
+    --pin-offset: calc((100vh - 738.7px) / 2);
     view-timeline: --worries-img block;
+    view-timeline-inset: 0 var(--pin-offset); // 固定位置をずらした分だけタイムラインの基準もずらす（進行・速度は不変）
 
     &::before {
       content: "";
@@ -501,9 +516,9 @@ button {
     }
 
     &--choice {
-      // .worries__pin 内で画面下端に固定（横スライド中は画面が止まる）
+      // .worries__pin 内で固定（横スライド中は画面が止まる）。PC は画面中央、SP・タブレットは画面下端
       position: sticky;
-      bottom: 0;
+      bottom: var(--pin-offset);
       z-index: 3;
       padding-bottom: 68.5px;
 
@@ -1097,6 +1112,17 @@ body::before {
 }
 
 // .worries-img：待機位置（下）から枠内へせり上がる／背面になった画像を縮小
+// PC：固定中、セクション上部をスクロール量と同じだけ下へずらして止めて見せる
+@keyframes worries-above-hold {
+  from {
+    translate: 0 0;
+  }
+
+  to {
+    translate: 0 var(--pin-distance);
+  }
+}
+
 // 横一列に並べた画像を左へ送る（1枚目 → 2枚目 → 3枚目）。各画像の表示中は少し静止させて読める時間を確保
 // ※ JS の代替処理（script.js）も同じ区間設定
 @keyframes worries-img-slide {
@@ -1203,6 +1229,16 @@ body::before {
 @include mq($bp-tab) {
   .side-logo {
     display: none;
+  }
+
+  // .worries-img：PC 用の固定位置調整は使わない（従来どおり画面下端で固定）
+  .worries__pin {
+    --pin-offset: 0px;
+  }
+
+  .worries__title,
+  .worries__cards {
+    animation: none;
   }
 
   // 背景の「30」は左右に余白のある PC のみ表示
