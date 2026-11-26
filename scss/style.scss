@@ -448,12 +448,17 @@ button {
 // WORRIES
 // ==========================================================================
 .worries {
-  --pin-distance: 150vh; // .worries-img の横スライドに使うスクロール量（大きいほどゆっくり）
-  @include panel($color-white);
-  @include stack(30px);
-  padding: $section-space $gutter;
+  --pin-distance: 300vh; // .worries-img の横スライドに使うスクロール量（大きいほどゆっくり）
+  @include panel($color-sub);
+  // @include stack(30px);
+  // padding: $section-space $gutter;
   timeline-scope: --worries-img; // セクション上部（見出し・吹き出し）からも固定区間のタイムラインを参照
-
+  &__inner{
+    padding: $section-space $gutter;
+    // border-radius: 40px 40px 0 0;
+    @include panel($color-white);
+     @include stack(30px);
+  }
   // PC：固定中はセクション上部も同じ量だけ下へずらし、画面上で止まって見えるようにする（上部に白い余白を出さない）
   // ※ SP・タブレットでは Responsive で無効化
   @supports (animation-timeline: view()) and (timeline-scope: none) {
@@ -674,13 +679,6 @@ button {
       animation-timeline: --worries-img;
       animation-range: entry-crossing calc(100% - var(--pin-distance)) entry-crossing 100%;
     }
-  }
-
-  // JS 有効時：横スライドは script.js（requestAnimationFrame で滑らかに追従）で描画するため、
-  // CSS のスクロール連動アニメーションは止める（JS 無効時は上記の CSS で動作）
-  &.is-js-slide &__item {
-    animation: none;
-    will-change: translate;
   }
 }
 
