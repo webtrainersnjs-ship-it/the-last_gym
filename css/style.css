@@ -518,7 +518,6 @@ button {
 .worries {
   --pin-distance: 300vh;
   background-color: #e6f2ff;
-  border-radius: 40px 40px 0 0;
   timeline-scope: --worries-img;
 }
 .worries__inner {

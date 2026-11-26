@@ -449,7 +449,9 @@ button {
 // ==========================================================================
 .worries {
   --pin-distance: 300vh; // .worries-img の横スライドに使うスクロール量（大きいほどゆっくり）
-  @include panel($color-sub);
+  // 角丸の背面色（上の BEFORE-AFTER と同じ色）。角丸は .worries__inner 側に付ける
+  // ※ 外側にも角丸を付けると、両方の角が欠けて背面の白が見え、角丸が見えなくなる
+  background-color: $color-sub;
   // @include stack(30px);
   // padding: $section-space $gutter;
   timeline-scope: --worries-img; // セクション上部（見出し・吹き出し）からも固定区間のタイムラインを参照
