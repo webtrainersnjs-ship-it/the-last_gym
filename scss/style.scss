@@ -471,6 +471,20 @@ button {
     margin-inline: -$gutter;
   }
 
+  // .worries-img のスクロール固定（.traial-card / .flow-card と同じく sticky + view-timeline）
+  // ::before の余白（--pin-distance）をスクロールする間、--choice ブロックを画面下端に固定し、
+  // その進行に合わせて .worries-img の画像を横にスライドさせる
+  &__pin {
+    --pin-distance: 150vh; // 横スライドに使うスクロール量（大きいほどゆっくり）
+    view-timeline: --worries-img block;
+
+    &::before {
+      content: "";
+      display: block;
+      height: var(--pin-distance);
+    }
+  }
+
   &__block {
     position: relative;
     padding-inline: $gutter;
@@ -487,6 +501,9 @@ button {
     }
 
     &--choice {
+      // .worries__pin 内で画面下端に固定（横スライド中は画面が止まる）
+      position: sticky;
+      bottom: 0;
       z-index: 3;
       padding-bottom: 68.5px;
 
@@ -608,15 +625,13 @@ button {
 // 下で待機している画像が順にせり上がり、背面の画像が縮小する
 .worries-img {
   --n: 3;
-  --stack-gap: 100px; // 画像同士の間隔（Figma の縦並び間隔）
-  --stack-range: 90%; // 枠が画面内に収まっている区間のうち、アニメーションに使う割合（大きいほどゆっくり）
+  --stack-gap: 100px; // 画像同士の間隔
   position: relative;
   width: 100%;
   max-width: $inner-width;
   aspect-ratio: 1;
   margin: 14.88px auto 0;
-  overflow: clip;
-  view-timeline: --worries-img block;
+  // 横スライド中の画像は LP の左右端まで見せ、LP の外側は .lp（overflow-x: clip）で切る
 
   &__item {
     position: absolute;
@@ -636,13 +651,13 @@ button {
     }
   }
 
+  // 固定区間（.worries__pin の下端が画面下端に届くまでの --pin-distance）全体で横スライド
+  // entry-crossing 100% = 固定の終わり、100% - --pin-distance = 固定の始まり
   @supports (animation-timeline: view()) {
     &__item {
-      animation: worries-img-slide linear both, worries-img-scale linear forwards;
-      animation-timeline: --worries-img, --worries-img;
-      animation-range:
-        contain 0% contain calc(var(--i) / (var(--n) - 1) * var(--stack-range)),
-        contain calc(var(--i) / (var(--n) - 1) * var(--stack-range)) contain calc((var(--i) + 1) / (var(--n) - 1) * var(--stack-range));
+      animation: worries-img-slide linear both;
+      animation-timeline: --worries-img;
+      animation-range: entry-crossing calc(100% - var(--pin-distance)) entry-crossing 100%;
     }
   }
 }
@@ -1082,19 +1097,22 @@ body::before {
 }
 
 // .worries-img：待機位置（下）から枠内へせり上がる／背面になった画像を縮小
+// 横一列に並べた画像を左へ送る（1枚目 → 2枚目 → 3枚目）。各画像の表示中は少し静止させて読める時間を確保
+// ※ JS の代替処理（script.js）も同じ区間設定
 @keyframes worries-img-slide {
-  from {
-    translate: 0 calc(var(--i) * (100% + var(--stack-gap)));
+  0%,
+  10% {
+    translate: calc(var(--i) * (100% + var(--stack-gap))) 0;
   }
 
-  to {
-    translate: 0 0;
+  45%,
+  55% {
+    translate: calc((var(--i) - 1) * (100% + var(--stack-gap))) 0;
   }
-}
 
-@keyframes worries-img-scale {
-  to {
-    scale: calc(1 - var(--stack-step, #{$stack-step}) * (var(--n) - 1 - var(--i)));
+  90%,
+  100% {
+    translate: calc((var(--i) - 2) * (100% + var(--stack-gap))) 0;
   }
 }
 
@@ -1263,11 +1281,6 @@ body::before {
   .traial-card,
   .flow-card {
     --stack-top: #{$stack-top + 46.64px};
-  }
-
-  // .worries-img：固定ヘッダーがあるため、最後の画像がヘッダーの下で止まる範囲で速度を設定
-  .worries-img {
-    --stack-range: 70%;
   }
 
 }

@@ -120,20 +120,18 @@
     };
 
     // 350×350 の枠内スタック（.worries-img）：ページスクロール連動（view-timeline の contain 相当）
+    // 横スライド（.worries-img）：.worries__pin の固定区間の進行に合わせて画像を左へ送る
+    // CSS のキーフレームと同じ区間：0〜10% 静止 → 45% で2枚目 → 55% まで静止 → 90% で3枚目 → 100% まで静止
     const updateBoxStack = (box) => {
-      const style = getComputedStyle(box);
-      const gap = parseFloat(style.getPropertyValue('--stack-gap')) || 0;
-      const range = (parseFloat(style.getPropertyValue('--stack-range')) || 100) / 100;
-      const rect = box.getBoundingClientRect();
-      const travel = window.innerHeight - rect.height;
-      const progress = travel > 0 ? clamp((window.innerHeight - rect.bottom) / travel / range) : 1;
-      const items = [...box.children];
-      const n = items.length;
-      items.forEach((item, i) => {
-        const arrived = i === 0 ? 1 : clamp(progress / (i / (n - 1)));
-        item.style.translate = `0 ${(1 - arrived) * i * (rect.height + gap)}px`;
+      const pin = box.closest('.worries__pin');
+      if (!pin) return;
+      const gap = parseFloat(getComputedStyle(box).getPropertyValue('--stack-gap')) || 0;
+      const distance = parseFloat(getComputedStyle(pin, '::before').height) || 0;
+      const progress = distance > 0 ? clamp((window.innerHeight + distance - pin.getBoundingClientRect().bottom) / distance) : 1;
+      const current = clamp((progress - 0.1) / 0.35) + clamp((progress - 0.55) / 0.35);
+      [...box.children].forEach((item, i) => {
+        item.style.translate = `${(i - current) * (box.clientWidth + gap)}px 0`;
       });
-      scaleItems(items, readStep(box), (i) => clamp((progress - i / (n - 1)) * (n - 1)));
     };
 
     let ticking = false;
